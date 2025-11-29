@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist/
+build/
+
+# Logs
+logs/
+*.log
+*.log.*
+pids
+*.pid
+*.seed
+
+# IDE configs
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# Java + Spring Boot
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Backup files
+*.tmp
+*.bak
+*.old
