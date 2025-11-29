@@ -1,5 +1,11 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
+import Session from "../models/session.model.js";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
+
+const ACCESS_TOKEN_TTL = "15m";
+const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 1000; //14 ngày
 
 export const signUp = async (req, res) => {
   try {
@@ -37,6 +43,63 @@ export const signUp = async (req, res) => {
     // Trả về
     res.status(201).json({
       message: "Đăng ký thành công!",
+    });
+  } catch (error) {
+    console.error("Lỗi khi gọi signUp:", error);
+    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
+  }
+};
+export const signIn = async (req, res) => {
+  try {
+    // Lấy input
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({
+        message: "Thiếu userName or passWord!",
+      });
+    }
+    // Lấy hash trong db so anh với pass input
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: "userName or passWord không chính xác!" });
+    }
+    // Kiểm tra password
+    const passWordCorrect = await bcrypt.compare(password, user.hashedPassword);
+
+    if (!passWordCorrect) {
+      return res
+        .status(401)
+        .json({ message: "userName or passWord không chính xác!" });
+    }
+    // Nếu khớp tạo accessToken với JWT
+    const accessToken = jwt.sign(
+      { userId: user._id },
+      process.env.ACCESS_TOKEN,
+      {
+        expiresIn: ACCESS_TOKEN_TTL,
+      }
+    );
+    // Tạo refresh token
+    const refreshToken = crypto.randomBytes(64).toString("hex");
+    // Tạo session mới để lưu refresh token
+    await Session.create({
+      userId: user._id,
+      refreshToken,
+      expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL),
+    });
+    // Trả  refresh token về trong cookie
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: REFRESH_TOKEN_TTL,
+    });
+    // Trả access token trong res
+    return res.status(200).json({
+      message: `User ${user.displayName} đã đăng nhập thành công!`,
+      accessToken,
     });
   } catch (error) {
     console.error("Lỗi khi gọi signUp:", error);
