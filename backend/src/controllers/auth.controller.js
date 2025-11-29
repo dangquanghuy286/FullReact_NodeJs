@@ -106,3 +106,23 @@ export const signIn = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
+export const signOut = async (req, res) => {
+  try {
+    // Lấy refreshToken token từ cookie
+    const token = req.cookies?.refreshToken;
+    // Xóa refresh token trong section
+    if (token) {
+      await Session.deleteOne({ refreshToken: token });
+    }
+    // Xóa cookie
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+    return res.status(200).json({ message: "Đăng xuất thành công!" });
+  } catch (error) {
+    console.error("Lỗi khi gọi signOut:", error);
+    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
+  }
+};
