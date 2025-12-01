@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { Link } from "react-router-dom";
 // Zod Schema
 const loginSchema = z.object({
   username: z.string().min(1, "Vui lòng nhập tên đăng nhập"),
@@ -85,9 +85,9 @@ export function LoginForm({
               {/* Footer */}
               <div className="text-center text-sm">
                 Bạn chưa có tài khoản?{" "}
-                <a href="#" className="underline hover:text-primary">
+                <Link to="/signup" className="underline hover:text-primary">
                   Tạo tài khoản
-                </a>
+                </Link>
               </div>
             </div>
           </form>
