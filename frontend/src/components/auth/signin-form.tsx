@@ -32,10 +32,14 @@ export function LoginForm({
 
   const onSubmit = async (data: LoginFormData) => {
     const { username, password } = data;
-    await signIn(username, password);
-    navigate("/");
+    try {
+      await signIn(username, password);
+      navigate("/");
+    } catch (error) {
+      // Đăng nhập thất bại
+      console.error("Login failed:", error);
+    }
   };
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">

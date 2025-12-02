@@ -7,7 +7,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: null,
   user: null,
   loading: false, //Theo doi trang thai
-
+  // Reset state
+  clearState: () => {
+    set({
+      accessToken: null,
+      user: null,
+      loading: false,
+    });
+  },
   signUp: async (username, password, email, firstName, lastName) => {
     try {
       set({
@@ -27,20 +34,43 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
   signIn: async (username, password) => {
     try {
+      set({ loading: true });
+
+      const { accessToken } = await authService.signIn(username, password);
+      set({ accessToken });
+      await get().getProfile();
+      toast.success("Đăng nhập thành công! Chào mừng bạn quay trở lại!");
+    } catch (error) {
+      toast.error("Đăng nhập thất bại!");
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  signOut: async () => {
+    try {
+      get().clearState();
+      await authService.signOut();
+      toast.success("Logout Thành Công");
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi xảy ra khi logout!");
+    }
+  },
+  getProfile: async () => {
+    try {
       set({
         loading: true,
       });
-      // Goi API
-      const { accessToken } = await authService.signIn(username, password);
-      set({ accessToken });
-      toast.success("Đăng nhập thành công !Chào mừng bạn quay trở lại! ");
+      // Goi api
+      const user = await authService.getProfile();
+      set({ user });
     } catch (error) {
       console.error(error);
-      toast.error("Đăng nhập thất bại !");
+      set({ user: null, accessToken: null });
+      toast.error("Lỗi xảy ra khi logout!");
     } finally {
-      set({
-        loading: false,
-      });
+      set({ loading: false });
     }
   },
 }));

@@ -32,4 +32,11 @@ export const authService = {
     );
     return res.data;
   },
+  signOut: async () => {
+    return api.post("/auth/signout", {}, { withCredentials: true });
+  },
+  getProfile: async () => {
+    const res = await api.get("/user/profile", { withCredentials: true });
+    return res.data.user;
+  },
 };
