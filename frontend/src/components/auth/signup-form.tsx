@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/stores/auth.store";
 // Zod Schema
 const signupSchema = z.object({
   firstName: z.string().min(1, "Vui lòng nhập họ"),
@@ -28,6 +29,8 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signUp } = useAuthStore();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -36,9 +39,12 @@ export function SignupForm({
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data: SignupFormData) => {
-    console.log("Form data:", data);
-    // Xử lý đăng ký ở đây
+  const onSubmit = async (data: SignupFormData) => {
+    const { firstName, lastName, username, password, email } = data;
+
+    //Gọi BE để SignUp
+    await signUp(username, password, email, firstName, lastName);
+    navigate("/signin");
   };
 
   return (

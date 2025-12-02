@@ -1,5 +1,3 @@
-import React from "react";
-import SignUpPage from "./SignUpPage";
 import { LoginForm } from "@/components/auth/signin-form";
 
 const SignInPage = () => {
