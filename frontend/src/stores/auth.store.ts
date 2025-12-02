@@ -73,4 +73,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       set({ loading: false });
     }
   },
+  refresh: async () => {
+    try {
+      const { user, getProfile } = get();
+      const accessToken = await authService.refresh();
+      set({ accessToken });
+      if (!user) {
+        await getProfile();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Phiên đăng nhập đã hết hạn !");
+      get().clearState();
+    } finally {
+      set({ loading: false });
+    }
+  },
 }));

@@ -39,4 +39,8 @@ export const authService = {
     const res = await api.get("/user/profile", { withCredentials: true });
     return res.data.user;
   },
+  refresh: async () => {
+    const res = await api.get("/auth/refresh", { withCredentials: true });
+    return res.data.accessToken;
+  },
 };
