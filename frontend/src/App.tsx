@@ -13,7 +13,7 @@ function App() {
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           {/* Private routes */}
-          <Route path="/signup" element={<ChatAppPage />} />
+          <Route path="/" element={<ChatAppPage />} />
         </Routes>
       </BrowserRouter>
     </>
