@@ -1,4 +1,5 @@
 import Conversation from "../models/conversation.model.js";
+import Message from "../models/message.model.js";
 
 export const createConversation = async (req, res) => {
   try {
@@ -88,11 +89,108 @@ export const createConversation = async (req, res) => {
       conversation,
     });
   } catch (error) {
-    console.error("Lỗi khi gửi tin nhắn!", error);
+    console.error("Lỗi khi tạo hội thoại!", error);
     return res.status(500).json({
       message: "Lỗi hệ thống!",
     });
   }
 };
-export const getAllConversations = async (req, res) => {};
-export const getMessages = async (req, res) => {};
+export const getAllConversations = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const conversation = await Conversation.find({
+      "participants.userId": userId,
+    })
+      .sort({
+        lastMessageAt: -1,
+        updatedAt: -1,
+      })
+      .populate({
+        path: "participants.userId",
+        select: "displayName avatarURL",
+      })
+      .populate({
+        path: "lastMessage.senderId",
+        select: "displayName avatarURL",
+      })
+      .populate({
+        path: "seenBy",
+        select: "displayName avatarURL",
+      });
+
+    const formatted = conversation.map((hoi) => {
+      const participants = (hoi.participants || []).map((p) => ({
+        _id: p.userId?._id,
+        displayName: p.userId?.displayName,
+        avatarUrl: p.userId?.avatarUrl ?? null,
+        joinedAt: p.joinedAt,
+      }));
+
+      return {
+        ...hoi.toObject(),
+        unreadCounts: hoi.unreadCounts || {},
+        participants,
+      };
+    });
+
+    return res.status(200).json({
+      conversation: formatted,
+    });
+  } catch (error) {
+    console.error("Lỗi khi lấy conversation!", error);
+    return res.status(500).json({
+      message: "Lỗi hệ thống!",
+    });
+  }
+};
+export const getMessages = async (req, res) => {
+  try {
+    // 1. Lấy conversationId từ URL
+    const { conversationId } = req.params;
+
+    // 2. Lấy limit và cursor từ query
+    const { limit = 50, cursor } = req.query;
+
+    // 3. Tạo điều kiện query theo conversationId
+    const query = { conversationId };
+
+    // 4. Nếu có cursor thì lấy tin nhắn cũ hơn cursor
+    if (cursor) {
+      query.createdAt = {
+        $lt: new Date(cursor),
+      };
+    }
+
+    // 5. Lấy danh sách tin nhắn (mới → cũ), dư 1 bản ghi
+    let message = await Message.find(query)
+      .sort({
+        createdAt: -1,
+      })
+      .limit(Number(limit) + 1);
+
+    // 6. Khởi tạo cursor cho lần load tiếp theo
+    let nextCursor = null;
+
+    // 7. Nếu còn tin nhắn cũ hơn thì tạo nextCursor
+    if (message.length > Number(limit)) {
+      const nextMessage = message[message.length - 1];
+      nextCursor = nextMessage.createdAt.toISOString();
+      message.pop();
+    }
+
+    // 8. Đảo mảng để trả về theo thứ tự cũ → mới
+    message = message.reverse();
+
+    // 9. Trả dữ liệu về client
+    return res.status(200).json({
+      message,
+      nextCursor,
+    });
+  } catch (error) {
+    // 10. Bắt lỗi hệ thống
+    console.error("Lỗi khi lấy tin nhắn!", error);
+    return res.status(500).json({
+      message: "Lỗi hệ thống!",
+    });
+  }
+};
