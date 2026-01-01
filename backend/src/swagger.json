@@ -1,0 +1,146 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "fullstack",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "servers": [
+        {
+            "url": "http://localhost:5001/api"
+        },
+        {
+            "url": ""
+        }
+    ],
+    "paths": {
+        "/auth/signup": {
+            "post": {
+                "summary": "SignUp",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/signin": {
+            "post": {
+                "summary": "SignIn",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/friend/requests": {
+            "post": {
+                "summary": "SendFriendRequest",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            },
+            "get": {
+                "summary": "GetFrRequest",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/friend/requests/695403d7c527853ef02c4a32/accept": {
+            "post": {
+                "summary": "AcceptFriend",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/friend": {
+            "get": {
+                "summary": "GetAllFr",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/messages/direct": {
+            "post": {
+                "summary": "SendDirectMess",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/conversation/": {
+            "post": {
+                "summary": "CreateConversation",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/": {
+            "get": {
+                "summary": "GetConversation",
+                "responses": {}
+            }
+        },
+        "/conversation/695414b0091c923260a76f0b/messages": {
+            "get": {
+                "summary": "GetMessage",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/messages/group": {
+            "post": {
+                "summary": "SendGroup",
+                "responses": {},
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ]
+}

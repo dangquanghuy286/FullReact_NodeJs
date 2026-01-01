@@ -4,6 +4,8 @@ import { connectDB } from "./libs/db.js";
 import routes from "./routes/index.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,11 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// Swagger
+const swaggerDocument = JSON.parse(
+  fs.readFileSync("./src/swagger.json", "utf8")
+);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Routes
 app.use("/api", routes);
 
