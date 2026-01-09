@@ -6,6 +6,9 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -13,8 +16,16 @@ import {
 } from "@/components/ui/sidebar";
 import { Moon, Sun } from "lucide-react";
 import { Switch } from "../ui/switch";
+import CreateNewChat from "../chat/CreateNewChat";
+import NewGroupChatModel from "../chat/NewGroupChatModel";
+import GroupChatList from "../chat/GroupChatList";
+import AddFriendModal from "../chat/AddFriendModal";
+import DirectChatList from "../chat/DirectChatList";
+import { useThemeStore } from "@/stores/useThemeStore";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { isDarkMode, toggleTheme } = useThemeStore();
+
   return (
     <Sidebar variant="inset" {...props}>
       {/* Header */}
@@ -32,9 +43,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <div className="flex items-center gap-2">
                     <Sun className="h-5 w-5 text-yellow-400" />
                     <Switch
-                      checked={true}
-                      onCheckedChange={() => {}}
-                      className="data-[state=checked]:bg-[#009fb0]"
+                      checked={isDarkMode}
+                      onCheckedChange={toggleTheme}
+                          className="h-6 w-11 rounded-full bg-gray-300 data-[state=checked]:bg-[#009fb0] transition-colors [&>span]:h-5 [&>span]:w-5 [&>span]:rounded-full [&>span]:bg-white [&>span]:shadow-md [&>span]:transition-transform [&>span]:translate-x-0.5 data-[state=checked]:[&>span]:translate-x-5"
                     />
                     <Moon className="h-5 w-5 text-gray-600" />
                   </div>
@@ -45,7 +56,34 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       {/* Content */}
-      <SidebarContent></SidebarContent>
+      <SidebarContent>
+        {/* New Chat */}
+        <SidebarGroup>
+          <SidebarContent>
+            <CreateNewChat />
+          </SidebarContent>
+        </SidebarGroup>
+        {/* Groups */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="uppercase">Nhóm Chat</SidebarGroupLabel>
+          <SidebarGroupAction title="Tạo nhóm" className="cursor-pointer">
+            <NewGroupChatModel />
+          </SidebarGroupAction>
+          <SidebarContent>
+            <GroupChatList />
+          </SidebarContent>
+        </SidebarGroup>
+        {/* Chats */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="uppercase">Bạn bè</SidebarGroupLabel>
+          <SidebarGroupAction title="Kết bạn" className="cursor-pointer">
+            <AddFriendModal />
+          </SidebarGroupAction>
+          <SidebarContent>
+            <DirectChatList />
+          </SidebarContent>
+        </SidebarGroup>
+      </SidebarContent>
       {/* Footer */}
       <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
     </Sidebar>
