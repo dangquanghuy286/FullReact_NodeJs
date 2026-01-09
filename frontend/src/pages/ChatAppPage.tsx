@@ -1,14 +1,16 @@
-import { useAuthStore } from "@/stores/auth.store";
-import React from "react";
+import ChatWindowApp from "@/components/chat/ChatWindowApp";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const ChatAppPage = () => {
-  const user = useAuthStore((state) => state.user);
-
   return (
     <div>
-      ChatAppPage
-      <br />
-      User: {user?.username}
+      <SidebarProvider>
+        <AppSidebar />
+        <div className="flex h-screen w-full p-2">
+          <ChatWindowApp />
+        </div>
+      </SidebarProvider>
     </div>
   );
 };
