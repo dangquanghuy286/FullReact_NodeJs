@@ -4,7 +4,7 @@ import SignUpPage from "./pages/SignUpPage";
 import ChatAppPage from "./pages/ChatAppPage";
 import { Toaster } from "sonner";
 import ProtectedRoutes from "./components/auth/protectedRoutes";
-import { useThemeStore } from "./stores/useThemeStore";
+import { useThemeStore } from "./stores/theme.strore";
 import { useEffect } from "react";
 function App() {
   const { isDarkMode, setTheme } = useThemeStore();

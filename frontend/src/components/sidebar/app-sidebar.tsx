@@ -21,7 +21,7 @@ import NewGroupChatModel from "../chat/NewGroupChatModel";
 import GroupChatList from "../chat/GroupChatList";
 import AddFriendModal from "../chat/AddFriendModal";
 import DirectChatList from "../chat/DirectChatList";
-import { useThemeStore } from "@/stores/useThemeStore";
+import { useThemeStore } from "@/stores/theme.strore";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { isDarkMode, toggleTheme } = useThemeStore();
@@ -45,7 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={toggleTheme}
-                          className="h-6 w-11 rounded-full bg-gray-300 data-[state=checked]:bg-[#009fb0] transition-colors [&>span]:h-5 [&>span]:w-5 [&>span]:rounded-full [&>span]:bg-white [&>span]:shadow-md [&>span]:transition-transform [&>span]:translate-x-0.5 data-[state=checked]:[&>span]:translate-x-5"
+                      className="h-6 w-11 rounded-full bg-gray-300 data-[state=checked]:bg-[#009fb0] transition-colors [&>span]:h-5 [&>span]:w-5 [&>span]:rounded-full [&>span]:bg-white [&>span]:shadow-md [&>span]:transition-transform [&>span]:translate-x-0.5 data-[state=checked]:[&>span]:translate-x-5"
                     />
                     <Moon className="h-5 w-5 text-gray-600" />
                   </div>
