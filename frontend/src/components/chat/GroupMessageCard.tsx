@@ -3,8 +3,8 @@ import { useChatStore } from "@/stores/chat.store";
 import type { Conversation } from "@/types/chat";
 import React from "react";
 import ChatCard from "./ChatCard";
-
-
+import UnreadCount from "./UnreadCount";
+import GroupChatAvatar from "./GroupChatAvatar";
 
 const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
@@ -23,29 +23,30 @@ const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
     }
   };
   return (
-  <ChatCard
-    convoId={convo._id}
-    name={name}
-    timestamp={
-      convo.lastMessage?.createdAt
-        ? new Date(convo.lastMessage.createdAt)
-        : undefined
-    }
-    isActive={activeConversationId === convo._id}
-    onSelect={handleSelectConversation}
-    unreadCount={unreadCount}
-    leftSection={null}
-    subtitle={
-      <p className="text-sm truncate text-muted-foreground">
-        {
-          convo.participants.length
-        } thành viên
-      </p>
-    }
-  />
-);
-
-
+    <ChatCard
+      convoId={convo._id}
+      name={name}
+      timestamp={
+        convo.lastMessage?.createdAt
+          ? new Date(convo.lastMessage.createdAt)
+          : undefined
+      }
+      isActive={activeConversationId === convo._id}
+      onSelect={handleSelectConversation}
+      unreadCount={unreadCount}
+      leftSection={
+        <>
+          {unreadCount > 0 && <UnreadCount unreadCount={unreadCount} />}
+          <GroupChatAvatar participants={convo.participants} type="chat" />
+        </>
+      }
+      subtitle={
+        <p className="text-sm truncate text-muted-foreground">
+          {convo.participants.length} thành viên
+        </p>
+      }
+    />
+  );
 };
 
 export default GroupMessageCard;

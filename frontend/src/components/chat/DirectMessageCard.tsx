@@ -4,6 +4,9 @@ import ChatCard from "./ChatCard";
 import { useAuthStore } from "@/stores/auth.store";
 import { useChatStore } from "@/stores/chat.store";
 import { cn } from "@/lib/utils";
+import UserAvatar from "./UserAvatar";
+import StatusBadge from "./StatusBadge";
+import UnreadCount from "./UnreadCount";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
@@ -36,14 +39,24 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
       isActive={activeConversationId === convo._id}
       onSelect={handleSelectConversation}
       unreadCount={unreadCount}
-      leftSection={<>{/* Todo */}</>}
+      leftSection={
+        <>
+          <UserAvatar
+            type="sidebar"
+            name={otherUser.displayName ?? ""}
+            avatarUrl={otherUser.avatarUrl ?? undefined}
+          />
+          <StatusBadge status="offline" />
+          {unreadCount > 0 && <UnreadCount unreadCount={unreadCount} />}
+        </>
+      }
       subtitle={
         <p
           className={cn(
             "text-sm truncate",
             unreadCount > 0
               ? "font-medium text-foreground"
-              : "text-muted-foreground"
+              : "text-muted-foreground",
           )}
         >
           {lastMessage}
