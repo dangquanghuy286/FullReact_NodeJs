@@ -27,7 +27,7 @@ const GroupChatAvatar = ({ participants, type }: GroupChatAvatarProps) => {
     <div className="flex relative -space-x-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:ring-2">
       {avatars}
 
-      {/* Nếu n người tham gia vượt quá 4, hiển thị số lượng người còn lại */}
+      {/* Nếu số người tham gia vượt quá 4, hiển thị số lượng người còn lại */}
       {participants.length > limit && (
         <div className="flex items-center z-10 justify-center size-8 rounded-full bg-muted ring-2 ring-background text-muted-foreground">
           <Ellipsis className="size-4 " />
