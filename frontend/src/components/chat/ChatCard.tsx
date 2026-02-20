@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { formatOnlineTime, cn } from "@/lib/utils";
 import { MoreHorizontal } from "lucide-react";
@@ -29,7 +28,7 @@ const ChatCard = ({
       className={cn(
         "border-none p-3 cursor-pointer transition-smooth glass hover:bg-muted/10",
         isActive &&
-          "bg-blue-100 ring-2 ring-blue-300 bg-gradient-to-tr from-[#00c0d1] to-[#0072ff] text-white"
+          "bg-blue-100 ring-2 ring-blue-300 bg-gradient-to-tr from-[#00c0d1] to-[#0072ff] text-white",
       )}
       onClick={() => onSelect(convoId)}
     >
@@ -40,7 +39,7 @@ const ChatCard = ({
             <h3
               className={cn(
                 "font-semibold text-sm truncate",
-                unreadCount && unreadCount > 0 && "text-foreground"
+                unreadCount && unreadCount > 0 && "text-foreground",
               )}
             >
               {name}
