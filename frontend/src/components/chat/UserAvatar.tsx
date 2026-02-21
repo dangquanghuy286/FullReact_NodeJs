@@ -1,4 +1,3 @@
-import React from "react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -23,7 +22,7 @@ const UserAvatar = ({ type, name, avatarUrl, className }: IUserAvatarProps) => {
         "rounded-full",
         className ?? "",
         type === "sidebar" ? "size-10" : type === "chat" ? "size-8" : "size-16",
-        bgColor
+        bgColor,
       )}
     >
       <AvatarImage src={avatarUrl} alt={name} />
