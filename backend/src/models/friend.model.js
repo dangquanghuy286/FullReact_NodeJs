@@ -35,7 +35,7 @@ friendSchema.index(
     userB: 1,
   },
   {
-    unique: true, //Rang buoc
+    unique: true, //Rang buoc userA va userB khong duoc trung nhau
   }
 );
 const Friend = mongoose.model("Friend", friendSchema);

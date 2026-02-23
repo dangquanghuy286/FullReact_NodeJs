@@ -1,6 +1,5 @@
 import Friend from "../models/friend.model.js";
 import Conversation from "../models/conversation.model.js";
-
 export const checkFriendShip = async (req, res, next) => {
   const pair = (a, b) => (a < b ? [a, b] : [b, a]);
 
@@ -94,7 +93,7 @@ export const checkGroup = async (req, res, next) => {
     }
 
     const isMember = conversation.participants.some(
-      (p) => p.userId.toString() === userId.toString()
+      (p) => p.userId.toString() === userId.toString(),
     );
 
     if (!isMember) {

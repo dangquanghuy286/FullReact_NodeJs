@@ -1,6 +1,6 @@
 export const getProfile = async (req, res) => {
   try {
-    const user = req.user; //Lấy từ authMiddleware
+    const user = req.user;
 
     return res.status(200).json({
       user,

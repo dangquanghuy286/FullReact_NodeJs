@@ -15,7 +15,6 @@ export const protectedRoute = (req, res, next) => {
     }
 
     // Xác nhận token hợp lệ
-    // Cấu trúc jwt.verify(token, secret, callback)
     jwt.verify(token, process.env.ACCESS_TOKEN, async (err, decodeUser) => {
       if (err) {
         console.error(err);
@@ -27,7 +26,7 @@ export const protectedRoute = (req, res, next) => {
       try {
         // Tìm User trong database
         const user = await User.findById(decodeUser.userId).select(
-          "-hashedPassword"
+          "-hashedPassword",
         );
 
         if (!user) {

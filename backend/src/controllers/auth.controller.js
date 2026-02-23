@@ -3,10 +3,8 @@ import User from "../models/user.model.js";
 import Session from "../models/session.model.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 1000; //14 ngày
-
 export const signUp = async (req, res) => {
   try {
     const { username, password, email, firstName, lastName } = req.body;
@@ -79,7 +77,7 @@ export const signIn = async (req, res) => {
       process.env.ACCESS_TOKEN,
       {
         expiresIn: ACCESS_TOKEN_TTL,
-      }
+      },
     );
     // Tạo refresh token
     const refreshToken = crypto.randomBytes(64).toString("hex");
@@ -150,7 +148,7 @@ export const refreshToken = async (req, res) => {
     const accessToken = jwt.sign(
       { userId: session.userId },
       process.env.ACCESS_TOKEN,
-      { expiresIn: ACCESS_TOKEN_TTL }
+      { expiresIn: ACCESS_TOKEN_TTL },
     );
 
     return res.status(200).json({ accessToken });

@@ -4,7 +4,7 @@ const messageSchema = new mongoose.Schema(
   {
     conversationId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Conversation", //Tham chieu
+      ref: "Conversation", //Tham chieu den Conversation
       required: true,
       index: true,
     },
@@ -23,7 +23,7 @@ const messageSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 messageSchema.index({
   conversationId: 1,

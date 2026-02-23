@@ -18,8 +18,8 @@ const sessionSchema = new mongoose.Schema(
       require: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-// Tự động xóa khi hết hạn
+// Tự động xóa khi hết hạn (0 giây sau expiresAt)
 sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 export default mongoose.model("Session", sessionSchema);
