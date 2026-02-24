@@ -64,8 +64,8 @@ const conversationSchema = new mongoose.Schema(
       type: [participantSchema],
       require: true,
     },
-    groups: {
-      type: [groupSchema],
+    group: {
+      type: groupSchema,
       require: true,
     },
     lastMessageAt: {

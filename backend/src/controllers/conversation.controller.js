@@ -106,15 +106,15 @@ export const getAllConversations = async (req, res) => {
       })
       .populate({
         path: "participants.userId",
-        select: "displayName avatarURL",
+        select: "displayName avatarUrl",
       })
       .populate({
         path: "lastMessage.senderId",
-        select: "displayName avatarURL",
+        select: "displayName avatarUrl",
       })
       .populate({
         path: "seenBy",
-        select: "displayName avatarURL",
+        select: "displayName avatarUrl",
       });
 
     const formatted = conversation.map((hoi) => {
