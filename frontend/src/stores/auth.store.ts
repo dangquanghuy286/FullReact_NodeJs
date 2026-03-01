@@ -32,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
             password,
             email,
             firstName,
-            lastName
+            lastName,
           );
           toast.success("Đăng ký thành công ! ");
         } catch (error) {
@@ -109,6 +109,6 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         user: state.user, // Chi luu thong tin user
       }),
-    }
-  )
+    },
+  ),
 );

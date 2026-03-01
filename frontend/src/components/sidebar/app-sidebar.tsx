@@ -41,7 +41,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <div className="flex w-full items-center justify-between px-2 ">
                   <h1 className="text-lg font-bold text-white">ChatApp</h1>
                   <div className="flex items-center gap-2">
-                    <Sun className="h-5 w-5 text-yellow-400" />
+                    <Sun className="h-5 w-5 text-yellow-400 size-5" />
                     <Switch
                       checked={isDarkMode}
                       onCheckedChange={toggleTheme}
@@ -69,11 +69,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupAction title="Tạo nhóm" className="cursor-pointer">
             <NewGroupChatModel />
           </SidebarGroupAction>
+
           <SidebarContent>
             <GroupChatList />
           </SidebarContent>
         </SidebarGroup>
-        {/* Chats */}
+        {/* Chats direct */}
         <SidebarGroup>
           <SidebarGroupLabel className="uppercase">Bạn bè</SidebarGroupLabel>
           <SidebarGroupAction title="Kết bạn" className="cursor-pointer">
