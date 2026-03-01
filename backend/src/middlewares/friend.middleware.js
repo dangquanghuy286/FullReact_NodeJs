@@ -103,7 +103,7 @@ export const checkGroup = async (req, res, next) => {
     }
 
     req.conversation = conversation;
-    return next();
+    next();
   } catch (error) {
     console.error("Lỗi khi kiểm tra nhóm!", error);
     return res.status(500).json({
