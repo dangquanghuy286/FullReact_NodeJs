@@ -45,6 +45,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
             name={otherUser.displayName ?? ""}
             avatarUrl={otherUser.avatarUrl ?? undefined}
           />
+          {/* Todo socket io */}
           <StatusBadge status="offline" />
           {unreadCount > 0 && <UnreadCount unreadCount={unreadCount} />}
         </>
