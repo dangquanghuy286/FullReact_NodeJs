@@ -20,7 +20,7 @@ export interface LastMessage {
   _id: string;
   content: string;
   createdAt: string;
-  sender: {
+  senderId: {
     _id: string;
     displayName: string;
     avatarUrl?: string | null;
@@ -41,7 +41,7 @@ export interface Conversation {
 }
 
 export interface ConversationResponse {
-  conversations: Conversation[];
+  conversation: Conversation[];
 }
 
 export interface Message {

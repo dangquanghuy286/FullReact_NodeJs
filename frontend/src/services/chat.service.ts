@@ -1,9 +1,11 @@
+// services/chat.service.ts
 import api from "@/lib/axios";
-import type { ConversationResponse } from "@/types/chat";
+import type { Conversation } from "@/types/chat";
 
 export const chatService = {
-  async fetchConversations(): Promise<ConversationResponse> {
+  async fetchConversations(): Promise<{ conversations: Conversation[] }> {
     const response = await api.get("/conversation");
-    return response.data;
+    // BE trả về "conversation", map lại thành "conversations"
+    return { conversations: response.data.conversation ?? [] };
   },
 };
