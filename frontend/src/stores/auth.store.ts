@@ -107,7 +107,7 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       partialize: (state) => ({
-        user: state.user, // Chi luu thong tin user
+        user: state.user, // Chi luu thong tin user va accessToken, khong luu loading de tranh loi khi tai lai trang
       }),
     },
   ),

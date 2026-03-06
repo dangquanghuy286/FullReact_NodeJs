@@ -16,7 +16,7 @@ export const authService = {
         firstName,
         lastName,
       },
-      { withCredentials: true } //Khi gửi request, nhớ gửi luôn cookie theo
+      { withCredentials: true } //Khi gửi request, nhớ gửi luôn cookie theo để backend có thể set cookie cho trình duyệt
     );
 
     return res.data;
