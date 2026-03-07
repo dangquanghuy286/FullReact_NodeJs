@@ -1,6 +1,8 @@
 import type { Conversation, Message } from "./chat";
 import type { User } from "./user";
 
+// Dinh nghia cac interface cho store
+// Auth store
 export interface AuthState {
   accessToken: string | null;
   user: User | null;
@@ -18,13 +20,14 @@ export interface AuthState {
   getProfile: () => Promise<void>;
   refresh: () => Promise<void>;
 }
-
+// Theme store
 export interface ThemeState {
   isDarkMode: boolean;
   toggleTheme: () => void;
   setTheme: (dark: boolean) => void;
 }
 
+// Chat store
 export interface ChatState {
   conversations: Conversation[];
   messages: Record<

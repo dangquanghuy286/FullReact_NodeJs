@@ -1,3 +1,5 @@
+// Dinh nghia cac interface cho user
+// User
 export interface User {
   _id: string;
   username: string;
@@ -9,13 +11,14 @@ export interface User {
   createAt?: string;
   updateAt?: string;
 }
+// Friend 
 export interface Friend {
   _id: string;
   username: string;
   displayName: string;
   avatarUrl?: string;
 }
-
+// Friend request
 export interface FriendRequest {
   id: string;
   username: string;
