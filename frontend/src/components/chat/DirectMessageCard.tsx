@@ -9,7 +9,7 @@ import UnreadCount from "./UnreadCount";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
-  const { activeConversationId, setActiveConversationId, messages } =
+  const { activeConversationId, setActiveConversationId, messages, fetchMessages } =
     useChatStore();
   if (!user) return null;
 
@@ -23,7 +23,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const handleSelectConversation = async (id: string) => {
     setActiveConversationId(id);
     if (!messages[id]) {
-      // Optionally, you can fetch messages here if not already loaded
+      await fetchMessages(id);
     }
   };
   return (

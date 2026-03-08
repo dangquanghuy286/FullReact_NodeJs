@@ -1,6 +1,14 @@
 // services/chat.service.ts
 import api from "@/lib/axios";
-import type { Conversation } from "@/types/chat";
+import type { Conversation, Message } from "@/types/chat";
+
+interface FetchMessageResponse {
+
+  messages : Message[];
+  cursor? : string ;
+}
+
+const pageLimit = 10;
 
 export const chatService = {
   async fetchConversations(): Promise<{ conversations: Conversation[] }> {
@@ -8,4 +16,14 @@ export const chatService = {
     // BE trả về "conversation", nếu không có thì trả về mảng rỗng để tránh lỗi khi frontend cố gắng truy cập vào thuộc tính của undefined
     return { conversations: response.data.conversation ?? [] };
   },
+
+
+  async fetchMessages(id:string,cursor?:string):Promise<FetchMessageResponse> {
+    
+    const response =await api.get(`conversation/${id}/messages?limit=${pageLimit}&cursor=${cursor ?? ""}`);
+    return {
+      messages: response.data.messages ?? [],
+      cursor: response.data.nextCursor
+    };
+  }
 };
