@@ -8,7 +8,7 @@ const ChatWindowBody = () => {
     activeConversationId,
     conversations,
     messages: allMessages,
-    fetchMessages, // thêm dòng này
+    fetchMessages,
   } = useChatStore();
 
   // ⭐ tự động fetch tin nhắn khi chọn conversation
