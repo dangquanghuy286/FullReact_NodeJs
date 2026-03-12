@@ -1,5 +1,5 @@
 import { useChatStore } from "@/stores/chat.store";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import MessageItem from "./MessageItem";
 
@@ -11,7 +11,8 @@ const ChatWindowBody = () => {
     fetchMessages,
   } = useChatStore();
 
-  // ⭐ tự động fetch tin nhắn khi chọn conversation
+  const bottomRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (activeConversationId) {
       fetchMessages(activeConversationId);
@@ -19,8 +20,12 @@ const ChatWindowBody = () => {
   }, [activeConversationId]);
 
   const messages = allMessages[activeConversationId!]?.items ?? [];
-
   const selectConvo = conversations.find((c) => c._id === activeConversationId);
+
+  // Auto-scroll xuống tin nhắn mới nhất
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages.length]);
 
   if (!selectConvo) return <ChatWelcomeScreen />;
 
@@ -33,7 +38,7 @@ const ChatWindowBody = () => {
 
   return (
     <div className="p-4 bg-primary-foreground h-full flex flex-col overflow-hidden">
-      <div className="flex flex-col overflow-y-auto overflow-x-hidden beautiful-scrollbar">
+      <div className="flex flex-col overflow-y-auto overflow-x-hidden beautiful-scrollbar flex-1">
         {messages.map((message, index) => (
           <MessageItem
             key={message._id ?? index}
@@ -44,6 +49,7 @@ const ChatWindowBody = () => {
             lastMessageStatus="delivered"
           />
         ))}
+        <div ref={bottomRef} />
       </div>
     </div>
   );
