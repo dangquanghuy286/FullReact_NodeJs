@@ -1,9 +1,60 @@
-import React from 'react'
+import { useAuthStore } from "@/stores/auth.store";
+import type { Conversation } from "@/types/chat";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { ImagePlus, Send } from "lucide-react";
+import { Input } from "../ui/input";
+import EmojiPicker from "./EmojiPicker";
 
-const MessageInput = () => {
+const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
+  const { user } = useAuthStore();
+  const [value, setValue] = useState("");
+
+  if (!user) return null;
+
   return (
-    <div>MessageInput</div>
-  )
-}
+    <div className="flex items-center gap-2 p-3 min-h-[56px] bg-background">
+      {/* upload image */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className="hover:bg-primary/10 transition-smooth"
+      >
+        <ImagePlus className="size-4" />
+      </Button>
 
-export default MessageInput
+      {/* input + emoji */}
+      <div className="flex-1 relative">
+        <Input
+          value={value}
+          placeholder="Soạn tin nhắn ..."
+          onChange={(e) => setValue(e.target.value)}
+          className="pr-10 h-9 bg-white border-border/50 focus:border-primary/50 transition-smooth"
+        />
+
+        {/* emoji inside input */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-1 top-1/2 -translate-y-1/2 size-8 hover:bg-primary/10"
+        >
+          <div>
+            <EmojiPicker
+              onchange={(emoji: string) => setValue(`${value}${emoji}`)}
+            />
+          </div>
+        </Button>
+      </div>
+
+      {/* send outside */}
+      <Button
+        className="bg-[#00c0d1] hover:bg-[#00a7b6] transition-all duration-200 size-9 hover:scale-105"
+        disabled={value.trim() === ""}
+      >
+        <Send className="size-4 text-white" />
+      </Button>
+    </div>
+  );
+};
+
+export default MessageInput;
