@@ -13,7 +13,7 @@ export interface AuthState {
     password: string,
     email: string,
     firstName: string,
-    lastName: string
+    lastName: string,
   ) => Promise<void>;
   signIn: (username: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -44,5 +44,16 @@ export interface ChatState {
   reset: () => void;
   setActiveConversationId: (id: string | null) => void;
   fetchConversations: () => Promise<void>;
-  fetchMessages:(conversationId: string) => Promise<void>;
+  fetchMessages: (conversationId: string) => Promise<void>;
+
+  sendDirectMessage: (
+    recipientId: string,
+    content?: string,
+    imgUrl?: string,
+  ) => Promise<void>;
+  sendGroupMessage: (
+    conversationId: string,
+    content?: string,
+    imgUrl?: string,
+  ) => Promise<void>;
 }

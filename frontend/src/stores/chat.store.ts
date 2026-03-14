@@ -81,6 +81,77 @@ export const useChatStore = create<ChatState>()(
           set({ messageLoading: false });
         }
       },
+
+      sendDirectMessage: async (recipientId, content, imgUrl) => {
+        try {
+          const { activeConversationId } = get();
+          const { user } = useAuthStore.getState(); // 👈 thêm
+
+          const message = await chatService.sendDirectMessage(
+            recipientId,
+            content ?? "",
+            imgUrl,
+            activeConversationId ?? undefined,
+          );
+
+          if (!activeConversationId) return;
+
+          set((state) => ({
+            messages: {
+              ...state.messages,
+              [activeConversationId]: {
+                ...state.messages[activeConversationId],
+                items: [
+                  ...(state.messages[activeConversationId]?.items ?? []),
+                  {
+                    ...message,
+                    isOwnMessage:
+                      message.senderId?.toString() === user?._id?.toString(),
+                  }, // 👈
+                ],
+              },
+            },
+            conversations: state.conversations.map((c) =>
+              c._id === activeConversationId ? { ...c, seenBy: [] } : c,
+            ),
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi gửi qua direct", error);
+          throw error;
+        }
+      },
+
+      sendGroupMessage: async (conversationId, content, imgUrl) => {
+        try {
+          const { user } = useAuthStore.getState(); // 👈 thêm
+
+          const message = await chatService.sendGroupMessage(
+            conversationId,
+            content ?? "",
+            imgUrl,
+          );
+
+          set((state) => ({
+            messages: {
+              ...state.messages,
+              [conversationId]: {
+                ...state.messages[conversationId],
+                items: [
+                  ...(state.messages[conversationId]?.items ?? []),
+                  {
+                    ...message,
+                    isOwnMessage:
+                      message.senderId?.toString() === user?._id?.toString(),
+                  }, // 👈
+                ],
+              },
+            },
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi gửi qua group", error);
+          throw error;
+        }
+      },
     }),
     {
       name: "chat-storage",

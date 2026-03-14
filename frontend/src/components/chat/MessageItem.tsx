@@ -35,11 +35,11 @@ const MessageItem = ({
     <div
       className={cn(
         "flex gap-2 message-bounce",
-        message.isOwn ? "justify-end" : "justify-start",
+        message.isOwnMessage ? "justify-end" : "justify-start",
       )}
     >
       {/* Avata */}
-      {!message.isOwn && (
+      {!message.isOwnMessage && (
         <div className="w-8">
           {isGroupBreak && (
             <UserAvatar
@@ -54,15 +54,15 @@ const MessageItem = ({
       <div
         className={cn(
           "max-w-xs lg:max-w-md space-y-1 flex flex-col",
-          message.isOwn ? "items-end" : " items-start",
+          message.isOwnMessage ? "items-end" : " items-start",
         )}
       >
         <Card
           className={cn(
             "p-3",
-            message.isOwn
-              ? "chat-bubble-sent border-0 "
-              : " bg-chat-bubble-received",
+            message.isOwnMessage
+              ? "bg-[#00c0d1] text-white "
+              : " bg-white text-black border-0",
           )}
         >
           <p className="text-sm leading-relaxed break-words">
@@ -76,21 +76,22 @@ const MessageItem = ({
           </span>
         )}
         {/* Status (chỉ hiện với tin nhắn cuối cùng của chính mình) */}
-        {message.isOwn && message._id === selectedConvo.lastMessage?._id && (
-          <Badge
-            variant="outline"
-            className={cn(
-              "text-xs px-1.5 py-0.5 h-4 border-0",
-              lastMessageStatus === "seen"
-                ? "bg-green-100 text-green-800"
-                : lastMessageStatus === "delivered"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-gray-100 text-gray-800",
-            )}
-          >
-            {lastMessageStatus}
-          </Badge>
-        )}
+        {message.isOwnMessage &&
+          message._id === selectedConvo.lastMessage?._id && (
+            <Badge
+              variant="outline"
+              className={cn(
+                "text-xs px-1.5 py-0.5 h-4 border-0",
+                lastMessageStatus === "seen"
+                  ? "bg-green-100 text-green-800"
+                  : lastMessageStatus === "delivered"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : "bg-gray-100 text-gray-800",
+              )}
+            >
+              {lastMessageStatus}
+            </Badge>
+          )}
       </div>
     </div>
   );

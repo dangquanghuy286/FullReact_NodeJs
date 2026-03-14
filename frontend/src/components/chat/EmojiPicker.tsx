@@ -12,7 +12,7 @@ const EmojiPicker = ({ onchange }: EmojiPickerProps) => {
   return (
     <div>
       <Popover>
-        <PopoverTrigger className=" flex items-center justify-center cursor-pointer">
+        <PopoverTrigger className=" flex items-center justify-center cursor-pointer ">
           <Smile className="size-4 " />
         </PopoverTrigger>
 
