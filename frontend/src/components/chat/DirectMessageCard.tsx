@@ -6,11 +6,17 @@ import { cn } from "@/lib/utils";
 import UserAvatar from "./UserAvatar";
 import StatusBadge from "./StatusBadge";
 import UnreadCount from "./UnreadCount";
+import { useSocketStore } from "@/stores/socket.store";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
-  const { activeConversationId, setActiveConversationId, messages, fetchMessages } =
-    useChatStore();
+  const { onlineUsers } = useSocketStore();
+  const {
+    activeConversationId,
+    setActiveConversationId,
+    messages,
+    fetchMessages,
+  } = useChatStore();
   if (!user) return null;
 
   const otherUser = convo.participants.find((u) => u._id !== user._id);
@@ -46,7 +52,11 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
             avatarUrl={otherUser.avatarUrl ?? undefined}
           />
           {/* Todo socket io */}
-          <StatusBadge status="offline" />
+          <StatusBadge
+            status={
+              onlineUsers.includes(otherUser?._id ?? "") ? "online" : "offline"
+            }
+          />
           {unreadCount > 0 && <UnreadCount unreadCount={unreadCount} />}
         </>
       }
