@@ -6,9 +6,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
+import { app, server } from "./socket/index.socket.js";
 dotenv.config();
 
-const app = express();
 const PORT = process.env.PORT || 5001;
 
 // Middlewares
@@ -20,11 +20,11 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 // Swagger
 const swaggerDocument = JSON.parse(
-  fs.readFileSync("./src/swagger.json", "utf8")
+  fs.readFileSync("./src/swagger.json", "utf8"),
 );
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Routes
@@ -32,5 +32,5 @@ app.use("/api", routes);
 
 // Connect Database
 connectDB().then(() => {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });

@@ -182,7 +182,7 @@ export const getMessages = async (req, res) => {
 
     // 9. Trả dữ liệu về client
     return res.status(200).json({
-      message,
+      messages: message,
       nextCursor,
     });
   } catch (error) {
