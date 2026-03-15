@@ -15,12 +15,19 @@ const io = new Server(server, {
 });
 // Sử dụng
 io.use(socketAuthMiddleware);
+
+const onlineUser = new Map(); //{userId:socketId}
 // Lắng nghe
 io.on("connection", async (socket) => {
   const user = socket.user;
   console.log(`${user.displayName} connected with : ${socket.id}`);
 
+  onlineUser.set(user._id, socket.id);
+
+  io.emit("online-users", Array.from(onlineUser.keys()));
   socket.on("disconnect", () => {
+    onlineUser.delete(user._id);
+    io.emit("online-users", Array.from(onlineUser.keys()));
     console.log(`Socket disconnected : ${socket.id}`);
   });
 });
