@@ -34,7 +34,7 @@ const MessageItem = ({
   return (
     <div
       className={cn(
-        "flex gap-2 message-bounce",
+        "flex gap-2 message-bounce mb-2",
         message.isOwnMessage ? "justify-end" : "justify-start",
       )}
     >
@@ -59,10 +59,10 @@ const MessageItem = ({
       >
         <Card
           className={cn(
-            "p-3",
+            "px-4 py-2 shadow-sm transition-all",
             message.isOwnMessage
-              ? "bg-[#00c0d1] text-white "
-              : " bg-white text-black border-0",
+              ? "bg-[#00c0d1] text-white rounded-2xl rounded-br-sm"
+              : "bg-gray-100 text-black rounded-2xl rounded-bl-sm",
           )}
         >
           <p className="text-sm leading-relaxed break-words">
@@ -71,7 +71,7 @@ const MessageItem = ({
         </Card>
         {/* Time */}
         {isGroupBreak && (
-          <span className="text-xs text-muted-foreground px-1 ">
+          <span className="text-[11px] text-gray-400 px-1">
             {formatMessageTime(new Date(message.createdAt))}
           </span>
         )}

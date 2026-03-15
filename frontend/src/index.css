@@ -130,3 +130,17 @@
     @apply scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-slate-400 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent;
   }
 }
+.message-bounce {
+  animation: messageIn 0.2s ease;
+}
+
+@keyframes messageIn {
+  from {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
