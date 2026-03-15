@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
+import { socketAuthMiddleware } from "../middlewares/socket.middlewares.js";
 
 const app = express();
 // Tạo một HTTP server và dùng app (Express) để xử lý các request từ client.
@@ -12,9 +13,12 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+// Sử dụng
+io.use(socketAuthMiddleware);
 // Lắng nghe
 io.on("connection", async (socket) => {
-  console.log(`Socket connected : ${socket.id}`);
+  const user = socket.user;
+  console.log(`${user.displayName} connected with : ${socket.id}`);
 
   socket.on("disconnect", () => {
     console.log(`Socket disconnected : ${socket.id}`);
