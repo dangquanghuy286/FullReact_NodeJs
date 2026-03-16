@@ -152,6 +152,46 @@ export const useChatStore = create<ChatState>()(
           throw error;
         }
       },
+      addMessage: async (message) => {
+        try {
+          const { user } = useAuthStore.getState();
+          const { fetchMessages } = get();
+
+          message.isOwnMessage = message.senderId === user?._id;
+          const convoId = message.conversationId;
+
+          let prevItems = get().messages[convoId]?.items ?? [];
+
+          // Nếu chưa load messages, fetch trước
+          if (prevItems.length === 0) {
+            await fetchMessages(convoId);
+            prevItems = get().messages[convoId]?.items ?? [];
+          }
+
+          // Tránh duplicate
+          if (prevItems.some((m) => m._id === message._id)) return;
+
+          set((state) => ({
+            messages: {
+              ...state.messages,
+              [convoId]: {
+                items: [...(state.messages[convoId]?.items ?? []), message],
+                hasMore: state.messages[convoId]?.hasMore ?? false,
+                nextCursor: state.messages[convoId]?.nextCursor ?? null,
+              },
+            },
+          }));
+        } catch (error) {
+          console.error("Lỗi xảy ra khi add message", error);
+        }
+      },
+      updateConversation: (conversation) => {
+        set((state) => ({
+          conversations: state.conversations.map((c) =>
+            c._id === conversation._id ? { ...c, ...conversation } : c,
+          ),
+        }));
+      },
     }),
     {
       name: "chat-storage",
