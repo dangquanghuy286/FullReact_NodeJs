@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import { socketAuthMiddleware } from "../middlewares/socket.middlewares.js";
+import { getUserConversationsForSocketIO } from "../controllers/conversation.controller.js";
 
 const app = express();
 // Tạo một HTTP server và dùng app (Express) để xử lý các request từ client.
@@ -25,6 +26,12 @@ io.on("connection", async (socket) => {
   onlineUser.set(user._id, socket.id);
 
   io.emit("online-users", Array.from(onlineUser.keys()));
+
+  const conversationIds = await getUserConversationsForSocketIO(user._id);
+
+  conversationIds.forEach((id) => {
+    socket.join(id);
+  });
   socket.on("disconnect", () => {
     onlineUser.delete(user._id);
     io.emit("online-users", Array.from(onlineUser.keys()));
