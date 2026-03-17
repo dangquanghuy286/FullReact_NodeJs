@@ -59,7 +59,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       if (
         useChatStore.getState().activeConversationId === message.conversationId
       ) {
-        // Danh dau da doc
+        // Đánh dấu đã đọc
       }
       useChatStore.getState().updateConversation(updateConversation);
     });
