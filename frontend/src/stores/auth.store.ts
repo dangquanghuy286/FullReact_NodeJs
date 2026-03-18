@@ -10,7 +10,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       accessToken: null,
       user: null,
-      loading: false, //Theo doi trang thai
+      loading: false, //Theo dõi trạng thái
       // Reset state
       clearState: () => {
         set({
