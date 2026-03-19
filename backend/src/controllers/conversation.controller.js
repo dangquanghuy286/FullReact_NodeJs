@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { io } from "../socket/index.socket.js";
 export const createConversation = async (req, res) => {
   try {
     const { type, name, memberIds } = req.body;
@@ -207,5 +208,74 @@ export const getUserConversationsForSocketIO = async (userId) => {
   } catch (error) {
     console.error("Lỗi khi fetch conversations", error);
     return [];
+  }
+};
+
+// Đánh dấu đã đọc
+export const markAsSeen = async (req, res) => {
+  try {
+    // Bước 1: Lấy thông tin Id người dùng và convo và xử lý ngoại lệ
+    const { conversationId } = req.params;
+    const userId = req.user._id.toString();
+
+    const conversation = await Conversation.findById(conversationId);
+
+    if (!conversation) {
+      return res.status(404).json({
+        message: "Conversation không tồn tại!",
+      });
+    }
+
+    const last = conversation.lastMessage;
+
+    if (!last) {
+      return res.status(200).json({
+        message: "Không có tin nhắn để mark as seen",
+      });
+    }
+
+    if (last.senderId.toString() === userId) {
+      return res.status(200).json({
+        message: "Sender không cần đánh dấu là đã đọc!",
+      });
+    }
+    // Bước 2:Cập nhật trạng thái đã đọc
+    const updated = await Conversation.findByIdAndUpdate(
+      conversationId,
+      {
+        $addToSet: { seenBy: userId },
+        $set: { [`unreadCounts.${userId}`]: 0 },
+      },
+      { new: true },
+    );
+
+    if (!updated) {
+      return res.status(404).json({
+        message: "Update thất bại",
+      });
+    }
+    // Bước 3:Đồng bộ trạng thái “đã đọc” theo thời gian thực giữa các user.
+    io.to(conversationId).emit("read-message", {
+      conversation: updated,
+      lastMessage: {
+        _id: updated?.lastMessage?._id,
+        content: updated?.lastMessage?.content,
+        createdAt: updated?.lastMessage?.createdAt,
+        sender: {
+          _id: updated?.lastMessage?.senderId,
+        },
+      },
+    });
+    // Bước 4:Trả response về client
+    return res.status(200).json({
+      message: "Marked as seen",
+      seenBy: updated.seenBy || [],
+      myUnreadCount: updated.unreadCounts[userId] || 0,
+    });
+  } catch (error) {
+    console.error("Lỗi khi mark seen", error);
+    return res.status(500).json({
+      message: "Lỗi hệ thống!",
+    });
   }
 };
