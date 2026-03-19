@@ -20,14 +20,24 @@ const ChatWindowBody = () => {
   }, [activeConversationId]);
 
   const messages = allMessages[activeConversationId!]?.items ?? [];
-  const selectConvo = conversations.find((c) => c._id === activeConversationId);
+  const selectedConvo = conversations.find(
+    (c) => c._id === activeConversationId,
+  );
+
+  // Derived directly — no state/effect needed
+  const seenBy = selectedConvo?.seenBy ?? [];
+  const lastMessageStatus: "delivered" | "seen" = selectedConvo?.lastMessage
+    ? seenBy.length > 0
+      ? "seen"
+      : "delivered"
+    : "delivered";
 
   // Auto-scroll xuống tin nhắn mới nhất
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
-  if (!selectConvo) return <ChatWelcomeScreen />;
+  if (!selectedConvo) return <ChatWelcomeScreen />;
 
   if (!messages || messages.length === 0)
     return (
@@ -45,8 +55,8 @@ const ChatWindowBody = () => {
             message={message}
             index={index}
             messages={messages}
-            selectedConvo={selectConvo}
-            lastMessageStatus="delivered"
+            selectedConvo={selectedConvo}
+            lastMessageStatus={lastMessageStatus}
           />
         ))}
         <div ref={bottomRef} />

@@ -1,5 +1,5 @@
 import { useChatStore } from "@/stores/chat.store";
-import React from "react";
+import React, { useEffect } from "react";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import ChatWindowSkeleton from "./ChatWindowSkeleton";
 import { SidebarInset } from "../ui/sidebar";
@@ -13,10 +13,26 @@ const ChatWindowLayout = () => {
     conversations,
     messageLoading: loading,
     messages,
+    markAsSeen,
   } = useChatStore();
 
   const selectedConvo =
     conversations.find((c) => c._id === activeConversationId) ?? null;
+
+  useEffect(() => {
+    if (!selectedConvo) {
+      return;
+    }
+
+    const markSeen = async () => {
+      try {
+        await markAsSeen();
+      } catch (error) {
+        console.error("Loi", error);
+      }
+    };
+    markSeen();
+  }, [markAsSeen, selectedConvo]);
 
   if (!selectedConvo) {
     return <ChatWelcomeScreen />;
