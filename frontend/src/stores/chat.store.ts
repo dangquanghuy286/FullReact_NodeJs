@@ -240,7 +240,7 @@ export const useChatStore = create<ChatState>()(
             ),
           }));
         } catch (error) {
-          console.error("Loi xay ra khi goi market Seen !", error);
+          console.error("Lỗi xảy ra khi gọi markSEEN !", error);
         }
       },
     }),
