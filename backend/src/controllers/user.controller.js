@@ -1,3 +1,4 @@
+// Get profile
 export const getProfile = async (req, res) => {
   try {
     const user = req.user;
