@@ -73,14 +73,16 @@ export const useChatStore = create<ChatState>()(
           set((state) => {
             const prev = state.messages[convoId]?.items ?? [];
 
-            const merged =
-              prev.length > 0 ? [...processed, ...prev] : processed;
+            const merged = [...processed, ...prev];
+            const deduplicated = Array.from(
+              new Map(merged.map((m) => [m._id, m])).values(),
+            );
 
             return {
               messages: {
                 ...state.messages,
                 [convoId]: {
-                  items: merged,
+                  items: deduplicated,
                   hasMore: cursor !== null,
                   nextCursor: cursor ?? null,
                 },

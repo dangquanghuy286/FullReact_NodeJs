@@ -69,11 +69,9 @@ const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
           size="icon"
           className="absolute right-1 top-1/2 -translate-y-1/2 size-8 hover:bg-primary/10 rounded-full"
         >
-          <div>
-            <EmojiPicker
-              onchange={(emoji: string) => setValue(`${value}${emoji}`)}
-            />
-          </div>
+          <EmojiPicker
+            onchange={(emoji: string) => setValue(`${value}${emoji}`)}
+          />
         </Button>
       </div>
 
