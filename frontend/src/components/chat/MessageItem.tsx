@@ -22,78 +22,86 @@ const MessageItem = ({
 }: MessageItemProps) => {
   const prev = index + 1 < messages.length ? messages[index + 1] : undefined;
 
-  const isGroupBreak =
+  const isShowTime =
     index === 0 ||
-    message.senderId !== prev?.senderId ||
-    new Date(message.createdAt).getTime() - new Date(prev.createdAt).getTime() >
-      5 * 60 * 1000; // cách nhau > 5 phút;
+    !prev ||
+    new Date(message.createdAt).getTime() -
+      new Date(prev?.createdAt).getTime() >
+      300000; // 5 phút
+
+  const isGroupBreak =
+    isShowTime || !prev || message.senderId !== prev.senderId;
 
   const participant = selectedConvo.participants.find(
     (p: Participant) => p._id.toString() === message.senderId.toString(),
   );
   return (
-    <div
-      className={cn(
-        "flex gap-2 message-bounce mb-2",
-        message.isOwnMessage ? "justify-end" : "justify-start",
-      )}
-    >
-      {/* Avata */}
-      {!message.isOwnMessage && (
-        <div className="w-8">
-          {isGroupBreak && (
-            <UserAvatar
-              type="chat"
-              name={participant?.displayName ?? "Người dùng hệ thống! "}
-              avatarUrl={participant?.avatarUrl ?? undefined}
-            />
-          )}{" "}
-        </div>
-      )}
-      {/* Tin nhắn */}
+    <>
+      {/* Time */}
+
       <div
         className={cn(
-          "max-w-xs lg:max-w-md space-y-1 flex flex-col",
-          message.isOwnMessage ? "items-end" : " items-start",
+          "flex gap-2 message-bounce mb-2",
+          message.isOwnMessage ? "justify-end" : "justify-start",
         )}
       >
-        <Card
+        {/* Avata */}
+        {!message.isOwnMessage && (
+          <div className="w-8">
+            {isGroupBreak && (
+              <UserAvatar
+                type="chat"
+                name={participant?.displayName ?? "Người dùng hệ thống! "}
+                avatarUrl={participant?.avatarUrl ?? undefined}
+              />
+            )}{" "}
+          </div>
+        )}
+        {/* Tin nhắn */}
+        <div
           className={cn(
-            "px-4 py-2 shadow-sm transition-all",
-            message.isOwnMessage
-              ? "bg-[#00c0d1] text-white rounded-2xl rounded-br-sm"
-              : "bg-gray-100 text-black rounded-2xl rounded-bl-sm",
+            "max-w-xs lg:max-w-md space-y-1 flex flex-col",
+            message.isOwnMessage ? "items-end" : " items-start",
           )}
         >
-          <p className="text-sm leading-relaxed break-words">
-            {message.content}
-          </p>
-        </Card>
-        {/* Time */}
-        {isGroupBreak && (
-          <span className="text-[11px] text-gray-400 px-1">
-            {formatMessageTime(new Date(message.createdAt))}
-          </span>
-        )}
-        {/* Status (chỉ hiện với tin nhắn cuối cùng của chính mình) */}
-        {message.isOwnMessage &&
-          message._id === selectedConvo.lastMessage?._id && (
-            <Badge
-              variant="outline"
-              className={cn(
-                "text-xs px-1.5 py-0.5 h-4 border-0",
-                lastMessageStatus === "seen"
-                  ? "bg-green-100 text-green-800"
-                  : lastMessageStatus === "delivered"
-                    ? "bg-yellow-100 text-yellow-800"
-                    : "bg-gray-100 text-gray-800",
-              )}
-            >
-              {lastMessageStatus}
-            </Badge>
-          )}
+          <Card
+            className={cn(
+              "px-4 py-2 shadow-sm transition-all",
+              message.isOwnMessage
+                ? "bg-[#00c0d1] text-white rounded-2xl rounded-br-sm"
+                : "bg-gray-100 text-black rounded-2xl rounded-bl-sm",
+            )}
+          >
+            <p className="text-sm leading-relaxed break-words">
+              {message.content}
+            </p>
+          </Card>
+
+          {/* Status (chỉ hiện với tin nhắn cuối cùng của chính mình) */}
+          {message.isOwnMessage &&
+            message._id === selectedConvo.lastMessage?._id && (
+              <Badge
+                variant="outline"
+                className={cn(
+                  "text-xs px-1.5 py-0.5 h-4 border-0",
+                  lastMessageStatus === "seen"
+                    ? "bg-green-100 text-green-800"
+                    : lastMessageStatus === "delivered"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : "bg-gray-100 text-gray-800",
+                )}
+              >
+                {lastMessageStatus}
+              </Badge>
+            )}
+        </div>
       </div>
-    </div>
+      {isShowTime && (
+        <span className="text-[13px] text-gray-400   px-1 text-center">
+          {formatMessageTime(new Date(message.createdAt))}
+        </span>
+      )}
+    </>
   );
 };
 
