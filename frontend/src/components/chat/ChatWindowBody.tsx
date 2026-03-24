@@ -1,9 +1,10 @@
 import { useChatStore } from "@/stores/chat.store";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import MessageItem from "./MessageItem";
 import { useAuthStore } from "@/stores/auth.store";
 import InfinityScroll from "react-infinite-scroll-component";
+
 const ChatWindowBody = () => {
   const {
     activeConversationId,
@@ -14,15 +15,12 @@ const ChatWindowBody = () => {
 
   const { user } = useAuthStore();
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (activeConversationId) {
-      fetchMessages(activeConversationId);
-    }
-  }, [activeConversationId]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const messages = allMessages[activeConversationId!]?.items ?? [];
+  const reversedMessages = [...messages].reverse();
   const hasMore = allMessages[activeConversationId!]?.hasMore ?? false;
+  const key = `chat-scroll-${activeConversationId}`;
   const selectedConvo = conversations.find(
     (c) => c._id === activeConversationId,
   );
@@ -35,12 +33,59 @@ const ChatWindowBody = () => {
       : "delivered"
     : "delivered";
 
-  // Auto-scroll xuống tin nhắn mới nhất
   useEffect(() => {
-    if (!bottomRef.current) {
+    const container = containerRef.current;
+    if (!container || !bottomRef.current) return;
+
+    const isNearBottom = container.scrollTop < 100;
+
+    if (isNearBottom) {
+      bottomRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [messages.length]);
+
+  const fetchMoreMessage = async () => {
+    if (!activeConversationId) {
       return;
     }
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+
+    try {
+      await fetchMessages(activeConversationId);
+    } catch (error) {
+      console.error("Loi khi fetch them tin", error);
+    }
+  };
+
+  const handleScrollSave = () => {
+    const container = containerRef.current;
+    if (!container || !activeConversationId) {
+      return;
+    }
+
+    sessionStorage.setItem(
+      key,
+      JSON.stringify({
+        scrollTop: container.scrollTop,
+        scrollHeight: container.scrollHeight,
+      }),
+    );
+  };
+
+  useLayoutEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const item = sessionStorage.getItem(key);
+
+    if (item) {
+      const { scrollTop } = JSON.parse(item);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          container.scrollTop = scrollTop;
+        });
+      });
+    }
   }, [messages.length]);
 
   if (!selectedConvo) return <ChatWelcomeScreen />;
@@ -55,29 +100,37 @@ const ChatWindowBody = () => {
   return (
     <div className="p-4 bg-primary-foreground h-full flex flex-col overflow-hidden">
       <div
-        className="flex flex-col overflow-y-auto overflow-x-hidden beautiful-scrollbar flex-1"
+        className="flex flex-col-reverse overflow-y-auto overflow-x-hidden beautiful-scrollbar flex-1"
         id="scrollableDiv"
+        ref={containerRef}
+        onScroll={handleScrollSave}
       >
+        <div ref={bottomRef} />
+
         <InfinityScroll
           dataLength={messages.length}
-          next={() => console.log("Dang tai them")}
+          next={fetchMoreMessage}
           hasMore={hasMore}
           scrollableTarget="scrollableDiv"
           inverse={true}
           loader={<p>Đang tải ...!</p>}
+          style={{
+            display: "flex",
+            flexDirection: "column-reverse",
+            overflow: "visible",
+          }}
         >
-          {messages.map((message, index) => (
+          {reversedMessages.map((message, index) => (
             <MessageItem
-              key={message._id ?? index}
+              key={message._id}
               message={message}
               index={index}
-              messages={messages}
+              messages={reversedMessages}
               selectedConvo={selectedConvo}
               lastMessageStatus={lastMessageStatus}
             />
           ))}
         </InfinityScroll>
-        <div ref={bottomRef} />
       </div>
     </div>
   );
