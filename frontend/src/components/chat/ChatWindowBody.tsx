@@ -34,7 +34,10 @@ const ChatWindowBody = () => {
 
   // Auto-scroll xuống tin nhắn mới nhất
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!bottomRef.current) {
+      return;
+    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length]);
 
   if (!selectedConvo) return <ChatWelcomeScreen />;
