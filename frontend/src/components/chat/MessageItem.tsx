@@ -37,8 +37,6 @@ const MessageItem = ({
   );
   return (
     <>
-      {/* Time */}
-
       <div
         className={cn(
           "flex gap-2 message-bounce mb-2",
@@ -96,10 +94,12 @@ const MessageItem = ({
             )}
         </div>
       </div>
+
+      {/* Time */}
       {isShowTime && (
-        <span className="text-[13px] text-gray-400   px-1 text-center">
+        <div className="text-xs text-gray-400 text-center my-2 opacity-80">
           {formatMessageTime(new Date(message.createdAt))}
-        </span>
+        </div>
       )}
     </>
   );
