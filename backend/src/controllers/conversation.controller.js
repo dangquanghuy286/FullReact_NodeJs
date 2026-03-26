@@ -161,7 +161,7 @@ export const getMessages = async (req, res) => {
       };
     }
 
-    // 5. Lấy danh sách tin nhắn (mới → cũ), dư 1 bản ghi
+    // 5. Lấy danh sách tin nhắn , dư 1 bản ghi
     let message = await Message.find(query)
       .sort({
         createdAt: -1,

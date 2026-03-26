@@ -56,7 +56,7 @@ export const signIn = async (req, res) => {
         message: "Thiếu userName or passWord!",
       });
     }
-    // Lấy hash trong db so anh với pass input
+    // Lấy hash trong db so sanh với pass input
     const user = await User.findOne({ username });
     if (!user) {
       return res
