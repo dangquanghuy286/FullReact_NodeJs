@@ -1,6 +1,7 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { io } from "../socket/index.socket.js";
+// Create a conversation
 export const createConversation = async (req, res) => {
   try {
     const { type, name, memberIds } = req.body;
@@ -95,6 +96,7 @@ export const createConversation = async (req, res) => {
     });
   }
 };
+// Get all user conversations
 export const getAllConversations = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -143,6 +145,7 @@ export const getAllConversations = async (req, res) => {
     });
   }
 };
+// Get messages with cursor pagination
 export const getMessages = async (req, res) => {
   try {
     // 1. Lấy conversationId từ URL
@@ -194,7 +197,7 @@ export const getMessages = async (req, res) => {
     });
   }
 };
-
+// Get conversation IDs for Socket.IO
 export const getUserConversationsForSocketIO = async (userId) => {
   try {
     const conversations = await Conversation.find(
@@ -210,8 +213,7 @@ export const getUserConversationsForSocketIO = async (userId) => {
     return [];
   }
 };
-
-// Đánh dấu đã đọc
+// Mark messages as seen
 export const markAsSeen = async (req, res) => {
   try {
     // Bước 1: Lấy thông tin Id người dùng và convo và xử lý ngoại lệ
