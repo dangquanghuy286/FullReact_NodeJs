@@ -1,7 +1,7 @@
 import Friend from "../models/friend.model.js";
 import FriendRequest from "../models/friendRequest.model.js";
 import User from "../models/user.model.js";
-
+// Send a friend request
 export const addFriend = async (req, res) => {
   try {
     const { to, message } = req.body;
@@ -71,6 +71,7 @@ export const addFriend = async (req, res) => {
     });
   }
 };
+// Accept a friend request
 export const acceptFriendRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
@@ -114,6 +115,7 @@ export const acceptFriendRequest = async (req, res) => {
     });
   }
 };
+// Decline a friend request
 export const declineFriendRequest = async (req, res) => {
   try {
     const { requestId } = req.params;
@@ -139,6 +141,7 @@ export const declineFriendRequest = async (req, res) => {
     });
   }
 };
+// Get all friends of the current user
 export const getAllFriends = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -163,7 +166,7 @@ export const getAllFriends = async (req, res) => {
       });
     }
     const friends = friendships.map((f) =>
-      f.userA._id.toString() === userId.toString() ? f.userB : f.userA
+      f.userA._id.toString() === userId.toString() ? f.userB : f.userA,
     );
     return res.status(200).json({
       friends,
@@ -175,6 +178,7 @@ export const getAllFriends = async (req, res) => {
     });
   }
 };
+// Get sent and received friend requests
 export const getFriendRequest = async (req, res) => {
   try {
     const userId = req.user._id;

@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 1000;
+// User registration
 export const signUp = async (req, res) => {
   try {
     const { username, password, email, firstName, lastName } = req.body;
@@ -47,6 +48,7 @@ export const signUp = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
+// User login (generate access & refresh tokens)
 export const signIn = async (req, res) => {
   try {
     // Lấy input
@@ -104,6 +106,7 @@ export const signIn = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
+// User logout (invalidate refresh token)
 export const signOut = async (req, res) => {
   try {
     // Lấy refreshToken token từ cookie
@@ -124,6 +127,7 @@ export const signOut = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
+// Refresh access token using refresh token
 export const refreshToken = async (req, res) => {
   try {
     const token = req.cookies?.refreshToken;
