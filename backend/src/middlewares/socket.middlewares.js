@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-
+// Authenticate socket connection using JWT
 export const socketAuthMiddleware = async (socket, next) => {
   try {
     const token = socket.handshake.auth?.token;

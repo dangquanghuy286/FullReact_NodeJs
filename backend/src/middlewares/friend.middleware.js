@@ -1,5 +1,6 @@
 import Friend from "../models/friend.model.js";
 import Conversation from "../models/conversation.model.js";
+// Validate friendship before direct/group actions
 export const checkFriendShip = async (req, res, next) => {
   const pair = (a, b) => (a < b ? [a, b] : [b, a]);
 
@@ -72,6 +73,7 @@ export const checkFriendShip = async (req, res, next) => {
     });
   }
 };
+// Validate group conversation and membership
 export const checkGroup = async (req, res, next) => {
   try {
     const { conversationId } = req.body;
