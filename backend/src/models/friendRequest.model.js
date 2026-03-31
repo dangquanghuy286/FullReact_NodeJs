@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Friend request schema
 const friendRequestSchema = new mongoose.Schema(
   {
     from: {
@@ -19,9 +19,9 @@ const friendRequestSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
-
+// Unique index for friend request pairs
 friendRequestSchema.index(
   {
     from: 1,
@@ -29,15 +29,16 @@ friendRequestSchema.index(
   },
   {
     unique: true,
-  }
+  },
 );
-
+// Index for querying sent requests
 friendRequestSchema.index({
   from: 1,
 });
+// Index for querying received requests
 friendRequestSchema.index({
   to: 1,
 });
-
+// Friend request model export
 const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
 export default FriendRequest;

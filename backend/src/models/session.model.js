@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Session schema for storing refresh tokens
 const sessionSchema = new mongoose.Schema(
   {
     userId: {

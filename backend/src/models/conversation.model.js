@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Participant schema for conversation members
 const participantSchema = new mongoose.Schema(
   {
     userId: {
@@ -14,8 +14,9 @@ const participantSchema = new mongoose.Schema(
   },
   {
     _id: false,
-  }
+  },
 );
+// Group information schema
 const groupSchema = new mongoose.Schema(
   {
     name: {
@@ -29,8 +30,9 @@ const groupSchema = new mongoose.Schema(
   },
   {
     _id: false,
-  }
+  },
 );
+// Last message metadata schema
 const lastMessageSchema = new mongoose.Schema(
   {
     _id: {
@@ -51,8 +53,9 @@ const lastMessageSchema = new mongoose.Schema(
   },
   {
     _id: false,
-  }
+  },
 );
+// Conversation schema (direct & group chat)
 const conversationSchema = new mongoose.Schema(
   {
     type: {
@@ -89,12 +92,13 @@ const conversationSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 conversationSchema.index({
   "participant.userId": 1,
   lastMessageAt: -1,
 });
+// Conversation model export
 const Conversation = mongoose.model("Conversation", conversationSchema);
 export default Conversation;

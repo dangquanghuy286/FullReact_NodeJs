@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Message schema for conversations
 const messageSchema = new mongoose.Schema(
   {
     conversationId: {
@@ -25,9 +25,11 @@ const messageSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+// Index for optimizing message queries by conversation and time
 messageSchema.index({
   conversationId: 1,
   createdAt: -1,
 });
+// Message model export
 const Message = mongoose.model("Message", messageSchema);
 export default Message;

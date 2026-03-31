@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+// Friend relationship schema
 const friendSchema = new mongoose.Schema(
   {
     userA: {
@@ -15,9 +15,9 @@ const friendSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
-
+// Ensure consistent user ordering before save
 friendSchema.pre("save", function (next) {
   const a = this.userA.toString();
   const b = this.userB.toString();
@@ -28,7 +28,7 @@ friendSchema.pre("save", function (next) {
   }
   next();
 });
-
+// Unique index for friend pairs
 friendSchema.index(
   {
     userA: 1,
@@ -36,7 +36,8 @@ friendSchema.index(
   },
   {
     unique: true, //Rang buoc userA va userB khong duoc trung nhau
-  }
+  },
 );
+// Friend model export
 const Friend = mongoose.model("Friend", friendSchema);
 export default Friend;
