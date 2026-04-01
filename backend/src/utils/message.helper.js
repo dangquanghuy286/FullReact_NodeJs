@@ -1,3 +1,4 @@
+// Update conversation metadata after new message
 export const updateConversationAfterCreateMessage = (
   conversation,
   message,
@@ -21,7 +22,7 @@ export const updateConversationAfterCreateMessage = (
     conversation.unreadCounts.set(memberId, isSender ? 0 : prevCount + 1);
   });
 };
-
+// Emit new message event via Socket.IO
 export const emitNewMessage = (io, conversation, message) => {
   io.to(conversation._id.toString()).emit("new-message", {
     message,

@@ -6,6 +6,7 @@ import {
   getMessages,
   markAsSeen,
 } from "../controllers/conversation.controller.js";
+// Conversation routes
 const router = express.Router();
 
 router.post("/", checkFriendShip, createConversation);

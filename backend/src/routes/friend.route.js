@@ -7,7 +7,7 @@ import {
   getAllFriends,
   getFriendRequest,
 } from "../controllers/friend.controller.js";
-
+// Friend routes
 const router = express.Router();
 router.post("/requests", addFriend);
 router.post("/requests/:requestId/accept", acceptFriendRequest);

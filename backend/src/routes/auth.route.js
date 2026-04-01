@@ -5,7 +5,7 @@ import {
   signOut,
   signUp,
 } from "../controllers/auth.controller.js";
-
+// Auth routes
 const router = express.Router();
 
 router.post("/signup", signUp);

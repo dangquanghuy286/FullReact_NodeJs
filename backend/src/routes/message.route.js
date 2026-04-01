@@ -8,7 +8,7 @@ import {
   checkFriendShip,
   checkGroup,
 } from "../middlewares/friend.middleware.js";
-
+// Message routes
 const router = express.Router();
 
 router.post("/direct", checkFriendShip, sendDirectMessage);

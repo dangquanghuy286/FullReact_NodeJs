@@ -14,7 +14,7 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-// Sử dụng
+// Apply socket authentication middleware
 io.use(socketAuthMiddleware);
 
 const onlineUser = new Map(); //{userId:socketId}
