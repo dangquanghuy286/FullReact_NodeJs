@@ -1,5 +1,5 @@
 import { useChatStore } from "@/stores/chat.store";
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import MessageItem from "./MessageItem";
 import { useAuthStore } from "@/stores/auth.store";

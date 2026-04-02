@@ -1,6 +1,5 @@
 import { useChatStore } from "@/stores/chat.store";
 import type { Conversation } from "@/types/chat";
-import React from "react";
 import { SidebarTrigger } from "../ui/sidebar";
 import { useAuthStore } from "@/stores/auth.store";
 import { Separator } from "../ui/separator";
