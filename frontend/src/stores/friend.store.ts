@@ -1,7 +1,7 @@
 import { friendService } from "@/services/friend.service";
 import type { FriendState } from "@/types/store";
 import { create } from "zustand";
-
+//  Store for managing friend-related state and actions
 export const useFriendStore = create<FriendState>((set, get) => ({
   loading: false,
   searchByUserName: async (username) => {
