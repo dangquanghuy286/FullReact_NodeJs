@@ -5,7 +5,7 @@ import {
   updateConversationAfterCreateMessage,
 } from "../utils/message.helper.js";
 import { io } from "../socket/index.socket.js";
-// Gửi tin nhắn 1-1 (direct message)
+// Gửi tin nhắn trực tiếp
 export const sendDirectMessage = async (req, res) => {
   try {
     const { recipientId, content, conversationId } = req.body;
@@ -68,7 +68,7 @@ export const sendDirectMessage = async (req, res) => {
     });
   }
 };
-// Gửi tin nhắn trong group
+// Gửi tin nhắn nhóm
 export const sendGroupMessage = async (req, res) => {
   try {
     const { conversationId, content } = req.body;

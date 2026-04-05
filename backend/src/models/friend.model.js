@@ -35,7 +35,7 @@ friendSchema.index(
     userB: 1,
   },
   {
-    unique: true, //Rang buoc userA va userB khong duoc trung nhau
+    unique: true, // Đảm bảo mỗi cặp bạn bè chỉ tồn tại một lần
   },
 );
 // Friend model export
