@@ -144,3 +144,7 @@
     opacity: 1;
   }
 }
+
+.error-message {
+  @apply text-destructive text-sm mt-1 text-red-500;
+}

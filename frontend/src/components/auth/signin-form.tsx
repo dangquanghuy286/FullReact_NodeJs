@@ -63,9 +63,7 @@ export function LoginForm({
                   {...register("username")}
                 />
                 {errors.username && (
-                  <p className="text-sm text-red-500">
-                    {errors.username.message}
-                  </p>
+                  <p className="error-message">{errors.username.message}</p>
                 )}
               </div>
 
@@ -79,9 +77,7 @@ export function LoginForm({
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-sm text-red-500">
-                    {errors.password.message}
-                  </p>
+                  <p className="error-message">{errors.password.message}</p>
                 )}
               </div>
 

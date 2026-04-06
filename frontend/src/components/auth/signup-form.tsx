@@ -66,18 +66,14 @@ export function SignupForm({
                   <Label htmlFor="firstName">Họ</Label>
                   <Input id="firstName" {...register("firstName")} />
                   {errors.firstName && (
-                    <p className="text-sm text-red-500">
-                      {errors.firstName.message}
-                    </p>
+                    <p className="error-message">{errors.firstName.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Tên</Label>
                   <Input id="lastName" {...register("lastName")} />
                   {errors.lastName && (
-                    <p className="text-sm text-red-500">
-                      {errors.lastName.message}
-                    </p>
+                    <p className="error-message">{errors.lastName.message}</p>
                   )}
                 </div>
               </div>
@@ -91,9 +87,7 @@ export function SignupForm({
                   {...register("username")}
                 />
                 {errors.username && (
-                  <p className="text-sm text-red-500">
-                    {errors.username.message}
-                  </p>
+                  <p className="error-message">{errors.username.message}</p>
                 )}
               </div>
 
@@ -107,7 +101,7 @@ export function SignupForm({
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                  <p className="error-message">{errors.email.message}</p>
                 )}
                 <p className="text-sm text-muted-foreground">
                   Chúng tôi sẽ dùng email này để liên hệ với bạn. Chúng tôi sẽ
@@ -125,9 +119,7 @@ export function SignupForm({
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-sm text-red-500">
-                    {errors.password.message}
-                  </p>
+                  <p className="error-message">{errors.password.message}</p>
                 )}
                 <p className="text-sm text-muted-foreground">
                   Mật khẩu phải có ít nhất 8 ký tự và bao gồm cả chữ và số.
