@@ -38,13 +38,11 @@ const SearchForm = ({
           <Input
             id="username"
             placeholder="Enter username"
-            {...(register("username"),
-            {
-              required: true,
+            {...register("username", {
+              required: "Username is required",
             })}
-            value={usernameValue}
-            className="glass border-gray-300 focus:border-[#00c0d1]/50 transform-smooth "
-          ></Input>
+            className="glass border-gray-300 focus:border-[#00c0d1]/50 transform-smooth"
+          />
           {errors.username && (
             <p className="error-message">{errors.username.message}</p>
           )}
@@ -77,7 +75,7 @@ const SearchForm = ({
               <span>Searching...</span>
             ) : (
               <>
-                <Search className="size-4 mr-2" />
+                <Search className="size-4 mr-2" /> Search
               </>
             )}
           </Button>
