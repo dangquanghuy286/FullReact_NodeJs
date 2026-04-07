@@ -21,7 +21,19 @@ export interface Friend {
 // Friend request
 export interface FriendRequest {
   _id: string;
-  username: string;
-  displayName: string;
-  avatarUrl?: string;
+  from?: {
+    _id: string;
+    username: string;
+    displayName: string;
+    avatarUrl?: string;
+  };
+  to?: {
+    _id: string;
+    username: string;
+    displayName: string;
+    avatarUrl?: string;
+  };
+  message?: string;
+  createAt: string;
+  updateAt: string;
 }

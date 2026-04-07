@@ -1,5 +1,6 @@
 import { useFriendStore } from "@/stores/friend.store";
 import React from "react";
+import FriendRequestItem from "./FriendRequestItem";
 
 const SentRequest = () => {
   const { sentList } = useFriendStore();
@@ -15,8 +16,13 @@ const SentRequest = () => {
     <div className="space-y-3 mt-4">
       {sentList.map((req) => (
         <div key={req._id} className="bg-gray-100 p-4 rounded-md">
-          <p className="font-medium">{req.username}</p>
-          <p className="text-sm text-gray-500">Request sent</p>
+          {/* Display sent friend request information */}
+          <FriendRequestItem
+            key={req._id}
+            requestInfo={req}
+            type="sent"
+            actions={<p className="text-sm text-gray-500">Pending</p>}
+          />
         </div>
       ))}
     </div>
