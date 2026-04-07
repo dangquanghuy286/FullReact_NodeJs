@@ -11,7 +11,7 @@ export interface User {
   createAt?: string;
   updateAt?: string;
 }
-// Friend 
+// Friend
 export interface Friend {
   _id: string;
   username: string;
@@ -20,7 +20,7 @@ export interface Friend {
 }
 // Friend request
 export interface FriendRequest {
-  id: string;
+  _id: string;
   username: string;
   displayName: string;
   avatarUrl?: string;

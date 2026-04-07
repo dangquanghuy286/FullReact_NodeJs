@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io-client";
 import type { Conversation, Message } from "./chat";
-import type { User } from "./user";
+import type { FriendRequest, User } from "./user";
 
 // Dinh nghia cac interface cho store
 // Auth store
@@ -77,6 +77,11 @@ export interface SocketState {
 
 export interface FriendState {
   loading: boolean;
+  receivedList: FriendRequest[];
+  sentList: FriendRequest[];
   searchByUserName: (username: string) => Promise<User | null>;
   addFriend: (to: string, message?: string) => Promise<string>;
+  getAllFriendRequests: () => Promise<void>;
+  acceptFriendRequest: (requestId: string) => Promise<void>;
+  declineFriendRequest: (requestId: string) => Promise<void>;
 }
