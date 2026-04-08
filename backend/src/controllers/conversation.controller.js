@@ -86,8 +86,17 @@ export const createConversation = async (req, res) => {
       },
     ]);
 
+    const participants = (conversation.participants || []).map((p) => ({
+      _id: p.userId?._id,
+      displayName: p.userId?.displayName,
+      avatarUrl: p.userId?.avatarUrl ?? null,
+      joinedAt: p.joinedAt,
+    }));
+
+    const formattedConversation = { ...conversation.toObject(), participants };
+
     return res.status(201).json({
-      conversation,
+      conversation: formattedConversation,
     });
   } catch (error) {
     console.error("Lỗi khi tạo hội thoại!", error);

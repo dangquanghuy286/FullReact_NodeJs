@@ -32,6 +32,10 @@ io.on("connection", async (socket) => {
   conversationIds.forEach((id) => {
     socket.join(id);
   });
+
+  socket.on("join-conversation", (conversationId) => {
+    socket.join(conversationId);
+  });
   socket.on("disconnect", () => {
     onlineUser.delete(user._id);
     io.emit("online-users", Array.from(onlineUser.keys()));

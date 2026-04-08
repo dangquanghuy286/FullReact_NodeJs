@@ -7,7 +7,7 @@ export const addFriend = async (req, res) => {
     const { to, message } = req.body;
     const from = req.user._id;
 
-    if (from === to) {
+    if (from.toString() === to.toString()) {
       return res.status(400).json({
         message: "Không thể gửi lời mời kết bạn cho chính mình!",
       });
@@ -156,8 +156,8 @@ export const getAllFriends = async (req, res) => {
         },
       ],
     })
-      .populate("userA", "_id displayName avatarURL")
-      .populate("userB", "_id displayName avatarURL")
+      .populate("userA", "_id displayName avatarURL username")
+      .populate("userB", "_id displayName avatarURL username")
       .lean();
 
     if (!friendships.length) {
