@@ -36,4 +36,13 @@ export const friendService = {
       console.error("Error declining friend request:", error);
     }
   },
+
+  async getFriends() {
+    try {
+      const res = await api.get("/friend");
+      return res.data.friends;
+    } catch (error) {
+      console.error("Error fetching friends:", error);
+    }
+  },
 };

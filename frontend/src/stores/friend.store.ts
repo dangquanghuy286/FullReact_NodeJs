@@ -3,6 +3,7 @@ import type { FriendState } from "@/types/store";
 import { create } from "zustand";
 //  Store for managing friend-related state and actions
 export const useFriendStore = create<FriendState>((set, get) => ({
+  friends: [],
   loading: false,
   receivedList: [],
   sentList: [],
@@ -71,6 +72,19 @@ export const useFriendStore = create<FriendState>((set, get) => ({
       }));
     } catch (error) {
       console.error("Error declining friend request:", error);
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  getFriends: async () => {
+    try {
+      set({ loading: true });
+      const friends = await friendService.getFriends();
+      set({ friends: friends });
+    } catch (error) {
+      console.error("Error fetching friends:", error);
+      set({ friends: [] });
     } finally {
       set({ loading: false });
     }
