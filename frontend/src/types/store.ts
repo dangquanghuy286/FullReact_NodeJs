@@ -66,6 +66,14 @@ export interface ChatState {
 
   // Update marketSeen
   markAsSeen: () => Promise<void>;
+
+  addConvo: (convo: Conversation) => void;
+
+  createConversation: (
+    type: "direct" | "group",
+    name: string,
+    memberIds: string[],
+  ) => Promise<void>;
 }
 
 export interface SocketState {
