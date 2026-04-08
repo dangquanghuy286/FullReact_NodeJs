@@ -28,7 +28,7 @@ const ChatCard = ({
       className={cn(
         "border-none p-3 cursor-pointer transition-smooth glass hover:bg-muted/10",
         isActive &&
-          "bg-blue-100 ring-2 ring-blue-300 bg-gradient-to-tr from-[#00c0d1] to-[#0072ff] text-white",
+          "bg-blue-100 ring-2 ring-blue-300 bg-linear-to-tr from-[#00c0d1] to-[#0072ff] dark:text-white text-[#00c0d1]",
       )}
       onClick={() => onSelect(convoId)}
     >
