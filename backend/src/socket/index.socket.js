@@ -36,6 +36,8 @@ io.on("connection", async (socket) => {
   socket.on("join-conversation", (conversationId) => {
     socket.join(conversationId);
   });
+  // Tao phong theo userId de gui thong bao den user do khi co tin nhan moi
+  socket.join(user._id.toString());
   socket.on("disconnect", () => {
     onlineUser.delete(user._id);
     io.emit("online-users", Array.from(onlineUser.keys()));
