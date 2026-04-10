@@ -41,7 +41,7 @@ const SearchForm = ({
             {...register("username", {
               required: "Username is required",
             })}
-            className="glass border-gray-300 focus:border-[#00c0d1]/50 transform-smooth"
+            className="glass  transform-smooth"
           />
           {errors.username && (
             <p className="error-message">{errors.username.message}</p>

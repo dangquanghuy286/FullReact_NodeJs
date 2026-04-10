@@ -17,7 +17,7 @@ import {
 import { Moon, Sun } from "lucide-react";
 import { Switch } from "../ui/switch";
 import CreateNewChat from "../chat/CreateNewChat";
-import NewGroupChatModel from "../chat/NewGroupChatModel";
+import NewGroupChatModel from "../chat/NewGroupChatModal";
 import GroupChatList from "../chat/GroupChatList";
 import AddFriendModal from "../chat/AddFriendModal";
 import DirectChatList from "../chat/DirectChatList";
@@ -69,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* Groups */}
         <SidebarGroup>
           <SidebarGroupLabel className="uppercase">Nhóm Chat</SidebarGroupLabel>
-          <SidebarGroupAction title="Tạo nhóm" className="cursor-pointer">
+          <SidebarGroupAction title="Create Group" className="cursor-pointer">
             <NewGroupChatModel />
           </SidebarGroupAction>
 

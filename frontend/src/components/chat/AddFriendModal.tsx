@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import SearchForm from "../addFriendModal/SearchForm";
 import SendFriendRequestForm from "../addFriendModal/SendFriendRequestForm";
 import type { User } from "@/types/user";
+import { Button } from "../ui/button";
 
 export interface IFormValues {
   username: string;
@@ -91,10 +92,13 @@ const AddFriendModal = () => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <div className="flex justify-center items-center size-5 rounded-full hover:bg-[#e2e8f0] cursor-pointer z-10">
+          <Button
+            className="flex justify-center items-center size-5 rounded-full  cursor-pointer z-10"
+            variant="ghost"
+          >
             <UserPlus className="size-4 " />
             <span className="sr-only">Add Friend</span>
-          </div>
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] border-none">
           <DialogHeader>
