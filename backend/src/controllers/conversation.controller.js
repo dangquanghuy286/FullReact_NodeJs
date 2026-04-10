@@ -98,7 +98,7 @@ export const createConversation = async (req, res) => {
     // Nếu là nhóm thì mới emit sự kiện tạo nhóm mới
     if (type === "group") {
       memberIds.forEach((userId) => {
-        io.to(userId).emit.apply("new-group", formattedConversation);
+        io.to(userId.toString()).emit("new-group", formattedConversation);
       });
     }
     return res.status(201).json({
