@@ -108,7 +108,7 @@ const NewGroupChatModal = () => {
               <Label htmlFor="invite" className="text-sm font-semibold">
                 Invite Friends
               </Label>
-
+              {/* Search Input */}
               <Input
                 id="invite"
                 className="glass transition-smooth"
@@ -123,7 +123,7 @@ const NewGroupChatModal = () => {
                   onSelect={handleSelectFriend}
                 />
               )}
-
+              {/* Selected List */}
               <SelectedUsersList
                 invitedUsers={invitedUsers}
                 onRemove={handleRemoveFriend}
