@@ -21,7 +21,7 @@ const UserAvatar = ({ type, name, avatarUrl, className }: IUserAvatarProps) => {
       className={cn(
         "rounded-full",
         className ?? "",
-        type === "sidebar" ? "size-10" : type === "chat" ? "size-8" : "size-16",
+        type === "sidebar" ? "size-10" : type === "chat" ? "size-8" : "size-20",
         bgColor,
       )}
     >
