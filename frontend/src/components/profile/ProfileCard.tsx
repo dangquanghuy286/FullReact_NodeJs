@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 interface ProfileCardProps {
   user: User | null;
 }
-
+// Ui Profile Card
 const ProfileCard = ({ user }: ProfileCardProps) => {
   const { onlineUsers } = useSocketStore();
   if (!user) return;
@@ -16,7 +16,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
   const isOnline = onlineUsers.includes(user._id) ? true : false;
   return (
     <Card className="overflow-hidden p-0 h-52 bg-gradient-to-r from-[#00c0d1] via-[#009fb3] to-[#007a8a]">
-      <CardContent className="h-full flex items-end pb-6 px-6">
+      <CardContent className="h-full flex items-end pb-3 px-3">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 w-full">
           {/* Avatar */}
           <UserAvatar

@@ -7,7 +7,7 @@ interface ProfileDialogProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
-
+// Profile dialog
 const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
   const { user } = useAuthStore();
   return (
