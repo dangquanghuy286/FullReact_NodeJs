@@ -26,21 +26,21 @@ const NewGroupChatModal = () => {
   const [invitedUsers, setInvitedUsers] = useState<Friend[]>([]);
 
   const { loading, createConversation } = useChatStore();
-
+  // Handle fet friend
   const handleGetFriends = async () => {
     await getFriends();
     setOpen(true);
   };
-
+  // Handle select friend
   const handleSelectFriend = (friend: Friend) => {
     setInvitedUsers([...invitedUsers, friend]);
     setSearch("");
   };
-
+  // Handle remove
   const handleRemoveFriend = (friends: Friend) => {
     setInvitedUsers(invitedUsers.filter((user) => user._id !== friends._id));
   };
-
+  // Handle create group  chat
   const handCreateGroupChat = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
