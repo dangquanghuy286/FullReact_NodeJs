@@ -80,7 +80,6 @@ const NewGroupChatModal = () => {
         <Users className="size-4" />
         <span className="sr-only">New Group Chat</span>
       </span>
-
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px] border-none">
           <DialogHeader>
