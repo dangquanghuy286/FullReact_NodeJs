@@ -74,22 +74,22 @@ export const createConversation = async (req, res) => {
     await conversation.populate([
       {
         path: "participants.userId",
-        select: "displayName avatarUrl",
+        select: "displayName avatarURL",
       },
       {
         path: "seenBy",
-        select: "displayName avatarUrl",
+        select: "displayName avatarURL",
       },
       {
         path: "lastMessage.senderId",
-        select: "displayName avatarUrl",
+        select: "displayName avatarURL",
       },
     ]);
 
     const participants = (conversation.participants || []).map((p) => ({
       _id: p.userId?._id,
       displayName: p.userId?.displayName,
-      avatarUrl: p.userId?.avatarUrl ?? null,
+      avatarURL: p.userId?.avatarURL ?? null,
       joinedAt: p.joinedAt,
     }));
 
@@ -124,22 +124,22 @@ export const getAllConversations = async (req, res) => {
       })
       .populate({
         path: "participants.userId",
-        select: "displayName avatarUrl",
+        select: "displayName avatarURL",
       })
       .populate({
         path: "lastMessage.senderId",
-        select: "displayName avatarUrl",
+        select: "displayName avatarURL",
       })
       .populate({
         path: "seenBy",
-        select: "displayName avatarUrl",
+        select: "displayName avatarURL",
       });
 
     const formatted = conversation.map((hoi) => {
       const participants = (hoi.participants || []).map((p) => ({
         _id: p.userId?._id,
         displayName: p.userId?.displayName,
-        avatarUrl: p.userId?.avatarUrl ?? null,
+        avatarURL: p.userId?.avatarURL ?? null,
         joinedAt: p.joinedAt,
       }));
 

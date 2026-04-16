@@ -64,7 +64,7 @@ export const uploadAvatar = async (req, res) => {
       {
         new: true,
       },
-    ).select("avatarUrl");
+    ).select("avatarURL");
 
     if (!updatedUser.avatarURL) {
       return res.status(400).json({
