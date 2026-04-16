@@ -1,7 +1,7 @@
 import { useFriendStore } from "@/stores/friend.store";
 import FriendRequestItem from "./FriendRequestItem";
-import { Button } from "../ui/button";
 import { toast } from "sonner";
+import { Check, X } from "lucide-react";
 
 const ReceivedRequests = () => {
   const { acceptFriendRequest, declineFriendRequest, loading, receivedList } =
@@ -9,9 +9,12 @@ const ReceivedRequests = () => {
 
   if (!receivedList || receivedList.length === 0) {
     return (
-      <p className="text-center text-gray-500 text-sm">
-        No received friend requests
-      </p>
+      <div className="flex flex-col items-center justify-center py-10 text-gray-400">
+        <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-3">
+          <Check className="size-5 text-gray-300" />
+        </div>
+        <p className="text-sm">No received requests</p>
+      </div>
     );
   }
 
@@ -19,8 +22,8 @@ const ReceivedRequests = () => {
     try {
       await acceptFriendRequest(requestId);
       toast.success("Friend request accepted!");
-    } catch (error) {
-      console.error("Error accepting friend request:", error);
+    } catch {
+      console.error("Error accepting friend request");
     }
   };
 
@@ -28,37 +31,38 @@ const ReceivedRequests = () => {
     try {
       await declineFriendRequest(requestId);
       toast.info("Friend request declined.");
-    } catch (error) {
-      console.error("Error declining friend request:", error);
+    } catch {
+      console.error("Error declining friend request");
     }
   };
 
   return (
-    <div className="space-y-3 mt-4">
+    <div className="space-y-2 max-h-72 overflow-y-auto beautiful-scrollbar pr-1">
       {receivedList.map((req) => (
         <FriendRequestItem
           type="received"
           key={req._id}
           requestInfo={req}
           actions={
-            <div className="flex gap-2">
-              <Button
+            <div className="flex gap-1.5">
+              <button
                 onClick={() => handleAccept(req._id)}
                 disabled={loading}
-                className="px-3 py-1 text-sm bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-                size="sm"
+                className="size-8 rounded-lg bg-[#00c0d1] text-white flex items-center justify-center
+                  hover:bg-[#009fb3] active:scale-95 transition-all duration-150
+                  disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
-                Accept
-              </Button>
-
-              <Button
+                <Check className="size-4" />
+              </button>
+              <button
                 onClick={() => handleDecline(req._id)}
                 disabled={loading}
-                className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-                size="sm"
+                className="size-8 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 flex items-center justify-center
+                  hover:bg-red-50 hover:text-red-400 active:scale-95 transition-all duration-150
+                  disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Decline
-              </Button>
+                <X className="size-4" />
+              </button>
             </div>
           }
         />

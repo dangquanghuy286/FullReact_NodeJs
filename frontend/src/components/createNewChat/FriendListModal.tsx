@@ -49,7 +49,7 @@ const FriendListModal = () => {
                     <UserAvatar
                       type="sidebar"
                       name={friend.displayName}
-                      avatarUrl={friend.avatarUrl}
+                      avatarURL={friend.avatarURL}
                     />
                   </div>
 

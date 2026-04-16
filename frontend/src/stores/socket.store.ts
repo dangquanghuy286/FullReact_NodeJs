@@ -46,7 +46,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
         sender: {
           _id: conversation.lastMessage.senderId,
           displayName: "",
-          avatarUrl: null,
+          avatarURL: null,
         },
       };
 

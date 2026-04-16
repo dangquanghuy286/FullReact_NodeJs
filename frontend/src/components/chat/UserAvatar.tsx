@@ -4,11 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface IUserAvatarProps {
   type: "sidebar" | "chat" | "profile";
   name?: string;
-  avatarUrl?: string;
+  avatarURL?: string;
   className?: string;
 }
-const UserAvatar = ({ type, name, avatarUrl, className }: IUserAvatarProps) => {
-  const bgColor = !avatarUrl
+const UserAvatar = ({ type, name, avatarURL, className }: IUserAvatarProps) => {
+  const bgColor = !avatarURL
     ? {
         sidebar: "bg-blue-500",
         chat: "bg-green-500",
@@ -25,7 +25,7 @@ const UserAvatar = ({ type, name, avatarUrl, className }: IUserAvatarProps) => {
         bgColor,
       )}
     >
-      <AvatarImage src={avatarUrl} alt={name} />
+      <AvatarImage src={avatarURL} alt={name} />
       <AvatarFallback className={`${bgColor} text-white font-semibold`}>
         {name?.charAt(0)}
       </AvatarFallback>

@@ -51,7 +51,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
                 <UserAvatar
                   type={"sidebar"}
                   name={otherUser?.displayName || "Người dùng hệ thống"}
-                  avatarUrl={otherUser?.avatarUrl || undefined}
+                  avatarURL={otherUser?.avatarURL || undefined}
                 />
 
                 <StatusBadge

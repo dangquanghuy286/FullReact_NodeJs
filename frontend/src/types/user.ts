@@ -16,7 +16,7 @@ export interface Friend {
   _id: string;
   username: string;
   displayName: string;
-  avatarUrl?: string;
+  avatarURL?: string;
 }
 // Friend request
 export interface FriendRequest {
@@ -25,13 +25,13 @@ export interface FriendRequest {
     _id: string;
     username: string;
     displayName: string;
-    avatarUrl?: string;
+    avatarURL?: string;
   };
   to?: {
     _id: string;
     username: string;
     displayName: string;
-    avatarUrl?: string;
+    avatarURL?: string;
   };
   message?: string;
   createAt: string;

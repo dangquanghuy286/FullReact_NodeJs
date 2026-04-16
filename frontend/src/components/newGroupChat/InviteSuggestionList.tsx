@@ -25,7 +25,7 @@ const InviteSuggestionList = ({
           <UserAvatar
             type="chat"
             name={friend.displayName}
-            avatarUrl={friend.avatarUrl}
+            avatarURL={friend.avatarURL}
           />
           <span className="text-gray-800 dark:text-gray-200">
             {friend.displayName}

@@ -29,7 +29,7 @@ const SelectedUsersList = ({
           <UserAvatar
             type="chat"
             name={user.displayName}
-            avatarUrl={user.avatarUrl}
+            avatarURL={user.avatarURL}
           />
 
           <span className="max-w-[100px] truncate">{user.displayName}</span>
