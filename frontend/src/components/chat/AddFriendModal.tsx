@@ -12,10 +12,10 @@ import { useFriendStore } from "@/stores/friend.store";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import SendFriendRequestForm from "../AddFriendModal/SendFriendRequestForm";
+import SendFriendRequestForm from "@/components/AddFriendModal/SendFriendRequestForm";
 import type { User } from "@/types/user";
 import { Button } from "../ui/button";
-import SearchForm from "../AddFriendModal/SearchForm";
+import SearchForm from "@/components/AddFriendModal/SearchForm";
 
 export interface IFormValues {
   username: string;
