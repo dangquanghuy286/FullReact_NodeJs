@@ -71,6 +71,7 @@ export const addFriend = async (req, res) => {
     });
   }
 };
+
 // Accept a friend request
 export const acceptFriendRequest = async (req, res) => {
   try {
@@ -89,10 +90,10 @@ export const acceptFriendRequest = async (req, res) => {
         .json({ message: "Bạn không có quyền chấp nhận lời mời kết bạn này!" });
     }
 
-    const friend = await Friend.create({
+    const friend = await new Friend({
       userA: request.from,
       userB: request.to,
-    });
+    }).save();
 
     await FriendRequest.findByIdAndDelete(requestId);
 
