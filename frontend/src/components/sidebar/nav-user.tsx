@@ -19,7 +19,7 @@ import {
 import type { User } from "@/types/user";
 import SignOutForm from "../auth/signout-form";
 import { useState } from "react";
-import FriendRequestDialog from "../friendRequest/FriendRequestDialog";
+import FriendRequestDialog from "@/components/friendRequest/FriendRequestDialog";
 import ProfileDialog from "../profile/ProfileDialog";
 
 export function NavUser({ user }: { user: User }) {
