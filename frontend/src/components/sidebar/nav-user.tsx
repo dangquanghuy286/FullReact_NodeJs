@@ -21,6 +21,7 @@ import SignOutForm from "../auth/signout-form";
 import { useState } from "react";
 
 import ProfileDialog from "../profile/ProfileDialog";
+
 import FriendRequestDialog from "@/components/friendRequest/FriendRequestDialog";
 
 export function NavUser({ user }: { user: User }) {
