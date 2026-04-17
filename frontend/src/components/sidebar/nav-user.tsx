@@ -22,7 +22,7 @@ import { useState } from "react";
 
 import ProfileDialog from "../profile/ProfileDialog";
 
-import FriendRequestDialog from "@/components/friendRequest/FriendRequestDialog";
+import FriendRequestDialog from "@/components/FriendRequest/FriendRequestDialog";
 
 export function NavUser({ user }: { user: User }) {
   const { isMobile } = useSidebar();
