@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthState>()(
           set({
             loading: true,
           });
-          // Goi API
+          // Gọi API
           await authService.signUp(
             username,
             password,
