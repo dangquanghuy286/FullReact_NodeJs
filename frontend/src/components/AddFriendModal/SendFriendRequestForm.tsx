@@ -6,7 +6,7 @@ import { Textarea } from "../ui/textarea";
 import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { UserPlus } from "lucide-react";
-
+// Interface
 interface SendFriendRequestFormProps {
   register: UseFormRegister<IFormValues>;
   loading: boolean;
@@ -14,7 +14,7 @@ interface SendFriendRequestFormProps {
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onBack: () => void;
 }
-
+// Send friend
 const SendFriendRequestForm = ({
   register,
   loading,
