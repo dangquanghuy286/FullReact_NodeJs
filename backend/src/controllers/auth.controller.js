@@ -4,7 +4,7 @@ import Session from "../models/session.model.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 const ACCESS_TOKEN_TTL = "15m";
-const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 1000;
+const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 // User registration
 export const signUp = async (req, res) => {
   try {
