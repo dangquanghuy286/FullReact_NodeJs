@@ -7,8 +7,12 @@ import GroupChatAvatar from "./GroupChatAvatar";
 
 const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
-  const { activeConversationId, setActiveConversationId, messages, fetchMessages } =
-    useChatStore();
+  const {
+    activeConversationId,
+    setActiveConversationId,
+    messages,
+    fetchMessages,
+  } = useChatStore();
   if (!user) return null;
 
   const unreadCount = convo.unreadCounts?.[user._id] || 0;
@@ -41,7 +45,7 @@ const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
       }
       subtitle={
         <p className="text-sm truncate text-muted-foreground">
-          {convo.participants.length} thành viên
+          {convo.participants.length} members
         </p>
       }
     />

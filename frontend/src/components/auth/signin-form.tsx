@@ -8,10 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
+
 // Zod Schema
 const loginSchema = z.object({
-  username: z.string().min(1, "Vui lòng nhập tên đăng nhập"),
-  password: z.string().min(1, "Vui lòng nhập mật khẩu"),
+  username: z.string().min(1, "Please enter username"),
+  password: z.string().min(1, "Please enter password"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -36,10 +37,11 @@ export function LoginForm({
       await signIn(username, password);
       navigate("/");
     } catch (error) {
-      // Đăng nhập thất bại
+      // Login failed
       console.error("Login failed:", error);
     }
   };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -48,15 +50,13 @@ export function LoginForm({
             <div className="flex flex-col gap-6">
               {/* Header */}
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Đăng nhập</h1>
-                <p className="text-muted-foreground text-sm">
-                  Chào mừng bạn quay trở lại!
-                </p>
+                <h1 className="text-2xl font-bold">Login</h1>
+                <p className="text-muted-foreground text-sm">Welcome back!</p>
               </div>
 
               {/* Username */}
               <div className="space-y-2">
-                <Label htmlFor="username">Tên đăng nhập</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
                   placeholder="username"
@@ -69,7 +69,7 @@ export function LoginForm({
 
               {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password">Mật khẩu</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -83,14 +83,14 @@ export function LoginForm({
 
               {/* Submit Button */}
               <Button type="submit" className="w-full">
-                Đăng nhập
+                Login
               </Button>
 
               {/* Footer */}
               <div className="text-center text-sm">
-                Bạn chưa có tài khoản?{" "}
+                Don't have an account?{" "}
                 <Link to="/signup" className="underline hover:text-primary">
-                  Tạo tài khoản
+                  Create account
                 </Link>
               </div>
             </div>

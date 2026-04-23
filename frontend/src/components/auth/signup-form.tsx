@@ -10,17 +10,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
 // Zod Schema
 const signupSchema = z.object({
-  firstName: z.string().min(1, "Vui lòng nhập họ"),
-  lastName: z.string().min(1, "Vui lòng nhập tên"),
+  firstName: z.string().min(1, "Please enter your first name"),
+  lastName: z.string().min(1, "Please enter your last name"),
   username: z
     .string()
-    .min(3, "Tên đăng nhập phải có ít nhất 3 ký tự")
-    .min(1, "Vui lòng nhập tên đăng nhập"),
-  email: z.string().min(1, "Vui lòng nhập email").email("Email không hợp lệ"),
+    .min(3, "Username must be at least 3 characters")
+    .min(1, "Please enter a username"),
+  email: z
+    .string()
+    .min(1, "Please enter your email")
+    .email("Invalid email address"),
   password: z
     .string()
-    .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
-    .regex(/^(?=.*[A-Za-z])(?=.*\d).+$/, "Mật khẩu phải bao gồm cả chữ và số"),
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d).+$/,
+      "Password must contain both letters and numbers",
+    ),
 });
 
 type SignupFormData = z.infer<typeof signupSchema>;
@@ -54,23 +60,23 @@ export function SignupForm({
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Tạo tài khoản mới !</h1>
+                <h1 className="text-2xl font-bold">Create a new account!</h1>
                 <p className="text-muted-foreground text-sm text-balance">
-                  Chào mừng bạn đã trở lại !
+                  Welcome back!
                 </p>
               </div>
 
-              {/* Họ và Tên */}
+              {/* First and Last Name */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">Họ</Label>
+                  <Label htmlFor="firstName">First Name</Label>
                   <Input id="firstName" {...register("firstName")} />
                   {errors.firstName && (
                     <p className="error-message">{errors.firstName.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Tên</Label>
+                  <Label htmlFor="lastName">Last Name</Label>
                   <Input id="lastName" {...register("lastName")} />
                   {errors.lastName && (
                     <p className="error-message">{errors.lastName.message}</p>
@@ -78,9 +84,9 @@ export function SignupForm({
                 </div>
               </div>
 
-              {/* Tên đăng nhập */}
+              {/* Username */}
               <div className="space-y-2">
-                <Label htmlFor="username">Tên đăng nhập</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
                   placeholder="username"
@@ -104,14 +110,14 @@ export function SignupForm({
                   <p className="error-message">{errors.email.message}</p>
                 )}
                 <p className="text-sm text-muted-foreground">
-                  Chúng tôi sẽ dùng email này để liên hệ với bạn. Chúng tôi sẽ
-                  không chia sẻ email của bạn với bất kỳ ai.
+                  We will use this email to contact you. We will not share your
+                  email with anyone.
                 </p>
               </div>
 
-              {/* Mật khẩu */}
+              {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password">Mật khẩu</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -122,13 +128,14 @@ export function SignupForm({
                   <p className="error-message">{errors.password.message}</p>
                 )}
                 <p className="text-sm text-muted-foreground">
-                  Mật khẩu phải có ít nhất 8 ký tự và bao gồm cả chữ và số.
+                  Password must be at least 8 characters and include both
+                  letters and numbers.
                 </p>
               </div>
 
               {/* Submit Button */}
               <Button type="submit" className="w-full">
-                Tạo tài khoản mới
+                Create new account
               </Button>
 
               {/* Separator */}
@@ -138,7 +145,7 @@ export function SignupForm({
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Hoặc tiếp tục với
+                    Or continue with
                   </span>
                 </div>
               </div>
@@ -176,9 +183,9 @@ export function SignupForm({
 
               {/* Footer */}
               <div className="text-center text-sm">
-                Bạn đã có tài khoản?{" "}
+                Already have an account?{" "}
                 <Link to="/signin" className="underline hover:text-primary">
-                  Đăng Nhập
+                  Sign In
                 </Link>
               </div>
             </div>
@@ -202,15 +209,15 @@ export function SignupForm({
       </Card>
 
       <div className="px-6 text-center text-sm text-muted-foreground [&_a]:hover:text-primary">
-        Bằng cách nhấn Tiếp tục, bạn đồng ý với{" "}
+        By clicking Continue, you agree to our{" "}
         <a href="#" className="underline">
-          Điều khoản Dịch vụ
+          Terms of Service
         </a>{" "}
-        và{" "}
+        and{" "}
         <a href="#" className="underline">
-          Chính sách Bảo mật
-        </a>{" "}
-        của chúng tôi.
+          Privacy Policy
+        </a>
+        .
       </div>
     </div>
   );

@@ -82,11 +82,11 @@ export function NavUser({ user }: { user: User }) {
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={() => setProfileOpen(true)}>
                   <UserIcon className="text-muted-foreground dark:group-focus:!text-accent-foreground" />
-                  Tài khoản
+                  Account
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setFriendRequestOpen(true)}>
                   <Bell className="text-muted-foreground dark:group-focus:!text-accent-foreground" />
-                  Thông báo
+                  Notifications
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />

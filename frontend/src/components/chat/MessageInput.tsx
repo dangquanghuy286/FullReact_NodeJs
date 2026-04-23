@@ -31,7 +31,9 @@ const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Lỗi xảy ra khi gửi tin nhắn . Bạn hãy thử lại !");
+      toast.error(
+        "An error occurred while sending the message. Please try again!",
+      );
     }
   };
 
@@ -58,7 +60,7 @@ const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
         <Input
           onKeyDown={handleKeyPress}
           value={value}
-          placeholder="Soạn tin nhắn ..."
+          placeholder="Type a message..."
           onChange={(e) => setValue(e.target.value)}
           className="pr-10 h-9 bg-white border-border/50 focus:border-primary/50 transition-smooth"
         />

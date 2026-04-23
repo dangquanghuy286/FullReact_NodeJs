@@ -7,6 +7,7 @@ import { LogOut } from "lucide-react";
 const SignOutForm = () => {
   const { signOut } = useAuthStore();
   const navigate = useNavigate();
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -15,10 +16,11 @@ const SignOutForm = () => {
       console.error("Error signing out:", error);
     }
   };
+
   return (
     <Button variant="completeGhost" size="sm" onClick={handleSignOut}>
       <LogOut className="text-destructive" />
-      Đăng xuất
+      Sign out
     </Button>
   );
 };

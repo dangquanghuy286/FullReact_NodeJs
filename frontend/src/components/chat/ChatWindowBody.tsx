@@ -52,7 +52,7 @@ const ChatWindowBody = () => {
     try {
       await fetchMessages(activeConversationId);
     } catch (error) {
-      console.error("Loi khi fetch them tin", error);
+      console.error("Error fetching more messages", error);
     }
   };
 
@@ -93,7 +93,7 @@ const ChatWindowBody = () => {
   if (!messages || messages.length === 0)
     return (
       <div className="flex h-full items-center justify-center">
-        Chưa có tin nhắn nào trong cuộc trò chuyện
+        No messages in this conversation yet
       </div>
     );
 
@@ -113,7 +113,7 @@ const ChatWindowBody = () => {
           hasMore={hasMore}
           scrollableTarget="scrollableDiv"
           inverse={true}
-          loader={<p>Đang tải ...!</p>}
+          loader={<p>Loading...</p>}
           style={{
             display: "flex",
             flexDirection: "column-reverse",

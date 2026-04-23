@@ -26,9 +26,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
     set({ socket });
 
-    socket.on("connect", () => {
-      console.log("Đã kết nối với SOCKET!");
-    });
+    socket.on("connect", () => {});
 
     // Online users
     socket.on("online-users", (userIds) => {

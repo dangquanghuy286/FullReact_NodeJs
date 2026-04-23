@@ -50,7 +50,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
               <>
                 <UserAvatar
                   type={"sidebar"}
-                  name={otherUser?.displayName || "Người dùng hệ thống"}
+                  name={otherUser?.displayName || "System User"}
                   avatarURL={otherUser?.avatarURL || undefined}
                 />
 
@@ -72,8 +72,8 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
           {/* Chat Info */}
           <h2 className="font-semibold text-foreground">
             {chat.type === "direct"
-              ? otherUser?.displayName || "Người dùng hệ thống"
-              : chat.group?.name || "Nhóm trò chuyện"}
+              ? otherUser?.displayName || "System User"
+              : chat.group?.name || "Group Chat"}
           </h2>
         </div>
       </div>

@@ -70,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <div className="flex items-center justify-between">
             <SidebarGroupLabel className="uppercase">
-              Nhóm Chat
+              Group Chats
             </SidebarGroupLabel>
             <NewGroupChatModel />
           </div>
@@ -79,10 +79,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <GroupChatList />
           </SidebarContent>
         </SidebarGroup>
-        {/* Chats direct */}
+        {/* Direct Chats */}
         <SidebarGroup>
           <div className="flex items-center justify-between">
-            <SidebarGroupLabel className="uppercase">Bạn bè</SidebarGroupLabel>
+            <SidebarGroupLabel className="uppercase">Friends</SidebarGroupLabel>
             <AddFriendModal />
           </div>
           <SidebarContent>
