@@ -75,7 +75,7 @@ const NewGroupChatModal = () => {
       <span
         role="button"
         onClick={handleGetFriends}
-        className="flex justify-center items-center size-5 rounded-full hover:bg-[#e2e8f0] cursor-pointer z-10"
+        className="flex justify-center items-center size-5 rounded-full  cursor-pointer z-10"
       >
         <Users className="size-4" />
         <span className="sr-only">New Group Chat</span>

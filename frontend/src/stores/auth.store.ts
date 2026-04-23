@@ -10,7 +10,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       accessToken: null,
       user: null,
-      loading: false, //Theo dõi trạng thái
+      loading: false, // Track loading state
       setAccessToken: (accessToken) => {
         set({ accessToken });
       },
@@ -34,7 +34,7 @@ export const useAuthStore = create<AuthState>()(
           set({
             loading: true,
           });
-          // Gọi API
+          // Call API
           await authService.signUp(
             username,
             password,
@@ -42,10 +42,10 @@ export const useAuthStore = create<AuthState>()(
             firstName,
             lastName,
           );
-          toast.success("Đăng ký thành công ! ");
+          toast.success("Registration successful!");
         } catch (error) {
           console.error(error);
-          toast.error("Đăng ký không thành công !");
+          toast.error("Registration failed!");
         } finally {
           set({
             loading: false,
@@ -62,9 +62,9 @@ export const useAuthStore = create<AuthState>()(
           set({ accessToken });
           await get().getProfile();
           useChatStore.getState().fetchConversations();
-          toast.success("Đăng nhập thành công! Chào mừng bạn quay trở lại!");
+          toast.success("Signed in successfully! Welcome back!");
         } catch (error) {
-          toast.error("Đăng nhập thất bại!");
+          toast.error("Sign in failed!");
           throw error;
         } finally {
           set({ loading: false });
@@ -74,10 +74,10 @@ export const useAuthStore = create<AuthState>()(
         try {
           get().clearState();
           await authService.signOut();
-          toast.success("Logout Thành Công");
+          toast.success("Logged out successfully");
         } catch (error) {
           console.error(error);
-          toast.error("Lỗi xảy ra khi logout!");
+          toast.error("An error occurred while logging out!");
         }
       },
       getProfile: async () => {
@@ -85,13 +85,13 @@ export const useAuthStore = create<AuthState>()(
           set({
             loading: true,
           });
-          // Goi api
+          // Call API
           const user = await authService.getProfile();
           set({ user });
         } catch (error) {
           console.error(error);
           set({ user: null, accessToken: null });
-          toast.error("Lỗi xảy ra khi logout!");
+          toast.error("An error occurred while fetching profile!");
         } finally {
           set({ loading: false });
         }
@@ -106,7 +106,7 @@ export const useAuthStore = create<AuthState>()(
           }
         } catch (error) {
           console.error(error);
-          toast.error("Phiên đăng nhập đã hết hạn !");
+          toast.error("Your session has expired!");
           get().clearState();
         } finally {
           set({ loading: false });
@@ -116,7 +116,7 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       partialize: (state) => ({
-        user: state.user, // Chi luu thong tin user va accessToken, khong luu loading de tranh loi khi tai lai trang
+        user: state.user, // Only persist user and accessToken, not loading to avoid stale state on page reload
         accessToken: state.accessToken,
       }),
     },

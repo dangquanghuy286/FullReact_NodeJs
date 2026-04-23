@@ -19,11 +19,11 @@ export const useUserStore = create<UserState>(() => ({
         });
         useChatStore.getState().fetchConversations();
       }
-      toast.success("Upload avatar thành công 🎉");
+      toast.success("Avatar uploaded successfully 🎉");
       return data;
     } catch (error) {
-      console.error("Upload fail", error);
-      toast.error("Upload avatar error");
+      console.error("Upload failed", error);
+      toast.error("Avatar upload failed");
       throw error;
     }
   },
