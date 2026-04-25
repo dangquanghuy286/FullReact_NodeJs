@@ -5,7 +5,7 @@ const UnreadCount = ({ unreadCount }: { unreadCount: number }) => {
 
   return (
     <div className="absolute -top-1 -right-1 z-20 flex items-center justify-center">
-      {/* pulse animation */}
+      {/* Pulse animation */}
       <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-70 animate-ping"></span>
 
       {/* badge */}
