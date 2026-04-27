@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth.store";
 import type { Conversation } from "@/types/chat";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePlus, Send } from "lucide-react";
 import { Input } from "../ui/input";
