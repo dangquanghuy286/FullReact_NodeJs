@@ -10,7 +10,7 @@ const GroupChatList = () => {
   if (!conversations || conversations.length === 0)
     return (
       <div className="p-2 text-muted-foreground text-sm">
-        Không có nhóm chat nào
+        There is no chat group.
       </div>
     );
 
@@ -21,7 +21,7 @@ const GroupChatList = () => {
   if (groupConversations.length === 0)
     return (
       <div className="p-2 text-muted-foreground text-sm">
-        Không có nhóm chat nào
+        There is no chat group.
       </div>
     );
 
