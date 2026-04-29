@@ -1,5 +1,5 @@
 import { useFriendStore } from "@/stores/friend.store";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { MessageCircleMore, Users } from "lucide-react";
 import { Card } from "../ui/card";
