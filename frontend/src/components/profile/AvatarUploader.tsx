@@ -3,6 +3,27 @@ import { useUserStore } from "@/stores/user.store";
 import { Camera } from "lucide-react";
 import { Button } from "../ui/button";
 
+const LoadingDots = () => (
+  <span className="flex items-center justify-center gap-[3px]">
+    {[0, 1, 2].map((i) => (
+      <span
+        key={i}
+        className="size-1 rounded-full bg-[#00c0d1] group-hover:bg-white"
+        style={{
+          animation: "avatarDotBounce 1.2s ease-in-out infinite",
+          animationDelay: `${i * 0.2}s`,
+        }}
+      />
+    ))}
+    <style>{`
+      @keyframes avatarDotBounce {
+        0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+        40% { transform: scale(1.15); opacity: 1; }
+      }
+    `}</style>
+  </span>
+);
+
 const AvatarUploader = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { updateAvatarUrl } = useUserStore();
@@ -39,7 +60,7 @@ const AvatarUploader = () => {
           group disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? (
-          <span className="size-3.5 rounded-full border-2 border-[#00c0d1] border-t-transparent animate-spin group-hover:border-white group-hover:border-t-transparent" />
+          <LoadingDots />
         ) : (
           <Camera className="size-3.5 text-gray-500 group-hover:text-white transition-colors duration-200" />
         )}
