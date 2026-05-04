@@ -1,22 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useAuthStore } from "@/stores/auth.store";
-import React, { useEffect, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
+import React, { useEffect, useRef, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoutes = () => {
-  const { accessToken, user, loading, refresh, getProfile } = useAuthStore();
+  const { accessToken, user, loading, refresh, getProfile } = useAuthStore(
+    useShallow((s) => ({
+      accessToken: s.accessToken,
+      user: s.user,
+      loading: s.loading,
+      refresh: s.refresh,
+      getProfile: s.getProfile,
+    })),
+  );
+
   const [starting, setStarting] = useState(true);
-  const init = async () => {
-    // Có thể xảy ra khi refresh trang
-    if (!accessToken) {
-      await refresh();
-    }
-    if (accessToken && !user) {
-      await getProfile();
-    }
-    setStarting(false);
-  };
+  const initialized = useRef(false);
+
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
+    const init = async () => {
+      try {
+        if (!accessToken) {
+          await refresh();
+        } else if (!user) {
+          await getProfile();
+        }
+      } finally {
+        setStarting(false);
+      }
+    };
+
     init();
   }, []);
 
@@ -33,7 +50,8 @@ const ProtectedRoutes = () => {
   if (!accessToken) {
     return <Navigate to="/signin" replace />;
   }
-  return <Outlet></Outlet>;
+
+  return <Outlet />;
 };
 
 export default ProtectedRoutes;

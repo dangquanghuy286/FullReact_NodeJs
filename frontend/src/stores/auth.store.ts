@@ -54,12 +54,11 @@ export const useAuthStore = create<AuthState>()(
       },
       signIn: async (username, password) => {
         try {
-          get().clearState();
           set({ loading: true });
-          localStorage.clear();
-          useChatStore.getState().reset();
           const { accessToken } = await authService.signIn(username, password);
-          set({ accessToken });
+          // Set token TRƯỚC, rồi mới clear các thứ khác
+          set({ accessToken, user: null });
+          useChatStore.getState().reset();
           await get().getProfile();
           useChatStore.getState().fetchConversations();
           toast.success("Signed in successfully! Welcome back!");
