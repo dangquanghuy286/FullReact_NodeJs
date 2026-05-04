@@ -22,6 +22,7 @@ export interface AuthState {
   signOut: () => Promise<void>;
   getProfile: () => Promise<void>;
   refresh: () => Promise<void>;
+  isRefreshing: boolean;
 }
 // Theme store
 export interface ThemeState {

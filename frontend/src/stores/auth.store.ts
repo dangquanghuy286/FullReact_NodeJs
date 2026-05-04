@@ -4,6 +4,7 @@ import { authService } from "@/services/auth.service";
 import type { AuthState } from "@/types/store";
 import { persist } from "zustand/middleware";
 import { useChatStore } from "./chat.store";
+
 // Store Auth
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -11,6 +12,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       user: null,
       loading: false, // Track loading state
+      isRefreshing: false,
       setAccessToken: (accessToken) => {
         set({ accessToken });
       },
@@ -23,8 +25,8 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           user: null,
           loading: false,
+          isRefreshing: false,
         });
-
         useChatStore.getState().reset();
         localStorage.clear();
         sessionStorage.clear();
@@ -96,7 +98,10 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       refresh: async () => {
+        // Chặn gọi lại nếu đang refresh
+        if (get().isRefreshing) return;
         try {
+          set({ isRefreshing: true });
           const { user, getProfile } = get();
           const accessToken = await authService.refresh();
           set({ accessToken });
@@ -107,9 +112,10 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error(error);
           toast.error("Your session has expired!");
-          get().clearState();
+          // Không gọi clearState() để tránh loop — chỉ xóa token
+          set({ accessToken: null, user: null });
         } finally {
-          set({ loading: false });
+          set({ loading: false, isRefreshing: false });
         }
       },
     }),
@@ -118,6 +124,7 @@ export const useAuthStore = create<AuthState>()(
       partialize: (state) => ({
         user: state.user, // Only persist user and accessToken, not loading to avoid stale state on page reload
         accessToken: state.accessToken,
+        // isRefreshing KHÔNG persist để tránh stale state
       }),
     },
   ),
