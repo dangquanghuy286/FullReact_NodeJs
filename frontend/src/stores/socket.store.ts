@@ -74,7 +74,14 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
       useChatStore.getState().updateConversation(updated);
     });
+    socket.on("connect_error", (err) => {
+      console.log("Socket error:", err.message);
 
+      if (err.message === "Unauthorized") {
+        useAuthStore.getState().clearState();
+        window.location.href = "/signin";
+      }
+    });
     // New group conversation
     socket.on("new-group", (conversation) => {
       useChatStore.getState().addConvo(conversation);

@@ -104,6 +104,7 @@ export const useAuthStore = create<AuthState>()(
           if (!user) {
             await getProfile();
           }
+          return accessToken;
         } catch (error) {
           console.error(error);
           toast.error("Your session has expired!");
