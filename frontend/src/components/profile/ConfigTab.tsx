@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, Globe } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { useThemeStore } from "@/stores/theme.strore";
+import { useTranslation } from "react-i18next";
 
 export const ConfigTab = () => {
   const { isDarkMode, toggleTheme } = useThemeStore();
+  const { i18n } = useTranslation();
 
   const [showOnline, setShowOnline] = useState(true);
+
+  const currentLang = i18n.language;
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    localStorage.setItem("lang", lang); // lưu lại
+  };
 
   return (
     <div className="space-y-5">
@@ -18,6 +27,40 @@ export const ConfigTab = () => {
           <p className="text-xs text-muted-foreground">
             Personalize your chat experience
           </p>
+        </div>
+      </div>
+
+      <Separator />
+
+      {/* 🌐 Language */}
+      <div className="flex items-center justify-between">
+        <div className="space-y-0.5">
+          <p className="text-sm font-medium">Language</p>
+          <p className="text-xs text-muted-foreground">
+            Choose your preferred language
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Globe className="size-4 text-muted-foreground" />
+
+          <button
+            onClick={() => changeLanguage("vi")}
+            className={`px-2 py-1 text-xs rounded ${
+              currentLang === "vi" ? "bg-[#00c0d1] text-white" : "bg-muted"
+            }`}
+          >
+            VI
+          </button>
+
+          <button
+            onClick={() => changeLanguage("en")}
+            className={`px-2 py-1 text-xs rounded ${
+              currentLang === "en" ? "bg-[#00c0d1] text-white" : "bg-muted"
+            }`}
+          >
+            EN
+          </button>
         </div>
       </div>
 
