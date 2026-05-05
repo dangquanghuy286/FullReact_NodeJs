@@ -1,0 +1,78 @@
+{
+    "config": {
+        "title": "App Preferences",
+        "subtitle": "Personalize your chat experience",
+        "language": {
+            "label": "Language",
+            "description": "Choose your preferred language"
+        },
+        "darkMode": {
+            "label": "Dark Mode",
+            "description": "Switch between light and dark theme"
+        },
+        "onlineStatus": {
+            "label": "Show Online Status",
+            "description": "Allow others to see when you are online"
+        }
+    },
+    "account": {
+        "title": "Personal Information",
+        "subtitle": "Update your personal details and profile information",
+        "displayName": "Display Name",
+        "username": "Username",
+        "email": "Email",
+        "phone": "Phone Number",
+        "bio": "Bio",
+        "saveChanges": "Save Changes",
+        "validation": {
+            "displayNameRequired": "Please enter a display name",
+            "usernameMin": "Username must be at least 3 characters",
+            "emailInvalid": "Invalid email",
+            "bioMax": "Bio must be at most 160 characters"
+        }
+    },
+    "security": {
+        "title": "Privacy & Security",
+        "subtitle": "Manage your privacy and security settings",
+        "changePassword": {
+            "label": "Change Password",
+            "currentPassword": "Current Password",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm Password",
+            "submit": "Update Password"
+        },
+        "notificationSettings": "Notification Settings",
+        "blockReport": "Block & Report",
+        "dangerZone": {
+            "label": "Danger Zone",
+            "deleteAccount": "Delete Account"
+        },
+        "validation": {
+            "currentPasswordRequired": "Enter current password",
+            "newPasswordMin": "New password must be at least 6 characters",
+            "confirmPasswordRequired": "Confirm password",
+            "confirmPasswordMismatch": "Password confirmation does not match"
+        }
+    },
+    "addFriend": {
+        "searchForm": {
+            "label": "Search by Username",
+            "placeholder": "Enter username",
+            "validation": {
+                "usernameRequired": "Username is required"
+            },
+            "userNotFound": "User not found",
+            "cancel": "Cancel",
+            "searching": "Searching...",
+            "search": "Search"
+        },
+        "sendRequestForm": {
+            "foundUser": "Founded user",
+            "introLabel": "Introduction",
+            "introPlaceholder": "Tell them why you want to be friends...",
+            "back": "Back",
+            "sending": "Sending...",
+            "addFriend": "Add Friend"
+        }
+    }
+}

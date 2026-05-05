@@ -3,27 +3,41 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Lock, Bell, ShieldOff, Trash2, Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-const passwordSchema = z
-  .object({
-    currentPassword: z.string().min(1, "Enter current password"),
-    newPassword: z
-      .string()
-      .min(6, "New password must be at least 6 characters"),
-    confirmPassword: z.string().min(1, "Confirm password"),
-  })
-  .refine((d) => d.newPassword === d.confirmPassword, {
-    message: "Password confirmation does not match",
-    path: ["confirmPassword"],
-  });
+const usePasswordSchema = () => {
+  const { t } = useTranslation();
 
-type PasswordFormData = z.infer<typeof passwordSchema>;
+  return z
+    .object({
+      currentPassword: z
+        .string()
+        .min(1, t("security.validation.currentPasswordRequired")),
+      newPassword: z.string().min(6, t("security.validation.newPasswordMin")),
+      confirmPassword: z
+        .string()
+        .min(1, t("security.validation.confirmPasswordRequired")),
+    })
+    .refine((d) => d.newPassword === d.confirmPassword, {
+      message: t("security.validation.confirmPasswordMismatch"),
+      path: ["confirmPassword"],
+    });
+};
+
+type PasswordFormData = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
 export const SecurityTab = () => {
+  const { t } = useTranslation();
+  const passwordSchema = usePasswordSchema();
+
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -47,9 +61,9 @@ export const SecurityTab = () => {
       <div className="flex items-center gap-2">
         <ShieldOff className="size-4 text-[#00c0d1]" />
         <div>
-          <p className="text-sm font-semibold">Privacy & Security</p>
+          <p className="text-sm font-semibold">{t("security.title")}</p>
           <p className="text-xs text-muted-foreground">
-            Manage your privacy and security settings
+            {t("security.subtitle")}
           </p>
         </div>
       </div>
@@ -58,12 +72,12 @@ export const SecurityTab = () => {
       <form onSubmit={handleSubmit(onChangePassword)} className="space-y-3">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Lock className="size-4" />
-          Change Password
+          {t("security.changePassword.label")}
         </div>
 
         {/* Current Password */}
         <div className="space-y-1.5">
-          <Label>Current Password</Label>
+          <Label>{t("security.changePassword.currentPassword")}</Label>
           <div className="relative">
             <Input
               type={showCurrent ? "text" : "password"}
@@ -86,7 +100,7 @@ export const SecurityTab = () => {
 
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1.5">
-            <Label>New Password</Label>
+            <Label>{t("security.changePassword.newPassword")}</Label>
             <div className="relative">
               <Input
                 type={showNew ? "text" : "password"}
@@ -108,7 +122,7 @@ export const SecurityTab = () => {
           </div>
 
           <div className="space-y-1.5">
-            <Label>Confirm Password</Label>
+            <Label>{t("security.changePassword.confirmPassword")}</Label>
             <div className="relative">
               <Input
                 type={showConfirm ? "text" : "password"}
@@ -135,22 +149,22 @@ export const SecurityTab = () => {
           variant="outline"
           className="border-[#00c0d1]/40 text-[#00a0b0]"
         >
-          Update Password
+          {t("security.changePassword.submit")}
         </Button>
       </form>
 
       <Separator />
 
-      <button className="w-full flex items-center gap-3 py-2 text-sm hover:text-[#00a0b0] transition-colors group">
+      <button className="w-full flex items-center gap-3  text-sm hover:text-[#00a0b0] transition-colors group">
         <Bell className="size-4 group-hover:text-[#00c0d1]" />
-        Notification Settings
+        {t("security.notificationSettings")}
       </button>
 
       <Separator />
 
-      <button className="w-full flex items-center gap-3 py-2 text-sm hover:text-[#00a0b0] transition-colors group">
+      <button className="w-full flex items-center gap-3  text-sm hover:text-[#00a0b0] transition-colors group">
         <ShieldOff className="size-4 group-hover:text-[#00c0d1]" />
-        Block & Report
+        {t("security.blockReport")}
       </button>
 
       <Separator />
@@ -158,11 +172,11 @@ export const SecurityTab = () => {
       {/* Danger Zone */}
       <div className="pt-2">
         <p className="text-xs font-semibold text-destructive uppercase tracking-wider mb-2">
-          Danger Zone
+          {t("security.dangerZone.label")}
         </p>
         <Button variant="destructive" className="w-full gap-2">
           <Trash2 className="size-4" />
-          Delete Account
+          {t("security.dangerZone.deleteAccount")}
         </Button>
       </div>
     </div>

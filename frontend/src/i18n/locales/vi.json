@@ -1,0 +1,78 @@
+{
+    "config": {
+        "title": "Tùy chỉnh ứng dụng",
+        "subtitle": "Cá nhân hóa trải nghiệm chat của bạn",
+        "language": {
+            "label": "Ngôn ngữ",
+            "description": "Chọn ngôn ngữ bạn muốn"
+        },
+        "darkMode": {
+            "label": "Chế độ tối",
+            "description": "Chuyển đổi giữa giao diện sáng và tối"
+        },
+        "onlineStatus": {
+            "label": "Hiển thị trạng thái online",
+            "description": "Cho phép người khác thấy khi bạn online"
+        }
+    },
+    "account": {
+        "title": "Thông tin cá nhân",
+        "subtitle": "Cập nhật thông tin cá nhân và hồ sơ của bạn",
+        "displayName": "Tên hiển thị",
+        "username": "Tên đăng nhập",
+        "email": "Email",
+        "phone": "Số điện thoại",
+        "bio": "Giới thiệu",
+        "saveChanges": "Lưu thay đổi",
+        "validation": {
+            "displayNameRequired": "Vui lòng nhập tên hiển thị",
+            "usernameMin": "Tên đăng nhập phải có ít nhất 3 ký tự",
+            "emailInvalid": "Email không hợp lệ",
+            "bioMax": "Giới thiệu tối đa 160 ký tự"
+        }
+    },
+    "security": {
+        "title": "Quyền riêng tư & Bảo mật",
+        "subtitle": "Quản lý cài đặt quyền riêng tư và bảo mật",
+        "changePassword": {
+            "label": "Đổi mật khẩu",
+            "currentPassword": "Mật khẩu hiện tại",
+            "newPassword": "Mật khẩu mới",
+            "confirmPassword": "Xác nhận mật khẩu",
+            "submit": "Cập nhật mật khẩu"
+        },
+        "notificationSettings": "Cài đặt thông báo",
+        "blockReport": "Chặn & Báo cáo",
+        "dangerZone": {
+            "label": "Vùng nguy hiểm",
+            "deleteAccount": "Xóa tài khoản"
+        },
+        "validation": {
+            "currentPasswordRequired": "Nhập mật khẩu hiện tại",
+            "newPasswordMin": "Mật khẩu mới phải có ít nhất 6 ký tự",
+            "confirmPasswordRequired": "Xác nhận mật khẩu",
+            "confirmPasswordMismatch": "Xác nhận mật khẩu không khớp"
+        }
+    },
+    "addFriend": {
+        "searchForm": {
+            "label": "Tìm theo tên đăng nhập",
+            "placeholder": "Nhập tên đăng nhập",
+            "validation": {
+                "usernameRequired": "Vui lòng nhập tên đăng nhập"
+            },
+            "userNotFound": "Không tìm thấy người dùng",
+            "cancel": "Hủy",
+            "searching": "Đang tìm...",
+            "search": "Tìm kiếm"
+        },
+        "sendRequestForm": {
+            "foundUser": "Đã tìm thấy người dùng",
+            "introLabel": "Lời giới thiệu",
+            "introPlaceholder": "Cho họ biết lý do bạn muốn kết bạn...",
+            "back": "Quay lại",
+            "sending": "Đang gửi...",
+            "addFriend": "Thêm bạn"
+        }
+    }
+}

@@ -7,15 +7,15 @@ import { useTranslation } from "react-i18next";
 
 export const ConfigTab = () => {
   const { isDarkMode, toggleTheme } = useThemeStore();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [showOnline, setShowOnline] = useState(true);
 
   const currentLang = i18n.language;
 
-  const changeLanguage = (lang) => {
+  const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
-    localStorage.setItem("lang", lang); // lưu lại
+    localStorage.setItem("lang", lang);
   };
 
   return (
@@ -23,9 +23,9 @@ export const ConfigTab = () => {
       <div className="flex items-center gap-2">
         <span className="text-[#00c0d1]">✦</span>
         <div>
-          <p className="text-sm font-semibold">App Preferences</p>
+          <p className="text-sm font-semibold">{t("config.title")}</p>
           <p className="text-xs text-muted-foreground">
-            Personalize your chat experience
+            {t("config.subtitle")}
           </p>
         </div>
       </div>
@@ -35,9 +35,9 @@ export const ConfigTab = () => {
       {/* 🌐 Language */}
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">Language</p>
+          <p className="text-sm font-medium">{t("config.language.label")}</p>
           <p className="text-xs text-muted-foreground">
-            Choose your preferred language
+            {t("config.language.description")}
           </p>
         </div>
 
@@ -69,9 +69,9 @@ export const ConfigTab = () => {
       {/* Dark Mode */}
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">Dark Mode</p>
+          <p className="text-sm font-medium">{t("config.darkMode.label")}</p>
           <p className="text-xs text-muted-foreground">
-            Switch between light and dark theme
+            {t("config.darkMode.description")}
           </p>
         </div>
 
@@ -93,9 +93,11 @@ export const ConfigTab = () => {
       {/* Online Status */}
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">Show Online Status</p>
+          <p className="text-sm font-medium">
+            {t("config.onlineStatus.label")}
+          </p>
           <p className="text-xs text-muted-foreground">
-            Allow others to see when you are online
+            {t("config.onlineStatus.description")}
           </p>
         </div>
 

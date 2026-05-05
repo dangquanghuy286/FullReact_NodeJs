@@ -6,7 +6,8 @@ import { Textarea } from "../ui/textarea";
 import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { UserPlus } from "lucide-react";
-// Interface
+import { useTranslation } from "react-i18next";
+
 interface SendFriendRequestFormProps {
   register: UseFormRegister<IFormValues>;
   loading: boolean;
@@ -14,7 +15,7 @@ interface SendFriendRequestFormProps {
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
   onBack: () => void;
 }
-// Send friend
+
 const SendFriendRequestForm = ({
   register,
   loading,
@@ -22,23 +23,25 @@ const SendFriendRequestForm = ({
   onSubmit,
   onBack,
 }: SendFriendRequestFormProps) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <form action="" onSubmit={onSubmit}>
         <div className="space-y-4">
           <span className="success-message">
-            Founded user
-            <span className="font-semibold">@{searchedUsername}</span>
+            {t("addFriend.sendRequestForm.foundUser")}
+            <span className="font-semibold"> @{searchedUsername}</span>
             🎆
           </span>
 
           <div className="space-y-4">
             <Label htmlFor="message" className="text-sm font-semibold">
-              Introduction
+              {t("addFriend.sendRequestForm.introLabel")}
             </Label>
             <Textarea
               id="message"
-              placeholder="Tell them why you want to be friends..."
+              placeholder={t("addFriend.sendRequestForm.introPlaceholder")}
               {...register("message")}
               rows={3}
               className="glass border-gray-300 focus:border-[#00c0d1]/50 transition-smooth resize-none"
@@ -53,19 +56,20 @@ const SendFriendRequestForm = ({
               disabled={loading}
               className="flex-1 glass hover:text-destructive"
             >
-              Back
+              {t("addFriend.sendRequestForm.back")}
             </Button>
 
             <Button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-linear-to-b from-[#00c0d1] to-[#007c91] text-white hover:opacity-90 transition-smooth "
+              className="flex-1 bg-linear-to-b from-[#00c0d1] to-[#007c91] text-white hover:opacity-90 transition-smooth"
             >
               {loading ? (
-                <span>Sending...</span>
+                <span>{t("addFriend.sendRequestForm.sending")}</span>
               ) : (
                 <>
-                  <UserPlus className="size-4 mr-2" /> Add Friend
+                  <UserPlus className="size-4 mr-2" />
+                  {t("addFriend.sendRequestForm.addFriend")}
                 </>
               )}
             </Button>

@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,18 +9,30 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuthStore } from "@/stores/auth.store";
 
-const profileSchema = z.object({
-  displayName: z.string().min(1, "Please enter a display name"),
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Invalid email"),
-  phone: z.string().optional(),
-  bio: z.string().max(160, "Bio must be at most 160 characters").optional(),
-});
+const useProfileSchema = () => {
+  const { t } = useTranslation();
 
-type ProfileFormData = z.infer<typeof profileSchema>;
+  return z.object({
+    displayName: z.string().min(1, t("account.validation.displayNameRequired")),
+    username: z.string().min(3, t("account.validation.usernameMin")),
+    email: z.string().email(t("account.validation.emailInvalid")),
+    phone: z.string().optional(),
+    bio: z.string().max(160, t("account.validation.bioMax")).optional(),
+  });
+};
+
+type ProfileFormData = {
+  displayName: string;
+  username: string;
+  email: string;
+  phone?: string;
+  bio?: string;
+};
 
 export const AccountTab = () => {
   const { user } = useAuthStore();
+  const { t } = useTranslation();
+  const profileSchema = useProfileSchema();
 
   const {
     register,
@@ -43,20 +56,19 @@ export const AccountTab = () => {
 
   return (
     <form onSubmit={handleSubmit(onSaveProfile)} className="space-y-5">
-      {/* Form fields */}
       <div className="flex items-center gap-2">
         <span className="text-[#00c0d1]">♡</span>
         <div>
-          <p className="text-sm font-semibold">Personal Information</p>
+          <p className="text-sm font-semibold">{t("account.title")}</p>
           <p className="text-xs text-muted-foreground">
-            Update your personal details and profile information
+            {t("account.subtitle")}
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <Label htmlFor="displayName">Display Name</Label>
+          <Label htmlFor="displayName">{t("account.displayName")}</Label>
           <Input id="displayName" {...register("displayName")} />
           {errors.displayName && (
             <p className="text-destructive text-xs">
@@ -65,7 +77,7 @@ export const AccountTab = () => {
           )}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="username">{t("account.username")}</Label>
           <Input id="username" {...register("username")} />
           {errors.username && (
             <p className="text-destructive text-xs">
@@ -77,20 +89,20 @@ export const AccountTab = () => {
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{t("account.email")}</Label>
           <Input id="email" type="email" {...register("email")} />
           {errors.email && (
             <p className="text-destructive text-xs">{errors.email.message}</p>
           )}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="phone">Phone Number</Label>
+          <Label htmlFor="phone">{t("account.phone")}</Label>
           <Input id="phone" {...register("phone")} />
         </div>
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="bio">Bio</Label>
+        <Label htmlFor="bio">{t("account.bio")}</Label>
         <Textarea id="bio" rows={3} {...register("bio")} />
         {errors.bio && (
           <p className="text-destructive text-xs">{errors.bio.message}</p>
@@ -102,7 +114,7 @@ export const AccountTab = () => {
         disabled={!isDirty}
         className="bg-gradient-to-r from-[#00c0d1] to-[#007a8a] hover:opacity-90"
       >
-        Save Changes
+        {t("account.saveChanges")}
       </Button>
     </form>
   );
