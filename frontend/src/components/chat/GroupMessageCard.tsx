@@ -4,9 +4,11 @@ import type { Conversation } from "@/types/chat";
 import ChatCard from "./ChatCard";
 import UnreadCount from "./UnreadCount";
 import GroupChatAvatar from "./GroupChatAvatar";
+import { useTranslation } from "react-i18next";
 
 const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
+  const { t } = useTranslation();
   const {
     activeConversationId,
     setActiveConversationId,
@@ -45,7 +47,7 @@ const GroupMessageCard = ({ convo }: { convo: Conversation }) => {
       }
       subtitle={
         <p className="text-sm truncate text-muted-foreground">
-          {convo.participants.length} members
+          {convo.participants.length} {t("chat.members")}
         </p>
       }
     />

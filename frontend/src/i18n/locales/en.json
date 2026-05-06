@@ -55,6 +55,7 @@
         }
     },
     "addFriend": {
+        "title": "Add Friend",
         "searchForm": {
             "label": "Search by Username",
             "placeholder": "Enter username",
@@ -74,5 +75,53 @@
             "sending": "Sending...",
             "addFriend": "Add Friend"
         }
+    },
+    "chat": {
+        "welcome": {
+            "title": "Welcome to Chat",
+            "subtitle": "Start a new conversation or select an existing one to get started."
+        },
+        "noMessages": "No messages in this conversation yet",
+        "loading": "Loading...",
+        "systemUser": "System User",
+        "groupChat": "Group Chat",
+        "createNewChat": "Create New Chat",
+        "noGroupChat": "There is no chat group.",
+        "unnamedGroup": "Unnamed Group",
+        "members": " members",
+        "messageInput": {
+            "placeholder": "Type a message...",
+            "errorSending": "An error occurred while sending the message. Please try again!"
+        },
+        "message": {
+            "systemUser": "System User",
+            "status": {
+                "seen": "seen",
+                "delivered": "delivered",
+                "sent": "sent"
+            }
+        }
+    },
+    "groupChat": {
+        "title": "Create New Group Chat",
+        "groupName": {
+            "label": "Group Name",
+            "placeholder": "Enter Group Name"
+        },
+        "invite": {
+            "label": "Invite Friends",
+            "placeholder": "Search by username",
+            "minWarning": "Please invite at least one friend to create a group chat."
+        },
+        "actions": {
+            "creating": "Creating...",
+            "createNew": "Create New",
+            "newGroup": "New Group Chat"
+        }
+    },
+    "friendList": {
+        "title": "Start a new chat",
+        "yourFriends": "Your Friends",
+        "noFriends": "You don't have any friends yet."
     }
 }

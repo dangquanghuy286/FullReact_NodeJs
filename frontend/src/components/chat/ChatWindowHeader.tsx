@@ -7,10 +7,11 @@ import UserAvatar from "./UserAvatar";
 import StatusBadge from "./StatusBadge";
 import GroupChatAvatar from "./GroupChatAvatar";
 import { useSocketStore } from "@/stores/socket.store";
+import { useTranslation } from "react-i18next";
 
 const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
+  const { t } = useTranslation();
   const { conversations, activeConversationId } = useChatStore();
-
   const { user } = useAuthStore();
   const { onlineUsers } = useSocketStore();
 
@@ -20,7 +21,7 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
 
   if (!chat) {
     return (
-      <header className="md:hidden sticky top-0 z-10 flex items-center gap-2 px-4 py-2 w-full ">
+      <header className="md:hidden sticky top-0 z-10 flex items-center gap-2 px-4 py-2 w-full">
         <SidebarTrigger className="-ml-1 text-foreground" />
       </header>
     );
@@ -30,10 +31,9 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
     const otherUsers = chat.participants.filter((p) => p._id !== user?._id);
     otherUser = otherUsers.length > 0 ? otherUsers[0] : null;
 
-    if (!user || !otherUser) {
-      return;
-    }
+    if (!user || !otherUser) return;
   }
+
   return (
     <header className="sticky top-0 z-10 px-4 py-2 flex items-center bg-background">
       <div className="flex items-center gap-2 w-full">
@@ -50,10 +50,9 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
               <>
                 <UserAvatar
                   type={"sidebar"}
-                  name={otherUser?.displayName || "System User"}
+                  name={otherUser?.displayName || t("chat.systemUser")}
                   avatarURL={otherUser?.avatarURL || undefined}
                 />
-
                 <StatusBadge
                   status={
                     onlineUsers.includes(otherUser?._id ?? "")
@@ -72,8 +71,8 @@ const ChatWindowHeader = ({ chat }: { chat?: Conversation }) => {
           {/* Chat Info */}
           <h2 className="font-semibold text-foreground">
             {chat.type === "direct"
-              ? otherUser?.displayName || "System User"
-              : chat.group?.name || "Group Chat"}
+              ? otherUser?.displayName || t("chat.systemUser")
+              : chat.group?.name || t("chat.groupChat")}
           </h2>
         </div>
       </div>

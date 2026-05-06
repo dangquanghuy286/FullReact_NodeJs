@@ -1,18 +1,19 @@
 import { useAuthStore } from "@/stores/auth.store";
 import type { Conversation } from "@/types/chat";
-import  { useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import { ImagePlus, Send } from "lucide-react";
 import { Input } from "../ui/input";
 import EmojiPicker from "./EmojiPicker";
 import { useChatStore } from "@/stores/chat.store";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
   const { user } = useAuthStore();
   const { sendDirectMessage, sendGroupMessage } = useChatStore();
   const [value, setValue] = useState("");
-
+  const { t } = useTranslation();
   if (!user) return null;
 
   const sendMessage = async () => {
@@ -31,9 +32,7 @@ const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(
-        "An error occurred while sending the message. Please try again!",
-      );
+      toast.error(t("chat.messageInput.errorSending"));
     }
   };
 
@@ -60,7 +59,7 @@ const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
         <Input
           onKeyDown={handleKeyPress}
           value={value}
-          placeholder="Type a message..."
+          placeholder={t("chat.messageInput.placeholder")}
           onChange={(e) => setValue(e.target.value)}
           className="pr-10 h-9 bg-white border-border/50 focus:border-primary/50 transition-smooth"
         />

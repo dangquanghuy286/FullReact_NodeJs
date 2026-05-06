@@ -1,16 +1,22 @@
 import { useChatStore } from "@/stores/chat.store";
 import GroupMessageCard from "./GroupMessageCard";
+import { useTranslation } from "react-i18next";
 
 const GroupChatList = () => {
+  const { t } = useTranslation();
   const { conversations, loading } = useChatStore();
 
   if (loading)
-    return <div className="p-2 text-muted-foreground text-sm">Đang tải...</div>;
+    return (
+      <div className="p-2 text-muted-foreground text-sm">
+        {t("chat.loading")}
+      </div>
+    );
 
   if (!conversations || conversations.length === 0)
     return (
       <div className="p-2 text-muted-foreground text-sm">
-        There is no chat group.
+        {t("chat.noGroupChat")}
       </div>
     );
 
@@ -21,7 +27,7 @@ const GroupChatList = () => {
   if (groupConversations.length === 0)
     return (
       <div className="p-2 text-muted-foreground text-sm">
-        There is no chat group.
+        {t("chat.noGroupChat")}
       </div>
     );
 

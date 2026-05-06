@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import UserAvatar from "./UserAvatar";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { useTranslation } from "react-i18next";
 
 interface MessageItemProps {
   message: Message;
@@ -23,7 +24,7 @@ const MessageItem = ({
   const prev = index + 1 < messages.length ? messages[index + 1] : undefined;
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-
+  const { t } = useTranslation();
   const isShowTime =
     index === 0 ||
     !prev ||
@@ -77,7 +78,7 @@ const MessageItem = ({
             {isGroupBreak && (
               <UserAvatar
                 type="chat"
-                name={participant?.displayName ?? "Người dùng hệ thống!"}
+                name={participant?.displayName ?? t("chat.systemUser")}
                 avatarURL={participant?.avatarURL ?? undefined}
               />
             )}

@@ -11,6 +11,7 @@ import { UserPlus } from "lucide-react";
 import { useFriendStore } from "@/stores/friend.store";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 import SendFriendRequestForm from "@/components/AddFriendModal/SendFriendRequestForm";
 import type { User } from "@/types/user";
@@ -23,6 +24,7 @@ export interface IFormValues {
 }
 
 const AddFriendModal = () => {
+  const { t } = useTranslation();
   const [isFound, setIsFound] = useState<boolean | null>(null);
   const [searchUser, setSearchUser] = useState<User>();
   const [searchedUsername, setSearchedUsername] = useState("");
@@ -41,13 +43,11 @@ const AddFriendModal = () => {
     },
   });
 
-  const usernameValue = watch("username"); //Hàm watch để theo dõi giá trị của trường username luôn được cập nhật khi người dùng nhập liệu
+  const usernameValue = watch("username");
 
   const handleSearch = handleSubmit(async (data) => {
     const username = data.username.trim();
-    if (!username) {
-      return;
-    }
+    if (!username) return;
 
     setIsFound(null);
     setSearchedUsername(username);
@@ -71,7 +71,6 @@ const AddFriendModal = () => {
 
     try {
       const message = await addFriend(searchUser._id, data.message.trim());
-
       toast.success(message);
       handleBack();
     } catch (error) {
@@ -89,16 +88,17 @@ const AddFriendModal = () => {
     setSearchUser(undefined);
     setSearchedUsername("");
   };
+
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
           <Button
-            className="flex justify-center items-center size-5 rounded-full  cursor-pointer z-10"
+            className="flex justify-center items-center size-5 rounded-full cursor-pointer z-10"
             variant="ghost"
           >
-            <UserPlus className="size-4 " />
-            <span className="sr-only">Add Friend</span>
+            <UserPlus className="size-4" />
+            <span className="sr-only">{t("addFriend.title")}</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] border-none">
@@ -106,36 +106,32 @@ const AddFriendModal = () => {
             <div className="flex items-center gap-2 mb-5">
               <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#00c0d1] to-[#007a8a]" />
               <DialogTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
-                Add Friend
+                {t("addFriend.title")}
               </DialogTitle>
             </div>
           </DialogHeader>
 
           {!isFound && (
-            <>
-              <SearchForm
-                register={register}
-                errors={errors}
-                usernameValue={usernameValue}
-                loading={loading}
-                isFound={isFound}
-                searchedUsername={searchedUsername}
-                onSubmit={handleSearch}
-                onCancel={handleBack}
-              />
-            </>
+            <SearchForm
+              register={register}
+              errors={errors}
+              usernameValue={usernameValue}
+              loading={loading}
+              isFound={isFound}
+              searchedUsername={searchedUsername}
+              onSubmit={handleSearch}
+              onCancel={handleBack}
+            />
           )}
 
           {isFound && (
-            <>
-              <SendFriendRequestForm
-                register={register}
-                loading={loading}
-                searchedUsername={searchedUsername}
-                onSubmit={handleSendRequest}
-                onBack={handleBack}
-              />
-            </>
+            <SendFriendRequestForm
+              register={register}
+              loading={loading}
+              searchedUsername={searchedUsername}
+              onSubmit={handleSendRequest}
+              onBack={handleBack}
+            />
           )}
         </DialogContent>
       </Dialog>

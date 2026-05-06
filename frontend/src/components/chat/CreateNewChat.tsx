@@ -3,8 +3,10 @@ import { Card } from "../ui/card";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { MessageCircle } from "lucide-react";
 import FriendListModal from "../createNewChat/FriendListModal";
+import { useTranslation } from "react-i18next";
 
 const CreateNewChat = () => {
+  const { t } = useTranslation();
   const { getFriends } = useFriendStore();
 
   const handleGetFriends = async () => {
@@ -14,7 +16,7 @@ const CreateNewChat = () => {
   return (
     <div className="flex gap-2">
       <Card
-        className="flex-1  border p-3  transition-smooth  hover:bg-muted/10 transition-all duration-300 cursor-pointer group/card border-[#00c0d1] "
+        className="flex-1 border p-3 transition-smooth hover:bg-muted/10 transition-all duration-300 cursor-pointer group/card border-[#00c0d1]"
         onClick={handleGetFriends}
       >
         <Dialog>
@@ -28,7 +30,7 @@ const CreateNewChat = () => {
                 <MessageCircle className="size-4 text-white" />
               </div>
               <span className="text-sm font-medium capitalize">
-                Create New Chat
+                {t("chat.createNewChat")}
               </span>
             </div>
           </DialogTrigger>

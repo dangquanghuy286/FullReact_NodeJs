@@ -4,8 +4,10 @@ import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import MessageItem from "./MessageItem";
 import { useAuthStore } from "@/stores/auth.store";
 import InfinityScroll from "react-infinite-scroll-component";
+import { useTranslation } from "react-i18next";
 
 const ChatWindowBody = () => {
+  const { t } = useTranslation();
   const {
     activeConversationId,
     conversations,
@@ -25,7 +27,6 @@ const ChatWindowBody = () => {
     (c) => c._id === activeConversationId,
   );
 
-  // Derived directly — no state/effect needed
   const seenBy = selectedConvo?.seenBy ?? [];
   const lastMessageStatus: "delivered" | "seen" = selectedConvo?.lastMessage
     ? seenBy.length > 0
@@ -45,9 +46,7 @@ const ChatWindowBody = () => {
   }, [messages.length]);
 
   const fetchMoreMessage = async () => {
-    if (!activeConversationId) {
-      return;
-    }
+    if (!activeConversationId) return;
 
     try {
       await fetchMessages(activeConversationId);
@@ -58,9 +57,7 @@ const ChatWindowBody = () => {
 
   const handleScrollSave = () => {
     const container = containerRef.current;
-    if (!container || !activeConversationId) {
-      return;
-    }
+    if (!container || !activeConversationId) return;
 
     sessionStorage.setItem(
       key,
@@ -93,7 +90,7 @@ const ChatWindowBody = () => {
   if (!messages || messages.length === 0)
     return (
       <div className="flex h-full items-center justify-center">
-        No messages in this conversation yet
+        {t("chat.noMessages")}
       </div>
     );
 
@@ -113,7 +110,7 @@ const ChatWindowBody = () => {
           hasMore={hasMore}
           scrollableTarget="scrollableDiv"
           inverse={true}
-          loader={<p>Loading...</p>}
+          loader={<p>{t("chat.loading")}</p>}
           style={{
             display: "flex",
             flexDirection: "column-reverse",

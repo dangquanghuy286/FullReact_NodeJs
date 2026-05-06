@@ -55,6 +55,7 @@
         }
     },
     "addFriend": {
+        "title": "Thêm bạn",
         "searchForm": {
             "label": "Tìm theo tên đăng nhập",
             "placeholder": "Nhập tên đăng nhập",
@@ -74,5 +75,53 @@
             "sending": "Đang gửi...",
             "addFriend": "Thêm bạn"
         }
+    },
+    "chat": {
+        "welcome": {
+            "title": "Chào mừng đến Chat",
+            "subtitle": "Bắt đầu cuộc trò chuyện mới hoặc chọn cuộc trò chuyện hiện có để bắt đầu."
+        },
+        "noMessages": "Chưa có tin nhắn nào trong cuộc trò chuyện này",
+        "loading": "Đang tải...",
+        "systemUser": "Người dùng hệ thống",
+        "groupChat": "Nhóm chat",
+        "createNewChat": "Tạo cuộc trò chuyện mới",
+        "noGroupChat": "Không có nhóm chat nào.",
+        "unnamedGroup": "Nhóm chưa đặt tên",
+        "members": " thành viên",
+        "messageInput": {
+            "placeholder": "Nhập tin nhắn...",
+            "errorSending": "Đã xảy ra lỗi khi gửi tin nhắn. Vui lòng thử lại!"
+        },
+        "message": {
+            "systemUser": "Người dùng hệ thống",
+            "status": {
+                "seen": "đã xem",
+                "delivered": "đã nhận",
+                "sent": "đã gửi"
+            }
+        }
+    },
+    "groupChat": {
+        "title": "Tạo nhóm chat mới",
+        "groupName": {
+            "label": "Tên nhóm",
+            "placeholder": "Nhập tên nhóm"
+        },
+        "invite": {
+            "label": "Mời bạn bè",
+            "placeholder": "Tìm theo tên đăng nhập",
+            "minWarning": "Vui lòng mời ít nhất một người bạn để tạo nhóm chat."
+        },
+        "actions": {
+            "creating": "Đang tạo...",
+            "createNew": "Tạo mới",
+            "newGroup": "Nhóm chat mới"
+        }
+    },
+    "friendList": {
+        "title": "Bắt đầu cuộc trò chuyện mới",
+        "yourFriends": "Bạn bè của bạn",
+        "noFriends": "Bạn chưa có người bạn nào."
     }
 }

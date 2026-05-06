@@ -17,6 +17,7 @@ import type { Friend } from "@/types/user";
 import SelectedUsersList from "../newGroupChat/SelectedUsersList";
 import { toast } from "sonner";
 import { useChatStore } from "@/stores/chat.store";
+import { useTranslation } from "react-i18next";
 
 const NewGroupChatModal = () => {
   const [open, setOpen] = useState(false);
@@ -24,7 +25,7 @@ const NewGroupChatModal = () => {
   const [search, setSearch] = useState("");
   const { friends, getFriends } = useFriendStore();
   const [invitedUsers, setInvitedUsers] = useState<Friend[]>([]);
-
+  const { t } = useTranslation();
   const { loading, createConversation } = useChatStore();
   // Handle fet friend
   const handleGetFriends = async () => {
@@ -45,9 +46,7 @@ const NewGroupChatModal = () => {
     try {
       e.preventDefault();
       if (invitedUsers.length === 0) {
-        toast.warning(
-          "Please invite at least one friend to create a group chat.",
-        );
+        toast.warning(t("groupChat.invite.minWarning"));
         return;
       }
 
@@ -78,7 +77,7 @@ const NewGroupChatModal = () => {
         className="flex justify-center items-center size-5 rounded-full  cursor-pointer z-10"
       >
         <Users className="size-4" />
-        <span className="sr-only">New Group Chat</span>
+        <span className="sr-only">{t("groupChat.actions.newGroup")}</span>
       </span>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-[425px] border-none">
@@ -86,7 +85,7 @@ const NewGroupChatModal = () => {
             <div className="flex items-center gap-2 mb-5">
               <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#00c0d1] to-[#007a8a]" />
               <DialogTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
-                Create New Group Chat
+                {t("groupChat.title")}
               </DialogTitle>
             </div>
           </DialogHeader>
@@ -94,11 +93,11 @@ const NewGroupChatModal = () => {
             {/* Group Name */}
             <div className="space-y-2">
               <Label htmlFor="groupName" className="text-sm font-semibold">
-                Group Name
+                {t("groupChat.groupName.label")}
               </Label>
               <Input
                 id="groupName"
-                placeholder="Enter Group Name"
+                placeholder={t("groupChat.groupName.placeholder")}
                 className="glass transition-smooth"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
@@ -108,13 +107,13 @@ const NewGroupChatModal = () => {
             {/* Invite Friends */}
             <div className="space-y-2">
               <Label htmlFor="invite" className="text-sm font-semibold">
-                Invite Friends
+                {t("groupChat.invite.label")}
               </Label>
               {/* Search Input */}
               <Input
                 id="invite"
                 className="glass transition-smooth"
-                placeholder="Search by username"
+                placeholder={t("groupChat.invite.placeholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -142,11 +141,11 @@ const NewGroupChatModal = () => {
            transition-smooth duration-300"
               >
                 {loading ? (
-                  "Creating..."
+                  t("groupChat.actions.creating")
                 ) : (
                   <>
                     <UserPlus className="size-4 mr-2" />
-                    Create New
+                    {t("groupChat.actions.createNew")}
                   </>
                 )}
               </Button>
