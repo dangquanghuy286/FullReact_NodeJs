@@ -90,7 +90,6 @@ const NewGroupChatModal = () => {
             </div>
           </DialogHeader>
           <form action="" className="space-y-4" onSubmit={handCreateGroupChat}>
-            {/* Group Name */}
             <div className="space-y-2">
               <Label htmlFor="groupName" className="text-sm font-semibold">
                 {t("groupChat.groupName.label")}
