@@ -85,7 +85,6 @@ const MessageItem = ({
           </div>
         )}
 
-        {/* Tin nhắn */}
         <div
           className={cn(
             "max-w-xs lg:max-w-md space-y-1 flex flex-col",
