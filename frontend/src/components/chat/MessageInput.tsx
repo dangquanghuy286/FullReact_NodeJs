@@ -54,7 +54,7 @@ const MessageInput = ({ selectedConvo }: { selectedConvo: Conversation }) => {
         <ImagePlus className="size-4" />
       </Button>
 
-      {/* input + emoji */}
+      {/* Input */}
       <div className="flex-1 relative">
         <Input
           onKeyDown={handleKeyPress}
