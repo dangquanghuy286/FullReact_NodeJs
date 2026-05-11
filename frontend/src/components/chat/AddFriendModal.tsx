@@ -7,22 +7,18 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { UserPlus } from "lucide-react";
-
 import { useFriendStore } from "@/stores/friend.store";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-
 import SendFriendRequestForm from "@/components/AddFriendModal/SendFriendRequestForm";
 import type { User } from "@/types/user";
 import { Button } from "../ui/button";
 import SearchForm from "@/components/AddFriendModal/SearchForm";
-
 export interface IFormValues {
   username: string;
   message: string;
 }
-
 const AddFriendModal = () => {
   const { t } = useTranslation();
   const [isFound, setIsFound] = useState<boolean | null>(null);
