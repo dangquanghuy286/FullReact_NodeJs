@@ -5,10 +5,13 @@ import { MessageCircleMore, Users } from "lucide-react";
 import { Card } from "../ui/card";
 import UserAvatar from "../chat/UserAvatar";
 import { useChatStore } from "@/stores/chat.store";
+import { useTranslation } from "react-i18next";
 
 const FriendListModal = () => {
+  const { t } = useTranslation();
   const { friends, getFriends } = useFriendStore();
   const { createConversation } = useChatStore();
+
   useEffect(() => {
     getFriends();
   }, []);
@@ -22,19 +25,19 @@ const FriendListModal = () => {
       <DialogHeader>
         <DialogTitle className="flex items-center gap-2 text-xl capitalize">
           <MessageCircleMore className="size-5" />
-          Start a new chat
+          {t("friendList.title")}
         </DialogTitle>
       </DialogHeader>
 
       <div className="space-y-4">
         <h1 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-          Your Friends
+          {t("friendList.yourFriends")}
         </h1>
 
         {friends.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <Users className="size-12 mx-auto mb-3 opacity-50" />
-            <p>You don't have any friends yet.</p>
+            <p>{t("friendList.noFriends")}</p>
           </div>
         ) : (
           <div className="space-y-2 max-h-60 overflow-y-auto">

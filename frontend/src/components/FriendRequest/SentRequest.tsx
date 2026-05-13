@@ -1,8 +1,10 @@
 import { useFriendStore } from "@/stores/friend.store";
 import FriendRequestItem from "./FriendRequestItem";
 import { Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const SentRequest = () => {
+  const { t } = useTranslation();
   const { sentList } = useFriendStore();
 
   if (!sentList || sentList.length === 0) {
@@ -11,7 +13,7 @@ const SentRequest = () => {
         <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-3">
           <Clock className="size-5 text-gray-300" />
         </div>
-        <p className="text-sm">No sent requests</p>
+        <p className="text-sm">{t("friendRequest.sent.empty")}</p>
       </div>
     );
   }
@@ -26,7 +28,7 @@ const SentRequest = () => {
           actions={
             <span className="flex items-center gap-1.5 text-xs text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-1 rounded-full font-medium">
               <Clock className="size-3" />
-              Pending
+              {t("friendRequest.sent.pending")}
             </span>
           }
         />

@@ -2,8 +2,10 @@ import { useFriendStore } from "@/stores/friend.store";
 import FriendRequestItem from "./FriendRequestItem";
 import { toast } from "sonner";
 import { Check, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const ReceivedRequests = () => {
+  const { t } = useTranslation();
   const { acceptFriendRequest, declineFriendRequest, loading, receivedList } =
     useFriendStore();
 
@@ -13,7 +15,7 @@ const ReceivedRequests = () => {
         <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-3">
           <Check className="size-5 text-gray-300" />
         </div>
-        <p className="text-sm">No received requests</p>
+        <p className="text-sm">{t("friendRequest.received.empty")}</p>
       </div>
     );
   }
@@ -21,7 +23,7 @@ const ReceivedRequests = () => {
   const handleAccept = async (requestId: string) => {
     try {
       await acceptFriendRequest(requestId);
-      toast.success("Friend request accepted!");
+      toast.success(t("friendRequest.received.accepted"));
     } catch {
       console.error("Error accepting friend request");
     }
@@ -30,7 +32,7 @@ const ReceivedRequests = () => {
   const handleDecline = async (requestId: string) => {
     try {
       await declineFriendRequest(requestId);
-      toast.info("Friend request declined.");
+      toast.info(t("friendRequest.received.declined"));
     } catch {
       console.error("Error declining friend request");
     }

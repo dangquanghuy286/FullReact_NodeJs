@@ -123,5 +123,21 @@
         "title": "Start a new chat",
         "yourFriends": "Your Friends",
         "noFriends": "You don't have any friends yet."
+    },
+    "friendRequest": {
+        "title": "Friend Requests",
+        "tabs": {
+            "received": "Received",
+            "sent": "Sent"
+        },
+        "received": {
+            "empty": "No received requests",
+            "accepted": "Friend request accepted!",
+            "declined": "Friend request declined."
+        },
+        "sent": {
+            "empty": "No sent requests",
+            "pending": "Pending"
+        }
     }
 }

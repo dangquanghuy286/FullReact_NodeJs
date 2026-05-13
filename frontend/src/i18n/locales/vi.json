@@ -123,5 +123,21 @@
         "title": "Bắt đầu cuộc trò chuyện mới",
         "yourFriends": "Bạn bè của bạn",
         "noFriends": "Bạn chưa có người bạn nào."
+    },
+    "friendRequest": {
+        "title": "Lời mời kết bạn",
+        "tabs": {
+            "received": "Đã nhận",
+            "sent": "Đã gửi"
+        },
+        "received": {
+            "empty": "Không có lời mời nào",
+            "accepted": "Đã chấp nhận lời mời kết bạn!",
+            "declined": "Đã từ chối lời mời kết bạn."
+        },
+        "sent": {
+            "empty": "Không có lời mời nào đã gửi",
+            "pending": "Chờ xác nhận"
+        }
     }
 }
