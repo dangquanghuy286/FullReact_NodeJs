@@ -4,6 +4,7 @@ import ProfileCard from "./ProfileCard";
 
 import { useAuthStore } from "@/stores/auth.store";
 import ProfileSettingsTabs from "./Profilesettingstabs";
+import { useTranslation } from "react-i18next";
 
 interface ProfileDialogProps {
   open: boolean;
@@ -12,7 +13,7 @@ interface ProfileDialogProps {
 
 const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
   const { user } = useAuthStore();
-
+  const { t } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="overflow-hidden p-0 border-0 shadow-2xl rounded-2xl max-w-lg">
@@ -22,7 +23,7 @@ const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-1 h-6 rounded-full bg-gradient-to-b from-[#00c0d1] to-[#007a8a]" />
                 <DialogTitle className="text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-tight">
-                  Profile & Settings
+                  {t("title.profileSettings")}
                 </DialogTitle>
               </div>
 

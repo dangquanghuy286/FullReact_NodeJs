@@ -1,5 +1,4 @@
 import { Bell, ChevronsUpDown, UserIcon } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -19,16 +18,14 @@ import {
 import type { User } from "@/types/user";
 import SignOutForm from "../auth/signout-form";
 import { useState } from "react";
-
 import ProfileDialog from "../profile/ProfileDialog";
-
 import FriendRequestDialog from "@/components/FriendRequest/FriendRequestDialog";
+import { useTranslation } from "react-i18next";
 
 export function NavUser({ user }: { user: User }) {
+  const { t } = useTranslation();
   const { isMobile } = useSidebar();
-
   const [friendRequestOpen, setFriendRequestOpen] = useState(false);
-
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
@@ -82,11 +79,11 @@ export function NavUser({ user }: { user: User }) {
               <DropdownMenuGroup>
                 <DropdownMenuItem onClick={() => setProfileOpen(true)}>
                   <UserIcon className="text-muted-foreground dark:group-focus:!text-accent-foreground" />
-                  Account
+                  {t("navUser.account")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setFriendRequestOpen(true)}>
                   <Bell className="text-muted-foreground dark:group-focus:!text-accent-foreground" />
-                  Notifications
+                  {t("navUser.notifications")}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />

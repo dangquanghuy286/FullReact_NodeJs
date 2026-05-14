@@ -7,6 +7,7 @@ import UserAvatar from "./UserAvatar";
 import StatusBadge from "./StatusBadge";
 import UnreadCount from "./UnreadCount";
 import { useSocketStore } from "@/stores/socket.store";
+import { useTranslation } from "react-i18next";
 
 const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
   const { user } = useAuthStore();
@@ -17,6 +18,8 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
     messages,
     fetchMessages,
   } = useChatStore();
+  const { t } = useTranslation();
+
   if (!user) return null;
 
   const otherUser = convo.participants.find((u) => u._id !== user._id);
@@ -24,7 +27,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
 
   const unreadCount = convo.unreadCounts?.[user._id] || 0;
 
-  const lastMessage = convo.lastMessage?.content || "No messages yet";
+  const lastMessage = convo.lastMessage?.content || t("chat.noMessageYet");
 
   const handleSelectConversation = async (id: string) => {
     setActiveConversationId(id);

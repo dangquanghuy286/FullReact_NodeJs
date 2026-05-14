@@ -5,6 +5,7 @@ import { Badge } from "../ui/badge";
 import { useSocketStore } from "@/stores/socket.store";
 import { cn } from "@/lib/utils";
 import AvatarUploader from "./AvatarUploader";
+import { useTranslation } from "react-i18next";
 
 interface ProfileCardProps {
   user: User | null;
@@ -12,6 +13,7 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ user }: ProfileCardProps) => {
   const { onlineUsers } = useSocketStore();
+  const { t } = useTranslation();
   if (!user) return;
   const bio = user.bio ?? "Will code for food";
   const isOnline = onlineUsers.includes(user._id);
@@ -44,7 +46,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
         <CardContent className="relative h-full flex flex-col justify-end pb-5 px-5">
           {/* Top label */}
           <p className="absolute top-4 right-5 text-white/30 text-[10px] font-medium tracking-[0.2em] uppercase">
-            Profile
+            {t("title.profile")}
           </p>
 
           <div className="flex flex-row items-end gap-5 w-full">
@@ -81,7 +83,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                       isOnline ? "bg-green-300 animate-pulse" : "bg-white/40",
                     )}
                   />
-                  {isOnline ? "Online" : "Offline"}
+                  {isOnline ? t("status.online") : t("status.offline")}
                 </Badge>
               </div>
 

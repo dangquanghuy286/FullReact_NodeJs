@@ -100,7 +100,8 @@
                 "delivered": "delivered",
                 "sent": "sent"
             }
-        }
+        },
+        "noMessageYet": "No messages yet. Say hi to your friend!"
     },
     "groupChat": {
         "title": "Create New Group Chat",
@@ -139,5 +140,33 @@
             "empty": "No sent requests",
             "pending": "Pending"
         }
+    },
+    "sidebar": {
+        "groupChats": "Group Chats",
+        "friends": "Friends"
+    },
+    "navUser": {
+        "account": "Account",
+        "notifications": "Notifications",
+        "signOut": "Sign Out"
+    },
+    "tabProfile": {
+        "account": "Account",
+        "config": "Configuration",
+        "security": "Security"
+    },
+    "title": {
+        "home": "Home",
+        "chat": "Chat",
+        "groupChat": "Group Chat",
+        "friendList": "Friend List",
+        "friendRequest": "Friend Requests",
+        "profile": "Profile ",
+        "profileSettings": "Profile Settings",
+        "settings": "Settings"
+    },
+    "status": {
+        "online": "Online",
+        "offline": "Offline"
     }
 }

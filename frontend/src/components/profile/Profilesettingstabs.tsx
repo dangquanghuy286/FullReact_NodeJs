@@ -4,11 +4,12 @@ import { useAuthStore } from "@/stores/auth.store";
 import { AccountTab } from "./AccountTab";
 import { ConfigTab } from "./ConfigTab";
 import { SecurityTab } from "./SecurityTab";
+import { useTranslation } from "react-i18next";
 
 const ProfileSettingsTabs = () => {
   const { user } = useAuthStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const { t } = useTranslation();
   if (!user) return null;
 
   return (
@@ -20,19 +21,19 @@ const ProfileSettingsTabs = () => {
             value="account"
             className="rounded-lg text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#00a0b0]"
           >
-            Account
+            {t("tabProfile.account")}
           </TabsTrigger>
           <TabsTrigger
             value="config"
             className="rounded-lg text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#00a0b0]"
           >
-            Configuration
+            {t("tabProfile.config")}
           </TabsTrigger>
           <TabsTrigger
             value="security"
             className="rounded-lg text-sm font-medium data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-[#00a0b0]"
           >
-            Security
+            {t("tabProfile.security")}
           </TabsTrigger>
         </TabsList>
 

@@ -100,7 +100,8 @@
                 "delivered": "đã nhận",
                 "sent": "đã gửi"
             }
-        }
+        },
+        "noMessageYet": "Chưa có tin nhắn nào. Hãy nói xin chào với bạn bè của bạn!"
     },
     "groupChat": {
         "title": "Tạo nhóm chat mới",
@@ -139,5 +140,33 @@
             "empty": "Không có lời mời nào đã gửi",
             "pending": "Chờ xác nhận"
         }
+    },
+    "sidebar": {
+        "groupChats": "Nhóm chat",
+        "friends": "Bạn bè"
+    },
+    "navUser": {
+        "account": "Tài khoản",
+        "notifications": "Thông báo",
+        "signOut": "Đăng xuất"
+    },
+    "tabProfile": {
+        "account": "Tài khoản",
+        "config": "Cài đặt",
+        "security": "Bảo mật"
+    },
+    "title": {
+        "home": "Trang chủ",
+        "profile": "Hồ sơ của tôi",
+        "profileSettings": "Cài đặt hồ sơ",
+        "settings": "Cài đặt",
+        "chat": "Trò chuyện",
+        "groupChat": "Nhóm chat",
+        "friendList": "Danh sách bạn bè",
+        "friendRequest": "Lời mời kết bạn"
+    },
+    "status": {
+        "online": "Trực tuyến",
+        "offline": "Ngoại tuyến"
     }
 }

@@ -1,13 +1,11 @@
 "use client";
 
 import * as React from "react";
-
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
@@ -24,8 +22,10 @@ import DirectChatList from "../chat/DirectChatList";
 import { useThemeStore } from "@/stores/theme.strore";
 import { useAuthStore } from "@/stores/auth.store";
 import { NavUser } from "./nav-user";
+import { useTranslation } from "react-i18next";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { t } = useTranslation();
   const { isDarkMode, toggleTheme } = useThemeStore();
   const { user } = useAuthStore();
 
@@ -41,7 +41,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="bg-gradient-to-r from-[#009fb0] via-[#00c0d1] to-[#7ce9f0]"
             >
               <a href="#">
-                <div className="flex w-full items-center justify-between px-2 ">
+                <div className="flex w-full items-center justify-between px-2">
                   <h1 className="text-lg font-bold text-white">ChatApp</h1>
                   <div className="flex items-center gap-2">
                     <Sun className="h-5 w-5 text-yellow-400 size-5" />
@@ -58,6 +58,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       {/* Content */}
       <SidebarContent className="beautiful-scrollbar">
         {/* New Chat */}
@@ -66,23 +67,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <CreateNewChat />
           </SidebarContent>
         </SidebarGroup>
+
         {/* Groups */}
         <SidebarGroup>
           <div className="flex items-center justify-between">
             <SidebarGroupLabel className="uppercase">
-              Group Chats
+              {t("sidebar.groupChats")}
             </SidebarGroupLabel>
             <NewGroupChatModel />
           </div>
-
           <SidebarContent>
             <GroupChatList />
           </SidebarContent>
         </SidebarGroup>
+
         {/* Direct Chats */}
         <SidebarGroup>
           <div className="flex items-center justify-between">
-            <SidebarGroupLabel className="uppercase">Friends</SidebarGroupLabel>
+            <SidebarGroupLabel className="uppercase">
+              {t("sidebar.friends")}
+            </SidebarGroupLabel>
             <AddFriendModal />
           </div>
           <SidebarContent>
@@ -90,6 +94,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarContent>
         </SidebarGroup>
       </SidebarContent>
+
       {/* Footer */}
       <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
     </Sidebar>
