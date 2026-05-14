@@ -89,24 +89,6 @@ export const ConfigTab = () => {
       </div>
 
       <Separator />
-
-      {/* Online Status */}
-      <div className="flex items-center justify-between">
-        <div className="space-y-0.5">
-          <p className="text-sm font-medium">
-            {t("config.onlineStatus.label")}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {t("config.onlineStatus.description")}
-          </p>
-        </div>
-
-        <Switch
-          checked={showOnline}
-          onCheckedChange={setShowOnline}
-          className="data-[state=checked]:bg-[#00c0d1]"
-        />
-      </div>
     </div>
   );
 };
