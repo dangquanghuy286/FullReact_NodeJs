@@ -23,9 +23,7 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
       className="overflow-hidden p-0 border-0 shadow-xl"
       style={{ height: "220px" }}
     >
-      {/* Background layers */}
       <div className="relative h-full">
-        {/* Gradient base */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#00c0d1] via-[#0096a8] to-[#005f6e]" />
 
         {/* Geometric accent shapes */}
