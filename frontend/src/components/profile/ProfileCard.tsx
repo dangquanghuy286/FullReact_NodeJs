@@ -42,13 +42,11 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
 
         {/* Content */}
         <CardContent className="relative h-full flex flex-col justify-end pb-5 px-5">
-          {/* Top label */}
           <p className="absolute top-4 right-5 text-white/30 text-[10px] font-medium tracking-[0.2em] uppercase">
             {t("title.profile")}
           </p>
 
           <div className="flex flex-row items-end gap-5 w-full">
-            {/* Avatar with glow ring */}
             <div className="relative flex-shrink-0">
               <div className="absolute inset-0 rounded-full bg-white/20 blur-md scale-110" />
               <div className="relative ring-[3px] ring-white/70 rounded-full shadow-2xl">
