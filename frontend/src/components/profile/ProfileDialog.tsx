@@ -27,7 +27,6 @@ const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
                 </DialogTitle>
               </div>
 
-              {/* Profile card banner */}
               <ProfileCard user={user} />
             </DialogHeader>
 
