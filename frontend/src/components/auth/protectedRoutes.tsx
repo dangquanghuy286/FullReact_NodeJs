@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoutes = () => {
-  const { accessToken, user, loading, refresh, getProfile } = useAuthStore(
+  const { accessToken, user, refresh, getProfile } = useAuthStore(
     useShallow((s) => ({
       accessToken: s.accessToken,
       user: s.user,
@@ -37,7 +37,7 @@ const ProtectedRoutes = () => {
     init();
   }, []);
 
-  if (loading || starting) {
+  if (starting) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-blue-500">
