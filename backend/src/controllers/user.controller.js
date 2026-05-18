@@ -81,3 +81,55 @@ export const uploadAvatar = async (req, res) => {
     });
   }
 };
+// Update profile
+export const updateProfile = async (req, res) => {
+  try {
+    // Lấy thông tin người dùng từ token
+    const userId = req.user._id;
+    const { displayName, bio, phone } = req.body;
+
+    // Kiểm tra hệ thống có gì để cập nhật không
+    if (!displayName && !bio && !phone) {
+      return res.status(400).json({
+        message: "Vui lòng cung cấp ít nhất một trường để cập nhật !",
+      });
+    }
+
+    // Validate bio length
+    if (bio && bio.length > 160) {
+      return res.status(400).json({
+        message: "Bio không được vượt quá 160 ký tự !",
+      });
+    }
+
+    // Tạo đối tượng cập nhật
+    const updateData = {};
+    if (displayName != undefined) updateData.displayName = displayName.trim();
+    if (bio != undefined) updateData.bio = bio.trim();
+    if (phone != undefined) updateData.phone = phone.trim();
+
+    // Hàm cập nhật người dùng
+    const updateUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateData },
+      { new: true },
+    ).select("-hashedPassword");
+
+    // Kiểm tra nếu cập nhật thành công
+    if (!updateUser) {
+      return res.status(404).json({
+        message: "Không tìm thấy người dùng !",
+      });
+    }
+
+    return res.status(200).json({
+      user: updateUser,
+      message: "Cập nhật profile thành công !",
+    });
+  } catch (error) {
+    console.error("Lỗi khi cập nhật profile", error);
+    return res.status(500).json({
+      message: "Lỗi hệ thống  !",
+    });
+  }
+};
