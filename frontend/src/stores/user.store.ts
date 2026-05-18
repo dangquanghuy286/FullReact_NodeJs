@@ -27,4 +27,19 @@ export const useUserStore = create<UserState>(() => ({
       throw error;
     }
   },
+  updateProfile: async (payload: {
+    displayName?: string;
+    phone?: string;
+    bio?: string;
+  }) => {
+    const { user, setUser } = useAuthStore.getState();
+    const data = await userService.updateProfile(payload);
+    if (user) {
+      setUser({
+        ...user,
+        ...data.user,
+      });
+      return data;
+    }
+  },
 }));

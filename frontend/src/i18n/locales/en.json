@@ -29,7 +29,9 @@
             "usernameMin": "Username must be at least 3 characters",
             "emailInvalid": "Invalid email",
             "bioMax": "Bio must be at most 160 characters"
-        }
+        },
+        "saveSuccess": "Profile updated successfully!",
+        "saveError": "An error occurred while updating your profile. Please try again!"
     },
     "security": {
         "title": "Privacy & Security",

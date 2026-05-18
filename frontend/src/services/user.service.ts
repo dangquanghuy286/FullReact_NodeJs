@@ -11,4 +11,15 @@ export const userService = {
     }
     return res.data;
   },
+  updateProfile: async (data: {
+    displayName?: string;
+    phone?: string;
+    bio?: string;
+  }) => {
+    const res = await api.patch("/user/updateProfile", data);
+    if (res.status === 400) {
+      throw new Error(res.data.message);
+    }
+    return res.data;
+  },
 };

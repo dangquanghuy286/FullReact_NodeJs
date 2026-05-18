@@ -11,7 +11,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       accessToken: null,
       user: null,
-      loading: false, // Track loading state
+      loading: false,
       isRefreshing: false,
       setAccessToken: (accessToken) => {
         set({ accessToken });
@@ -33,10 +33,7 @@ export const useAuthStore = create<AuthState>()(
       },
       signUp: async (username, password, email, firstName, lastName) => {
         try {
-          set({
-            loading: true,
-          });
-          // Call API
+          set({ loading: true });
           await authService.signUp(
             username,
             password,
@@ -49,16 +46,13 @@ export const useAuthStore = create<AuthState>()(
           console.error(error);
           toast.error("Registration failed!");
         } finally {
-          set({
-            loading: false,
-          });
+          set({ loading: false });
         }
       },
       signIn: async (username, password) => {
         try {
           set({ loading: true });
           const { accessToken } = await authService.signIn(username, password);
-          // Set token TRƯỚC, rồi mới clear các thứ khác
           set({ accessToken, user: null });
           useChatStore.getState().reset();
           await get().getProfile();
@@ -83,10 +77,7 @@ export const useAuthStore = create<AuthState>()(
       },
       getProfile: async () => {
         try {
-          set({
-            loading: true,
-          });
-          // Call API
+          set({ loading: true });
           const user = await authService.getProfile();
           set({ user });
         } catch (error) {
@@ -98,8 +89,18 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       refresh: async () => {
-        // Chặn gọi lại nếu đang refresh
-        if (get().isRefreshing) return;
+        // Nếu đang refresh, chờ token mới thay vì return undefined
+        if (get().isRefreshing) {
+          return new Promise<string>((resolve) => {
+            const unsub = useAuthStore.subscribe((state) => {
+              if (!state.isRefreshing && state.accessToken) {
+                unsub();
+                resolve(state.accessToken);
+              }
+            });
+          });
+        }
+
         try {
           set({ isRefreshing: true });
           const { user, getProfile } = get();
@@ -112,8 +113,8 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error(error);
           toast.error("Your session has expired!");
-          // Không gọi clearState() để tránh loop — chỉ xóa token
           set({ accessToken: null, user: null });
+          throw error;
         } finally {
           set({ loading: false, isRefreshing: false });
         }
@@ -122,9 +123,8 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       partialize: (state) => ({
-        user: state.user, // Only persist user and accessToken, not loading to avoid stale state on page reload
+        user: state.user,
         accessToken: state.accessToken,
-        // isRefreshing KHÔNG persist để tránh stale state
       }),
     },
   ),
