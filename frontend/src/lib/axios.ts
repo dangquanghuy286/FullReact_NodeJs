@@ -6,7 +6,6 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// REQUEST INTERCEPTOR
 api.interceptors.request.use((config) => {
   const { accessToken } = useAuthStore.getState();
   if (accessToken) {
@@ -15,7 +14,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-//  RESPONSE INTERCEPTOR
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -23,29 +21,17 @@ api.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
-    // ❗ Nếu token hết hạn
-    if (
-      (error.response?.status === 401 || error.response?.status === 403) &&
-      !originalRequest._retry
-    ) {
+    // ← chỉ giữ 401, bỏ 403
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // gọi refresh từ store
         const newAccessToken = await useAuthStore.getState().refresh();
-
-        // gắn lại token
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
-        // gọi lại request cũ
         return api(originalRequest);
       } catch (err) {
-        // refresh fail → logout
         useAuthStore.getState().clearState();
-
-        // redirect login
         window.location.href = "/signin";
-
         return Promise.reject(err);
       }
     }

@@ -1,11 +1,13 @@
 import api from "@/lib/axios";
+import axios from "axios";
+
 export const authService = {
   signUp: async (
     username: string,
     password: string,
     email: string,
     firstName: string,
-    lastName: string
+    lastName: string,
   ) => {
     const res = await api.post(
       "/auth/signup",
@@ -16,11 +18,11 @@ export const authService = {
         firstName,
         lastName,
       },
-      { withCredentials: true } //Khi gửi request, nhớ gửi luôn cookie theo để backend có thể set cookie cho trình duyệt
+      { withCredentials: true },
     );
-
     return res.data;
   },
+
   signIn: async (username: string, password: string) => {
     const res = await api.post(
       "/auth/signin",
@@ -28,19 +30,25 @@ export const authService = {
         username,
         password,
       },
-      { withCredentials: true }
+      { withCredentials: true },
     );
     return res.data;
   },
+
   signOut: async () => {
     return api.post("/auth/signout", {}, { withCredentials: true });
   },
+
   getProfile: async () => {
     const res = await api.get("/user/profile", { withCredentials: true });
     return res.data.user;
   },
+
   refresh: async () => {
-    const res = await api.get("/auth/refresh", { withCredentials: true });
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_URL}/auth/refresh`,
+      { withCredentials: true },
+    );
     return res.data.accessToken;
   },
 };
