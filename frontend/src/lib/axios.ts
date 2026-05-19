@@ -21,7 +21,7 @@ api.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
-    // ← chỉ giữ 401, bỏ 403
+    // 401 → token hết hạn → thử refresh rồi retry
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -34,6 +34,12 @@ api.interceptors.response.use(
         window.location.href = "/signin";
         return Promise.reject(err);
       }
+    }
+
+    // 403 → token sai hoàn toàn → logout luôn, không retry
+    if (error.response?.status === 403) {
+      useAuthStore.getState().clearState();
+      window.location.href = "/signin";
     }
 
     return Promise.reject(error);
