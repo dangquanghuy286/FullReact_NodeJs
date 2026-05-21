@@ -54,7 +54,7 @@ const DirectMessageCard = ({ convo }: { convo: Conversation }) => {
             name={otherUser.displayName ?? ""}
             avatarURL={otherUser.avatarURL ?? undefined}
           />
-          {/* Todo socket io */}
+
           <StatusBadge
             status={
               onlineUsers.includes(otherUser?._id ?? "") ? "online" : "offline"
