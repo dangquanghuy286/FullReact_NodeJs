@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useAuthStore } from "@/stores/auth.store";
 import { useShallow } from "zustand/react/shallow";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoutes = () => {
