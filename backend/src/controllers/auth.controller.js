@@ -3,6 +3,9 @@ import User from "../models/user.model.js";
 import Session from "../models/session.model.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import { sendOTPEmail } from "../libs/mailer.js";
+import OTP from "../models/otp.model.js";
+const OTP_TTL = 5 * 60 * 1000;
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 // User registration
@@ -158,6 +161,105 @@ export const refreshToken = async (req, res) => {
     return res.status(200).json({ accessToken });
   } catch (error) {
     console.error("Lỗi khi gọi refreshToken:", error);
+    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
+  }
+};
+// Request OTP for password reset
+// Bước 1: Gửi OTP vào email (yêu cầu JWT hợp lệ qua protectedRoute)
+export const requestChangePassword = async (req, res) => {
+  try {
+    const user = req.user; // đã xác thực bởi protectedRoute
+
+    // Tạo OTP 6 chữ số
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Xóa OTP cũ của user nếu có
+    await OTP.deleteMany({ userId: user._id });
+
+    // Lưu OTP mới
+    await OTP.create({
+      userId: user._id,
+      otp,
+      expiresAt: new Date(Date.now() + OTP_TTL),
+    });
+
+    // Gửi email
+    await sendOTPEmail(user.email, otp);
+
+    return res.status(200).json({
+      message: `Mã OTP đã được gửi đến ${user.email}`,
+    });
+  } catch (error) {
+    console.error("Lỗi khi gửi OTP:", error);
+    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
+  }
+};
+// Bước 2: Xác thực OTP + đổi mật khẩu (yêu cầu JWT hợp lệ qua protectedRoute)
+export const changePassword = async (req, res) => {
+  try {
+    const user = req.user; // đã xác thực bởi protectedRoute
+    const { otp, currentPassword, newPassword } = req.body;
+
+    if (!otp || !currentPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Vui lòng cung cấp otp, currentPassword và newPassword!",
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        message: "Mật khẩu mới phải có ít nhất 6 ký tự!",
+      });
+    }
+
+    // Lấy lại user kèm hashedPassword (protectedRoute đã select bỏ trường này)
+    const fullUser = await User.findById(user._id);
+
+    // Kiểm tra mật khẩu hiện tại
+    const isCurrentCorrect = await bcrypt.compare(
+      currentPassword,
+      fullUser.hashedPassword,
+    );
+    if (!isCurrentCorrect) {
+      return res.status(401).json({ message: "Mật khẩu hiện tại không đúng!" });
+    }
+
+    // Kiểm tra OTP
+    const otpRecord = await OTP.findOne({ userId: user._id });
+    if (!otpRecord) {
+      return res
+        .status(400)
+        .json({ message: "OTP không tồn tại, hãy yêu cầu lại!" });
+    }
+
+    if (otpRecord.expiresAt < new Date()) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res
+        .status(400)
+        .json({ message: "OTP đã hết hạn, hãy yêu cầu lại!" });
+    }
+
+    if (otpRecord.otp !== otp) {
+      return res.status(400).json({ message: "OTP không chính xác!" });
+    }
+
+    // Hash mật khẩu mới
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Cập nhật mật khẩu
+    await User.findByIdAndUpdate(user._id, { hashedPassword });
+
+    // Xóa OTP đã dùng
+    await OTP.deleteOne({ _id: otpRecord._id });
+
+    // Xóa tất cả session (buộc đăng nhập lại trên tất cả thiết bị)
+    await Session.deleteMany({ userId: user._id });
+
+    return res.status(200).json({
+      message: "Đổi mật khẩu thành công! Vui lòng đăng nhập lại.",
+    });
+  } catch (error) {
+    console.error("Lỗi khi đổi mật khẩu:", error);
     return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
