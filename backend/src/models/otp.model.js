@@ -6,18 +6,26 @@ const otpSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+
   otp: {
     type: String,
     required: true,
   },
+
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+
   expiresAt: {
     type: Date,
     required: true,
   },
 });
 
-// Tự động xóa document khi hết hạn
+// TTL index
 otpSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 const OTP = mongoose.model("OTP", otpSchema, "otp");
+
 export default OTP;

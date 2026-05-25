@@ -166,100 +166,173 @@ export const refreshToken = async (req, res) => {
 };
 // Request OTP for password reset
 // Bước 1: Gửi OTP vào email (yêu cầu JWT hợp lệ qua protectedRoute)
-export const requestChangePassword = async (req, res) => {
+// POST /send-otp
+export const sendOTP = async (req, res) => {
   try {
-    const user = req.user; // đã xác thực bởi protectedRoute
+    const user = req.user;
 
-    // Tạo OTP 6 chữ số
+    // tạo otp
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    // Xóa OTP cũ của user nếu có
+    // xóa otp cũ
     await OTP.deleteMany({ userId: user._id });
 
-    // Lưu OTP mới
+    // lưu otp mới
     await OTP.create({
       userId: user._id,
       otp,
+      verified: false,
       expiresAt: new Date(Date.now() + OTP_TTL),
     });
 
-    // Gửi email
+    // gửi email
     await sendOTPEmail(user.email, otp);
 
     return res.status(200).json({
-      message: `Mã OTP đã được gửi đến ${user.email}`,
+      message: `OTP đã gửi tới ${user.email}`,
     });
   } catch (error) {
-    console.error("Lỗi khi gửi OTP:", error);
-    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
+    console.error("Lỗi sendOTP:", error);
+
+    return res.status(500).json({
+      message: "Lỗi server",
+    });
   }
 };
-// Bước 2: Xác thực OTP + đổi mật khẩu (yêu cầu JWT hợp lệ qua protectedRoute)
-export const changePassword = async (req, res) => {
+// Bước 2: Xác thực OTP
+// POST /verify-otp
+export const verifyOTP = async (req, res) => {
   try {
-    const user = req.user; // đã xác thực bởi protectedRoute
-    const { otp, currentPassword, newPassword } = req.body;
+    const user = req.user;
 
-    if (!otp || !currentPassword || !newPassword) {
+    const { otp } = req.body;
+
+    if (!otp) {
       return res.status(400).json({
-        message: "Vui lòng cung cấp otp, currentPassword và newPassword!",
+        message: "OTP không được để trống!",
+      });
+    }
+
+    const otpRecord = await OTP.findOne({
+      userId: user._id,
+    });
+
+    if (!otpRecord) {
+      return res.status(400).json({
+        message: "OTP không tồn tại!",
+      });
+    }
+
+    // kiểm tra hết hạn
+    if (otpRecord.expiresAt < new Date()) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+
+      return res.status(400).json({
+        message: "OTP đã hết hạn!",
+      });
+    }
+
+    // kiểm tra otp
+    if (otpRecord.otp !== otp) {
+      return res.status(400).json({
+        message: "OTP không chính xác!",
+      });
+    }
+
+    // đánh dấu verified
+    otpRecord.verified = true;
+
+    await otpRecord.save();
+
+    return res.status(200).json({
+      message: "Xác thực OTP thành công!",
+    });
+  } catch (error) {
+    console.error("Lỗi verifyOTP:", error);
+
+    return res.status(500).json({
+      message: "Lỗi server",
+    });
+  }
+};
+// Bước 3: Đặt lại mật khẩu mới
+// POST /reset-password
+export const resetPassword = async (req, res) => {
+  try {
+    const user = req.user;
+
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        message: "Thiếu currentPassword hoặc newPassword!",
       });
     }
 
     if (newPassword.length < 6) {
       return res.status(400).json({
-        message: "Mật khẩu mới phải có ít nhất 6 ký tự!",
+        message: "Mật khẩu mới phải >= 6 ký tự!",
       });
     }
 
-    // Lấy lại user kèm hashedPassword (protectedRoute đã select bỏ trường này)
+    // lấy full user
     const fullUser = await User.findById(user._id);
 
-    // Kiểm tra mật khẩu hiện tại
-    const isCurrentCorrect = await bcrypt.compare(
+    // check mật khẩu cũ
+    const isCorrect = await bcrypt.compare(
       currentPassword,
       fullUser.hashedPassword,
     );
-    if (!isCurrentCorrect) {
-      return res.status(401).json({ message: "Mật khẩu hiện tại không đúng!" });
+
+    if (!isCorrect) {
+      return res.status(401).json({
+        message: "Mật khẩu hiện tại không đúng!",
+      });
     }
 
-    // Kiểm tra OTP
-    const otpRecord = await OTP.findOne({ userId: user._id });
+    // kiểm tra otp đã verify chưa
+    const otpRecord = await OTP.findOne({
+      userId: user._id,
+    });
+
     if (!otpRecord) {
-      return res
-        .status(400)
-        .json({ message: "OTP không tồn tại, hãy yêu cầu lại!" });
+      return res.status(400).json({
+        message: "OTP không tồn tại!",
+      });
     }
 
-    if (otpRecord.expiresAt < new Date()) {
-      await OTP.deleteOne({ _id: otpRecord._id });
-      return res
-        .status(400)
-        .json({ message: "OTP đã hết hạn, hãy yêu cầu lại!" });
+    if (!otpRecord.verified) {
+      return res.status(400).json({
+        message: "OTP chưa được xác thực!",
+      });
     }
 
-    if (otpRecord.otp !== otp) {
-      return res.status(400).json({ message: "OTP không chính xác!" });
-    }
-
-    // Hash mật khẩu mới
+    // hash mật khẩu mới
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Cập nhật mật khẩu
-    await User.findByIdAndUpdate(user._id, { hashedPassword });
+    // update password
+    await User.findByIdAndUpdate(user._id, {
+      hashedPassword,
+    });
 
-    // Xóa OTP đã dùng
-    await OTP.deleteOne({ _id: otpRecord._id });
+    // xóa otp
+    await OTP.deleteOne({
+      _id: otpRecord._id,
+    });
 
-    // Xóa tất cả session (buộc đăng nhập lại trên tất cả thiết bị)
-    await Session.deleteMany({ userId: user._id });
+    // logout all devices
+    await Session.deleteMany({
+      userId: user._id,
+    });
 
     return res.status(200).json({
-      message: "Đổi mật khẩu thành công! Vui lòng đăng nhập lại.",
+      message: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!",
     });
   } catch (error) {
-    console.error("Lỗi khi đổi mật khẩu:", error);
-    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
+    console.error("Lỗi resetPassword:", error);
+
+    return res.status(500).json({
+      message: "Lỗi server",
+    });
   }
 };

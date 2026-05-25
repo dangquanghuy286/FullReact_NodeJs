@@ -31,7 +31,7 @@ export const sendOTPEmail = async (toEmail, otp) => {
             <td style="background:#0f172a;padding:28px 32px;text-align:center;">
               <table cellpadding="0" cellspacing="0" style="margin:0 auto;">
                 <tr>
-                  <td style="background:#3b82f6;border-radius:6px;width:28px;height:28px;text-align:center;vertical-align:middle;">
+                  <td style="background:#00c0d1;border-radius:6px;width:28px;height:28px;text-align:center;vertical-align:middle;">
                     <span style="color:#fff;font-size:16px;">🔒</span>
                   </td>
                   <td style="padding-left:8px;">
