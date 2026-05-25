@@ -5,26 +5,28 @@ import {
   signIn,
   signOut,
   signUp,
-  sendOTP,
-  verifyOTP,
-  resetPassword,
+  changePassword,
+  forgotSendOTP,
+  forgotVerifyOTP,
+  forgotResetPassword,
 } from "../controllers/auth.controller.js";
 
 import { protectedRoute } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-// Auth
+// ─── Auth ───────────────────────────────────
 router.post("/signup", signUp);
 router.post("/signin", signIn);
 router.post("/signout", signOut);
 router.get("/refresh", refreshToken);
 
-// Reset password
-router.post("/send-otp", protectedRoute, sendOTP);
+// ─── Change Password  ───
+router.post("/change-password", protectedRoute, changePassword);
 
-router.post("/verify-otp", protectedRoute, verifyOTP);
-
-router.post("/reset-password", protectedRoute, resetPassword);
+// ─── Forgot Password  ───────
+router.post("/forgot-password/send-otp", forgotSendOTP);
+router.post("/forgot-password/verify-otp", forgotVerifyOTP);
+router.post("/forgot-password/reset-password", forgotResetPassword);
 
 export default router;
