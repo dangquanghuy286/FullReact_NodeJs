@@ -5,10 +5,12 @@ import {
   signIn,
   signOut,
   signUp,
-  changePassword,
   forgotSendOTP,
   forgotVerifyOTP,
   forgotResetPassword,
+  changePasswordVerify,
+  changePasswordConfirm,
+  changePasswordReset,
 } from "../controllers/auth.controller.js";
 
 import { protectedRoute } from "../middlewares/auth.middleware.js";
@@ -22,7 +24,9 @@ router.post("/signout", signOut);
 router.get("/refresh", refreshToken);
 
 // ─── Change Password  ───
-router.post("/change-password", protectedRoute, changePassword);
+router.post("/change-password/verify", protectedRoute, changePasswordVerify);
+router.get("/change-password/confirm", changePasswordConfirm);
+router.post("/change-password/reset", changePasswordReset);
 
 // ─── Forgot Password  ───────
 router.post("/forgot-password/send-otp", forgotSendOTP);

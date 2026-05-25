@@ -9,7 +9,7 @@ import OTP from "../models/otp.model.js";
 const OTP_TTL = 5 * 60 * 1000;
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
-
+const CONFIRM_TOKEN_TTL = "10m";
 // ─────────────────────────────────────────────
 // User registration
 // ─────────────────────────────────────────────
@@ -170,25 +170,16 @@ export const refreshToken = async (req, res) => {
 
 // ═════════════════════════════════════════════
 // CHANGE PASSWORD (đã đăng nhập — không cần OTP)
-// Yêu cầu: protectedRoute (JWT hợp lệ)
 // POST /change-password
-// ═════════════════════════════════════════════
-export const changePassword = async (req, res) => {
+// Bước 1: Kiểm tra mật khẩu cũ
+// Post /change-password/verify
+export const changePasswordVerify = async (req, res) => {
   try {
     const user = req.user; // từ protectedRoute
+    const { currentPassword } = req.body;
 
-    const { currentPassword, newPassword } = req.body;
-
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({
-        message: "Thiếu currentPassword hoặc newPassword!",
-      });
-    }
-
-    if (newPassword.length < 6) {
-      return res.status(400).json({
-        message: "Mật khẩu mới phải >= 6 ký tự!",
-      });
+    if (!currentPassword) {
+      return res.status(400).json({ message: "Thiếu currentPassword!" });
     }
 
     const fullUser = await User.findById(user._id);
@@ -201,13 +192,106 @@ export const changePassword = async (req, res) => {
       return res.status(401).json({ message: "Mật khẩu hiện tại không đúng!" });
     }
 
+    // Tạo confirm token (10 phút)
+    const confirmToken = jwt.sign(
+      { userId: user._id, purpose: "change-password" },
+      process.env.ACCESS_TOKEN,
+      { expiresIn: CONFIRM_TOKEN_TTL },
+    );
+
+    // Link gửi về email — frontend sẽ đọc token từ query param
+    const confirmLink = `${process.env.CLIENT_URL}/change-password/confirm?token=${confirmToken}`;
+
+    await sendChangePasswordEmail(fullUser.email, confirmLink);
+
+    return res.status(200).json({
+      message:
+        "Mật khẩu đúng. Email xác nhận đã được gửi, vui lòng kiểm tra hộp thư!",
+    });
+  } catch (error) {
+    console.error("Lỗi changePasswordVerify:", error);
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+// Bước 2: Xác nhận link từ email
+// GET /change-password/confirm?token=...
+export const changePasswordConfirm = async (req, res) => {
+  try {
+    const { token } = req.query;
+
+    if (!token) {
+      return res.status(400).json({ message: "Thiếu token!" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.ACCESS_TOKEN);
+    } catch {
+      return res
+        .status(401)
+        .json({ message: "Token không hợp lệ hoặc đã hết hạn!" });
+    }
+
+    if (decoded.purpose !== "change-password") {
+      return res.status(401).json({ message: "Token không hợp lệ!" });
+    }
+
+    // Tạo reset token mới (10 phút) để dùng ở bước 3
+    // Tách biệt confirm token và reset token để tránh dùng nhầm
+    const resetToken = jwt.sign(
+      { userId: decoded.userId, purpose: "change-password-reset" },
+      process.env.ACCESS_TOKEN,
+      { expiresIn: CONFIRM_TOKEN_TTL },
+    );
+
+    return res.status(200).json({
+      message: "Xác nhận thành công! Vui lòng nhập mật khẩu mới.",
+      resetToken,
+    });
+  } catch (error) {
+    console.error("Lỗi changePasswordConfirm:", error);
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+// Bước 3: Đặt mật khẩu mới
+// POST /change-password/reset
+export const changePasswordReset = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Reset token không tồn tại!" });
+    }
+
+    const resetToken = authHeader.split(" ")[1];
+
+    let decoded;
+    try {
+      decoded = jwt.verify(resetToken, process.env.ACCESS_TOKEN);
+    } catch {
+      return res
+        .status(401)
+        .json({ message: "Token không hợp lệ hoặc đã hết hạn!" });
+    }
+
+    if (decoded.purpose !== "change-password-reset") {
+      return res.status(401).json({ message: "Token không hợp lệ!" });
+    }
+
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+      return res.status(400).json({ message: "Thiếu newPassword!" });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "Mật khẩu mới phải >= 6 ký tự!" });
+    }
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.findByIdAndUpdate(decoded.userId, { hashedPassword });
 
-    await User.findByIdAndUpdate(user._id, { hashedPassword });
-
-    // Đăng xuất toàn bộ thiết bị sau khi đổi mật khẩu
-    await Session.deleteMany({ userId: user._id });
-
+    // Đăng xuất toàn bộ thiết bị
+    await Session.deleteMany({ userId: decoded.userId });
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: true,
@@ -218,10 +302,11 @@ export const changePassword = async (req, res) => {
       message: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!",
     });
   } catch (error) {
-    console.error("Lỗi changePassword:", error);
+    console.error("Lỗi changePasswordReset:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
+// ═════════════════════════════════════════════
 
 // ═════════════════════════════════════════════
 // FORGOT PASSWORD
