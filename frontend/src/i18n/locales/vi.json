@@ -54,7 +54,17 @@
             "newPasswordMin": "Mật khẩu mới phải có ít nhất 6 ký tự",
             "confirmPasswordRequired": "Xác nhận mật khẩu",
             "confirmPasswordMismatch": "Xác nhận mật khẩu không khớp"
-        }
+        },
+        "emailSent": "Mật khẩu đúng. Email xác nhận đã được gửi, vui lòng kiểm tra hộp thư!",
+        "emailConfirmSuccess": "Xác nhận thành công! Vui lòng nhập mật khẩu mới.",
+        "resetSuccess": "Đổi mật khẩu thành công. Vui lòng đăng nhập lại!",
+        "emailSentTitle": "Kiểm tra hộp thư",
+        "emailSentDesc": "Chúng tôi đã gửi link xác nhận đến email đăng ký của bạn. Nhấn vào link để tiếp tục.",
+        "emailExpiry": "Link hết hạn sau 10 phút",
+        "tokenMissing": "Không tìm thấy token",
+        "tokenInvalid": "Link không hợp lệ hoặc đã hết hạn",
+        "newPasswordTitle": "Đặt mật khẩu mới",
+        "newPasswordDesc": "Nhập mật khẩu mới của bạn bên dưới"
     },
     "addFriend": {
         "title": "Thêm bạn",
@@ -170,5 +180,13 @@
     "status": {
         "online": "Trực tuyến",
         "offline": "Ngoại tuyến"
+    },
+    "common": {
+        "cancel": "Hủy",
+        "loading": "Đang xử lý...",
+        "continue": "Tiếp tục",
+        "close": "Đóng",
+        "backHome": "Về trang chủ",
+        "error": "Đã xảy ra lỗi, vui lòng thử lại"
     }
 }

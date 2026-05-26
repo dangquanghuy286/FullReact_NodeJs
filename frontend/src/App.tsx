@@ -8,6 +8,7 @@ import { useThemeStore } from "./stores/theme.strore";
 import { useEffect } from "react";
 import { useAuthStore } from "./stores/auth.store";
 import { useSocketStore } from "./stores/socket.store";
+import { ChangePasswordConfirmPage } from "./components/profile/ChangePasswordConfirmPage";
 function App() {
   const { isDarkMode, setTheme } = useThemeStore();
   const { accessToken } = useAuthStore();
@@ -32,6 +33,10 @@ function App() {
           {/* Public routes */}
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route
+            path="/change-password/confirm"
+            element={<ChangePasswordConfirmPage />}
+          />
           {/* Private routes */}
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<ChatAppPage />} />

@@ -54,7 +54,17 @@
             "newPasswordMin": "New password must be at least 6 characters",
             "confirmPasswordRequired": "Confirm password",
             "confirmPasswordMismatch": "Password confirmation does not match"
-        }
+        },
+        "emailSent": "Password correct. A confirmation email has been sent, please check your inbox!",
+        "emailConfirmSuccess": "Confirmed! Please enter your new password.",
+        "resetSuccess": "Password changed successfully. Please log in again!",
+        "emailSentTitle": "Check your email",
+        "emailSentDesc": "We sent a confirmation link to your registered email. Click the link to continue.",
+        "emailExpiry": "Link expires in 10 minutes",
+        "tokenMissing": "Token not found",
+        "tokenInvalid": "Link is invalid or has expired",
+        "newPasswordTitle": "Set new password",
+        "newPasswordDesc": "Enter your new password below"
     },
     "addFriend": {
         "title": "Add Friend",
@@ -170,5 +180,13 @@
     "status": {
         "online": "Online",
         "offline": "Offline"
+    },
+    "common": {
+        "cancel": "Cancel",
+        "loading": "Loading...",
+        "continue": "Continue",
+        "close": "Close",
+        "backHome": "Back to Home",
+        "error": "An error occurred, please try again"
     }
 }

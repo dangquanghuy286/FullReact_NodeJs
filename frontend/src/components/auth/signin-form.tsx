@@ -79,6 +79,16 @@ export function LoginForm({
                 {errors.password && (
                   <p className="error-message">{errors.password.message}</p>
                 )}
+
+                {/* Forgot Password */}
+                <div className="text-right">
+                  <Link
+                    to="/forgot-password"
+                    className="text-sm text-muted-foreground underline hover:text-primary"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
               </div>
 
               {/* Submit Button */}
