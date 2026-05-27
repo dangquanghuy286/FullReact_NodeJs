@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import api from "@/lib/axios";
+import { toast } from "sonner";
 
 const usePasswordSchema = () => {
   const { t } = useTranslation();
@@ -52,8 +54,19 @@ export const SecurityTab = () => {
   });
 
   const onChangePassword = async (data: PasswordFormData) => {
-    console.log("Change password", data);
-    reset();
+    try {
+      await api.post("/auth/change-password", {
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
+      toast.success(t("security.changePassword.success"));
+      reset();
+    } catch (err: unknown) {
+      toast.error(
+        (err as { response?: { data?: { message?: string } } }).response?.data
+          ?.message || t("security.changePassword.error"),
+      );
+    }
   };
 
   return (

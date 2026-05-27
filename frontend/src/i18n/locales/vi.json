@@ -41,7 +41,9 @@
             "currentPassword": "Mật khẩu hiện tại",
             "newPassword": "Mật khẩu mới",
             "confirmPassword": "Xác nhận mật khẩu",
-            "submit": "Cập nhật mật khẩu"
+            "submit": "Cập nhật mật khẩu",
+            "success": "Đổi mật khẩu thành công!",
+            "error": "Đã xảy ra lỗi khi cập nhật mật khẩu của bạn. Vui lòng thử lại!"
         },
         "notificationSettings": "Cài đặt thông báo",
         "blockReport": "Chặn & Báo cáo",
