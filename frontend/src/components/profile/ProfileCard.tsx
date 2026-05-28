@@ -26,12 +26,10 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
       <div className="relative h-full">
         <div className="absolute inset-0 bg-gradient-to-br from-[#00c0d1] via-[#0096a8] to-[#005f6e]" />
 
-        {/* Geometric accent shapes */}
         <div className="absolute -top-8 -right-8 w-48 h-48 rounded-full bg-white/5 blur-sm" />
         <div className="absolute top-4 right-16 w-24 h-24 rounded-full bg-white/8" />
         <div className="absolute -bottom-6 left-1/3 w-36 h-36 rounded-full bg-[#00e5f7]/10" />
 
-        {/* Subtle diagonal stripe texture */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
