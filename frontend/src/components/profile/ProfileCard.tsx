@@ -38,7 +38,6 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
           }}
         />
 
-        {/* Content */}
         <CardContent className="relative h-full flex flex-col justify-end pb-5 px-5">
           <p className="absolute top-4 right-5 text-white/30 text-[10px] font-medium tracking-[0.2em] uppercase">
             {t("title.profile")}
@@ -57,7 +56,6 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
               <AvatarUploader />
             </div>
 
-            {/* Info */}
             <div className="flex flex-col gap-1.5 min-w-0 flex-1 pb-0.5">
               <div className="flex items-center gap-2.5 flex-wrap">
                 <h1 className="text-white text-2xl font-bold leading-tight tracking-tight drop-shadow-sm truncate">
@@ -81,7 +79,6 @@ const ProfileCard = ({ user }: ProfileCardProps) => {
                 </Badge>
               </div>
 
-              {/* Divider */}
               <div className="w-10 h-[2px] rounded-full bg-white/30" />
 
               <p className="text-white/70 text-sm leading-snug max-w-sm truncate">

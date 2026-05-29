@@ -30,7 +30,6 @@ const ProfileDialog = ({ open, setOpen }: ProfileDialogProps) => {
               <ProfileCard user={user} />
             </DialogHeader>
 
-            {/* Tabs section */}
             <ProfileSettingsTabs />
           </div>
         </div>
