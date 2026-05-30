@@ -81,14 +81,12 @@ export const SecurityTab = () => {
         </div>
       </div>
 
-      {/* Change Password */}
       <form onSubmit={handleSubmit(onChangePassword)} className="space-y-3">
         <div className="flex items-center gap-2 text-sm font-medium">
           <Lock className="size-4" />
           {t("security.changePassword.label")}
         </div>
 
-        {/* Current Password */}
         <div className="space-y-1.5">
           <Label>{t("security.changePassword.currentPassword")}</Label>
           <div className="relative">
@@ -182,7 +180,6 @@ export const SecurityTab = () => {
 
       <Separator />
 
-      {/* Danger Zone */}
       <div className="pt-2">
         <p className="text-xs font-semibold text-destructive uppercase tracking-wider mb-2">
           {t("security.dangerZone.label")}
