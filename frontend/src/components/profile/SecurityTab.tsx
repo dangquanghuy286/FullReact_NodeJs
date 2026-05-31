@@ -170,16 +170,12 @@ export const SecurityTab = () => {
         <Bell className="size-4 group-hover:text-[#00c0d1]" />
         {t("security.notificationSettings")}
       </button>
-
       <Separator />
-
       <button className="w-full flex items-center gap-3  text-sm hover:text-[#00a0b0] transition-colors group">
         <ShieldOff className="size-4 group-hover:text-[#00c0d1]" />
         {t("security.blockReport")}
       </button>
-
       <Separator />
-
       <div className="pt-2">
         <p className="text-xs font-semibold text-destructive uppercase tracking-wider mb-2">
           {t("security.dangerZone.label")}
