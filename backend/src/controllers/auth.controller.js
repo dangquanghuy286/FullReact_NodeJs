@@ -169,8 +169,7 @@ export const refreshToken = async (req, res) => {
 };
 
 // ═════════════════════════════════════════════
-// CHANGE PASSWORD (đã đăng nhập — không cần OTP)
-// POST /change-password
+// CHANGE PASSWORD
 // POST /change-password
 export const changePassword = async (req, res) => {
   try {
@@ -208,9 +207,7 @@ export const changePassword = async (req, res) => {
 
 // ═════════════════════════════════════════════
 // FORGOT PASSWORD
-// ═════════════════════════════════════════════
-
-// Bước 1: Nhập email hoặc username → gửi OTP
+// ════════════════════════════════════════════
 // POST /forgot-password/send-otp
 export const forgotSendOTP = async (req, res) => {
   try {
@@ -254,7 +251,6 @@ export const forgotSendOTP = async (req, res) => {
   }
 };
 
-// Bước 2: Xác thực OTP
 // POST /forgot-password/verify-otp
 export const forgotVerifyOTP = async (req, res) => {
   try {
