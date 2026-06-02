@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-// User schema for authentication and profile
+
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -37,10 +37,19 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      sparse: true, // cho phép null nhưng không cho trùng
+      sparse: true,
+    },
+    isDeactivated: {
+      type: Boolean,
+      default: false,
+    },
+    deactivatedAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true },
 );
+
 const User = mongoose.model("User", userSchema, "user");
 export default User;

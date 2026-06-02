@@ -8,6 +8,7 @@ import {
   forgotVerifyOTP,
   forgotResetPassword,
   changePassword,
+  deactivateAccount,
 } from "../controllers/auth.controller.js";
 import { protectedRoute } from "../middlewares/auth.middleware.js";
 
@@ -26,5 +27,6 @@ router.post("/change-password", protectedRoute, changePassword); // ← 1 route 
 router.post("/forgot-password/send-otp", forgotSendOTP);
 router.post("/forgot-password/verify-otp", forgotVerifyOTP);
 router.post("/forgot-password/reset-password", forgotResetPassword);
-
+// ─ Deactivate Account ───────────────────────
+router.patch("/deactivate-account", deactivateAccount);
 export default router;

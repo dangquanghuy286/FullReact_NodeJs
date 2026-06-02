@@ -77,6 +77,11 @@ export const signIn = async (req, res) => {
         .json({ message: "Username hoặc password không chính xác!" });
     }
 
+    if (user.isDeactivated) {
+      return res.status(403).json({
+        message: "Tài khoản đã bị vô hiệu hóa. Liên hệ hỗ trợ để khôi phục!",
+      });
+    }
     const accessToken = jwt.sign(
       { userId: user._id },
       process.env.ACCESS_TOKEN,
@@ -366,5 +371,49 @@ export const forgotResetPassword = async (req, res) => {
   } catch (error) {
     console.error("Lỗi forgotResetPassword:", error);
     return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+// DELETE /user/deactivate-account
+export const deactivateAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { password } = req.body;
+
+    if (!password) {
+      return res
+        .status(400)
+        .json({ message: "Vui lòng nhập mật khẩu để xác nhận!" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Người dùng không tồn tại!" });
+    }
+
+    const isCorrect = await bcrypt.compare(password, user.hashedPassword);
+    if (!isCorrect) {
+      return res.status(401).json({ message: "Mật khẩu không chính xác!" });
+    }
+
+    // Đánh dấu vô hiệu hóa
+    await User.findByIdAndUpdate(userId, {
+      isDeactivated: true,
+      deactivatedAt: new Date(),
+    });
+
+    // Kick toàn bộ sessions hiện tại
+    await Session.deleteMany({ userId });
+    await OTP.deleteMany({ userId });
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+
+    return res.status(200).json({ message: "Tài khoản đã bị vô hiệu hóa!" });
+  } catch (error) {
+    console.error("Lỗi deactivateAccount:", error);
+    return res.status(500).json({ message: "Lỗi server!" });
   }
 };
