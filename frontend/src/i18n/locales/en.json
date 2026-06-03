@@ -49,7 +49,7 @@
         "blockReport": "Block & Report",
         "dangerZone": {
             "label": "Danger Zone",
-            "deleteAccount": "Delete Account"
+            "deleteAccount": "Lock Account"
         },
         "validation": {
             "currentPasswordRequired": "Enter current password",

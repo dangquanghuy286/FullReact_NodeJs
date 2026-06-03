@@ -49,7 +49,7 @@
         "blockReport": "Chặn & Báo cáo",
         "dangerZone": {
             "label": "Vùng nguy hiểm",
-            "deleteAccount": "Xóa tài khoản"
+            "deleteAccount": "Khóa tài khoản"
         },
         "validation": {
             "currentPasswordRequired": "Nhập mật khẩu hiện tại",
