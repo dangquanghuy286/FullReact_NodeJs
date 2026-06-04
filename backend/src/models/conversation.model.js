@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-// Participant schema for conversation members
+// Participant
 const participantSchema = new mongoose.Schema(
   {
     userId: {
