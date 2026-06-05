@@ -7,7 +7,7 @@ import {
 } from "../controllers/user.controller.js";
 
 import { upload } from "../middlewares/upload.middleware.js";
-// User routes
+
 const router = express.Router();
 
 router.get("/profile", getProfile);
