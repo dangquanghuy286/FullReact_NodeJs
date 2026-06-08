@@ -21,7 +21,7 @@ router.post("/signout", signOut);
 router.get("/refresh", refreshToken);
 
 // ─── Change Password ────────────────────────
-router.post("/change-password", protectedRoute, changePassword); // ← 1 route duy nhất
+router.post("/change-password", protectedRoute, changePassword);
 
 // ─── Forgot Password ────────────────────────
 router.post("/forgot-password/send-otp", forgotSendOTP);
