@@ -1,6 +1,6 @@
 # 💬 FullReact_NodeJs – Realtime Chat Application
 
-A **fullstack realtime chat application** built with **Node.js, React, TypeScript, Socket.IO, and MongoDB**, featuring a modern and clean UI using **Tailwind CSS + shadcn/ui**.
+A **fullstack realtime chat application** built with **Node.js, React, TypeScript, Socket.IO, and MongoDB**, featuring a modern and clean UI using **Tailwind CSS + shadcn/ui**, with full **internationalization (i18n)** support.
 
 ---
 
@@ -13,10 +13,11 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 * 🔔 **Instant realtime notifications**
 * 🔐 **Authentication & authorization** with JWT
 * 🕒 **Message timestamps**
-* 📧 **Email service** (account verification & notifications)
+* 📧 **Email service** (account verification & notifications via Nodemailer)
 * 👤 **User profile management**
 * 🔍 **Fast user search**
 * ✅ **Realtime online / offline status**
+* 🌍 **Multi-language support** via i18n (Vietnamese & English)
 
 ---
 
@@ -29,12 +30,14 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 * **shadcn/ui** – Modern UI component library
 * **Zustand / Context API** – State management
 * **Socket.IO Client** – Realtime communication
+* **i18next + react-i18next** – Internationalization (i18n)
 
 ### Backend
 
 * **Node.js** + **Express.js**
 * **Socket.IO** – WebSocket-based realtime engine
 * **TypeScript** – Type-safe development
+* **i18next** – Server-side i18n for email templates & API messages
 
 ### Database
 
@@ -50,6 +53,16 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 ### Email Service
 
 * **Nodemailer** – Email verification & notifications
+* HTML email templates with multi-language support (i18n)
+* Supports Gmail / SMTP providers
+
+### Internationalization (i18n)
+
+* **i18next** – Core i18n framework (frontend & backend)
+* **react-i18next** – React bindings
+* **i18next-browser-languagedetector** – Auto-detect browser language
+* **i18next-http-backend** – Lazy-load translation files
+* Supported languages: 🇻🇳 Vietnamese, 🇺🇸 English
 
 ### Others
 
@@ -58,8 +71,6 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 * **dotenv** for environment variables
 
 ---
-
-
 
 ## 🚀 Installation & Setup
 
@@ -98,6 +109,16 @@ ACCESS_TOKEN=your_accesstoken
 
 # Frontend URL
 CLIENT_URL=http://localhost:5173
+
+# Nodemailer (Email Service)
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USER=your_email@gmail.com
+MAIL_PASS=your_app_password
+MAIL_FROM="FullChat App <your_email@gmail.com>"
+
+# i18n
+DEFAULT_LANGUAGE=vi
 ```
 
 Run the backend server:
@@ -126,6 +147,7 @@ Create a `.env` file inside the `client` folder:
 ```env
 VITE_API_URL=http://localhost:5000/api
 VITE_SOCKET_URL=http://localhost:5000
+VITE_DEFAULT_LANGUAGE=vi
 ```
 
 Run the frontend:
@@ -142,23 +164,102 @@ http://localhost:5173
 
 ---
 
+## 🌍 Internationalization (i18n)
+
+Translation files are located at `client/public/locales/`:
+
+```
+public/
+  locales/
+    en/
+      translation.json
+    vi/
+      translation.json
+```
+
+Example `translation.json`:
+
+```json
+{
+  "auth": {
+    "login": "Đăng nhập",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất"
+  },
+  "chat": {
+    "placeholder": "Nhập tin nhắn...",
+    "send": "Gửi"
+  },
+  "email": {
+    "verifySubject": "Xác minh tài khoản của bạn",
+    "verifyBody": "Nhấn vào liên kết để xác minh tài khoản."
+  }
+}
+```
+
+To switch language programmatically:
+
+```typescript
+import { useTranslation } from 'react-i18next';
+
+const { t, i18n } = useTranslation();
+i18n.changeLanguage('en'); // or 'vi'
+```
+
+---
+
+## 📧 Email Service (Nodemailer)
+
+Nodemailer is used for:
+
+* ✅ Account verification emails
+* 🔑 Password reset emails
+* 🔔 Chat notifications (optional)
+
+Email templates support i18n and are rendered as HTML.
+
+Example usage in backend:
+
+```typescript
+import transporter from './mailer';
+import i18next from 'i18next';
+
+await transporter.sendMail({
+  from: process.env.MAIL_FROM,
+  to: user.email,
+  subject: i18next.t('email.verifySubject'),
+  html: `<p>${i18next.t('email.verifyBody')}</p>`,
+});
+```
+
+> ⚠️ For Gmail, you must enable **App Password** in your Google account settings.
+
+---
+
 ## 📝 API Endpoints
 
 ### Authentication
+
 * `POST /api/auth/signup` – Register a new account
 * `POST /api/auth/signin` – Login
 * `POST /api/auth/signout` – Logout
 * `GET /api/auth/refresh` – RefreshToken
+* `POST /api/auth/verify-email` – Verify email via token
+* `POST /api/auth/forgot-password` – Send password reset email
+* `POST /api/auth/reset-password` – Reset password
 
 ### User
+
 * `GET /api/user/profile` – Get Profile
 
 ### Friend
+
 * `POST /api/friend/requests` – Add RequestFriend
 * `POST /api/friend/requests/:requestId/accept` – Accept RequestFriend
 * `POST /api/friend/requests/:requestId/decline` – Decline RequestFriend
 
 ### Messages
+
 * `POST /api/messages/direct` – Fetch messages
 * `POST /api/messages/group` – Fetch messages
 
@@ -205,8 +306,6 @@ http://localhost:5173
 
 ---
 
-
 ## 👨‍💻 Author
 
 **Đặng Hữu Quang Huy**
-
