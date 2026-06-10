@@ -9,6 +9,8 @@ import {
   forgotResetPassword,
   changePassword,
   deactivateAccount,
+  recoverVerifyOTP,
+  recoverResendOTP,
 } from "../controllers/auth.controller.js";
 import { protectedRoute } from "../middlewares/auth.middleware.js";
 
@@ -29,4 +31,7 @@ router.post("/forgot-password/verify-otp", forgotVerifyOTP);
 router.post("/forgot-password/reset-password", forgotResetPassword);
 // ─ Deactivate Account
 router.patch("/deactivate-account", deactivateAccount);
+// ─── Recover Account ────────────────────────
+router.post("/recover-account/verify-otp", recoverVerifyOTP);
+router.post("/recover-account/resend-otp", recoverResendOTP);
 export default router;

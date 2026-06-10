@@ -54,6 +54,8 @@ export const signUp = async (req, res) => {
 
 // ─────────────────────────────────────────────
 // User login
+// * signIn phát hiện isDeactivated → tự động gửi OTP
+
 // ─────────────────────────────────────────────
 export const signIn = async (req, res) => {
   try {
@@ -77,9 +79,24 @@ export const signIn = async (req, res) => {
         .json({ message: "Username hoặc password không chính xác!" });
     }
 
+    // Tài khoản bị khóa → gửi OTP khôi phục thay vì báo lỗi cứng
     if (user.isDeactivated) {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+      await OTP.deleteMany({ userId: user._id });
+      await OTP.create({
+        userId: user._id,
+        otp,
+        verified: false,
+        expiresAt: new Date(Date.now() + OTP_TTL),
+      });
+
+      await sendOTPEmail(user.email, otp);
+
       return res.status(403).json({
-        message: "Tài khoản đã bị vô hiệu hóa. Liên hệ hỗ trợ để khôi phục!",
+        message:
+          "Tài khoản đã bị vô hiệu hóa. OTP khôi phục đã được gửi tới email đăng ký.",
+        code: "ACCOUNT_DEACTIVATED",
       });
     }
     const accessToken = jwt.sign(
@@ -415,5 +432,109 @@ export const deactivateAccount = async (req, res) => {
   } catch (error) {
     console.error("Lỗi deactivateAccount:", error);
     return res.status(500).json({ message: "Lỗi server!" });
+  }
+};
+
+// ═════════════════════════════════════════════
+// RECOVER ACCOUNT (khôi phục tài khoản bị khóa)
+// ═════════════════════════════════════════════
+
+// Verify OTP khôi phục
+// POST /recover-account/verify-otp
+export const recoverVerifyOTP = async (req, res) => {
+  try {
+    const { username, otp } = req.body;
+
+    if (!username || !otp) {
+      return res
+        .status(400)
+        .json({ message: "Vui lòng nhập username và OTP!" });
+    }
+
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ message: "Tài khoản không tồn tại!" });
+    }
+
+    if (!user.isDeactivated) {
+      return res
+        .status(400)
+        .json({ message: "Tài khoản không ở trạng thái bị khóa!" });
+    }
+
+    const otpRecord = await OTP.findOne({ userId: user._id });
+
+    if (!otpRecord) {
+      return res.status(400).json({
+        message: "OTP không tồn tại! Vui lòng đăng nhập lại để nhận OTP mới.",
+      });
+    }
+
+    if (otpRecord.expiresAt < new Date()) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res.status(400).json({
+        message: "OTP đã hết hạn! Vui lòng đăng nhập lại để nhận OTP mới.",
+      });
+    }
+
+    if (otpRecord.otp !== otp) {
+      return res.status(400).json({ message: "OTP không chính xác!" });
+    }
+
+    // Khôi phục tài khoản
+    await User.findByIdAndUpdate(user._id, {
+      isDeactivated: false,
+      deactivatedAt: null,
+    });
+
+    // Dọn OTP
+    await OTP.deleteOne({ _id: otpRecord._id });
+
+    return res.status(200).json({
+      message: "Tài khoản đã được khôi phục! Vui lòng đăng nhập lại.",
+    });
+  } catch (error) {
+    console.error("Lỗi recoverVerifyOTP:", error);
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+// Gửi lại OTP nếu hết hạn
+// POST /recover-account/resend-otp
+export const recoverResendOTP = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (!username) {
+      return res.status(400).json({ message: "Vui lòng nhập username!" });
+    }
+
+    const user = await User.findOne({ username });
+
+    // Không lộ thông tin nếu không tìm thấy
+    if (!user || !user.isDeactivated) {
+      return res.status(200).json({
+        message: "Nếu tài khoản hợp lệ, OTP đã được gửi tới email đăng ký.",
+      });
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await OTP.deleteMany({ userId: user._id });
+    await OTP.create({
+      userId: user._id,
+      otp,
+      verified: false,
+      expiresAt: new Date(Date.now() + OTP_TTL),
+    });
+
+    await sendOTPEmail(user.email, otp);
+
+    return res.status(200).json({
+      message: "Nếu tài khoản hợp lệ, OTP đã được gửi tới email đăng ký.",
+    });
+  } catch (error) {
+    console.error("Lỗi recoverResendOTP:", error);
+    return res.status(500).json({ message: "Lỗi server" });
   }
 };
