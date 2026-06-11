@@ -436,7 +436,7 @@ export const deactivateAccount = async (req, res) => {
 };
 
 // ═════════════════════════════════════════════
-// RECOVER ACCOUNT (khôi phục tài khoản bị khóa)
+// RECOVER ACCOUNT 
 // ═════════════════════════════════════════════
 
 // Verify OTP khôi phục
