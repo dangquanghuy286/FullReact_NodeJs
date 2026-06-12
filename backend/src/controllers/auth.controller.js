@@ -435,11 +435,9 @@ export const deactivateAccount = async (req, res) => {
   }
 };
 
-// ═════════════════════════════════════════════
-// RECOVER ACCOUNT 
-// ═════════════════════════════════════════════
+// RECOVER ACCOUNT
 
-// Verify OTP khôi phục
+//***/ Verify OTP khôi phục
 // POST /recover-account/verify-otp
 export const recoverVerifyOTP = async (req, res) => {
   try {
@@ -499,7 +497,7 @@ export const recoverVerifyOTP = async (req, res) => {
   }
 };
 
-// Gửi lại OTP nếu hết hạn
+//***/ Gửi lại OTP nếu hết hạn
 // POST /recover-account/resend-otp
 export const recoverResendOTP = async (req, res) => {
   try {
