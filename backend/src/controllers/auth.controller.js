@@ -189,7 +189,7 @@ export const refreshToken = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
-
+// ────────────────────────────────────────────
 // CHANGE PASSWORD
 // POST /change-password
 export const changePassword = async (req, res) => {
@@ -224,7 +224,7 @@ export const changePassword = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
-
+// ────────────────────────────────────────────
 // FORGOT PASSWORD
 
 // POST /forgot-password/send-otp
