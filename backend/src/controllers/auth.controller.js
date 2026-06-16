@@ -54,7 +54,6 @@ export const signUp = async (req, res) => {
 
 // ─────────────────────────────────────────────
 // User login
-// * signIn phát hiện isDeactivated → tự động gửi OTP
 
 // ─────────────────────────────────────────────
 export const signIn = async (req, res) => {
@@ -191,7 +190,6 @@ export const refreshToken = async (req, res) => {
 };
 // ────────────────────────────────────────────
 // CHANGE PASSWORD
-// POST /change-password
 export const changePassword = async (req, res) => {
   try {
     const user = req.user; // từ protectedRoute
@@ -226,8 +224,6 @@ export const changePassword = async (req, res) => {
 };
 // ────────────────────────────────────────────
 // FORGOT PASSWORD
-
-// POST /forgot-password/send-otp
 export const forgotSendOTP = async (req, res) => {
   try {
     const { email, username } = req.body;
@@ -269,8 +265,6 @@ export const forgotSendOTP = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
-
-// POST /forgot-password/verify-otp
 export const forgotVerifyOTP = async (req, res) => {
   try {
     const { email, username, otp } = req.body;
@@ -322,8 +316,6 @@ export const forgotVerifyOTP = async (req, res) => {
   }
 };
 
-// Bước 3: Đặt lại mật khẩu mới
-// POST /forgot-password/reset-password
 export const forgotResetPassword = async (req, res) => {
   try {
     // Lấy reset token từ header
@@ -387,7 +379,7 @@ export const forgotResetPassword = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
-// DELETE /user/deactivate-account
+
 export const deactivateAccount = async (req, res) => {
   try {
     const userId = req.user._id;
