@@ -6,18 +6,18 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 
 ## ✨ Features
 
-* 💬 **Realtime messaging** powered by Socket.IO
-* 😀 **Rich emoji support**
-* 📎 **Send images & file attachments**
-* 👥 **One-to-one & group chats**
-* 🔔 **Instant realtime notifications**
-* 🔐 **Authentication & authorization** with JWT
-* 🕒 **Message timestamps**
-* 📧 **Email service** (account verification & notifications via Nodemailer)
-* 👤 **User profile management**
-* 🔍 **Fast user search**
-* ✅ **Realtime online / offline status**
-* 🌍 **Multi-language support** via i18n (Vietnamese & English)
+- 💬 **Realtime messaging** powered by Socket.IO
+- 😀 **Rich emoji support**
+- 📎 **Send images & file attachments**
+- 👥 **One-to-one & group chats**
+- 🔔 **Instant realtime notifications**
+- 🔐 **Authentication & authorization** with JWT
+- 🕒 **Message timestamps**
+- 📧 **Email service** (account verification & notifications via Nodemailer)
+- 👤 **User profile management**
+- 🔍 **Fast user search**
+- ✅ **Realtime online / offline status**
+- 🌍 **Multi-language support** via i18n (Vietnamese & English)
 
 ---
 
@@ -25,50 +25,50 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 
 ### Frontend
 
-* **React 18** with TypeScript
-* **Tailwind CSS** – Utility-first CSS framework
-* **shadcn/ui** – Modern UI component library
-* **Zustand / Context API** – State management
-* **Socket.IO Client** – Realtime communication
-* **i18next + react-i18next** – Internationalization (i18n)
+- **React 18** with TypeScript
+- **Tailwind CSS** – Utility-first CSS framework
+- **shadcn/ui** – Modern UI component library
+- **Zustand / Context API** – State management
+- **Socket.IO Client** – Realtime communication
+- **i18next + react-i18next** – Internationalization (i18n)
 
 ### Backend
 
-* **Node.js** + **Express.js**
-* **Socket.IO** – WebSocket-based realtime engine
-* **TypeScript** – Type-safe development
-* **i18next** – Server-side i18n for email templates & API messages
+- **Node.js** + **Express.js**
+- **Socket.IO** – WebSocket-based realtime engine
+- **TypeScript** – Type-safe development
+- **i18next** – Server-side i18n for email templates & API messages
 
 ### Database
 
-* **MongoDB** with **Mongoose ODM**
-* Optimized schema design for chat applications
+- **MongoDB** with **Mongoose ODM**
+- Optimized schema design for chat applications
 
 ### Authentication & Security
 
-* **JWT** (JSON Web Tokens)
-* **bcrypt** – Password hashing
-* HTTP-only cookies
+- **JWT** (JSON Web Tokens)
+- **bcrypt** – Password hashing
+- HTTP-only cookies
 
 ### Email Service
 
-* **Nodemailer** – Email verification & notifications
-* HTML email templates with multi-language support (i18n)
-* Supports Gmail / SMTP providers
+- **Nodemailer** – Email verification & notifications
+- HTML email templates with multi-language support (i18n)
+- Supports Gmail / SMTP providers
 
 ### Internationalization (i18n)
 
-* **i18next** – Core i18n framework (frontend & backend)
-* **react-i18next** – React bindings
-* **i18next-browser-languagedetector** – Auto-detect browser language
-* **i18next-http-backend** – Lazy-load translation files
-* Supported languages: 🇻🇳 Vietnamese, 🇺🇸 English
+- **i18next** – Core i18n framework (frontend & backend)
+- **react-i18next** – React bindings
+- **i18next-browser-languagedetector** – Auto-detect browser language
+- **i18next-http-backend** – Lazy-load translation files
+- Supported languages: 🇻🇳 Vietnamese, 🇺🇸 English
 
 ### Others
 
-* **RESTful API** architecture
-* **CORS** configuration
-* **dotenv** for environment variables
+- **RESTful API** architecture
+- **CORS** configuration
+- **dotenv** for environment variables
 
 ---
 
@@ -76,9 +76,9 @@ A **fullstack realtime chat application** built with **Node.js, React, TypeScrip
 
 ### System Requirements
 
-* **Node.js** >= 16.x
-* **MongoDB** >= 5.x
-* **npm** or **yarn**
+- **Node.js** >= 16.x
+- **MongoDB** >= 5.x
+- **npm** or **yarn**
 
 ---
 
@@ -177,33 +177,13 @@ public/
       translation.json
 ```
 
-Example `translation.json`:
-
-```json
-{
-  "auth": {
-    "login": "Đăng nhập",
-    "register": "Đăng ký",
-    "logout": "Đăng xuất"
-  },
-  "chat": {
-    "placeholder": "Nhập tin nhắn...",
-    "send": "Gửi"
-  },
-  "email": {
-    "verifySubject": "Xác minh tài khoản của bạn",
-    "verifyBody": "Nhấn vào liên kết để xác minh tài khoản."
-  }
-}
-```
-
 To switch language programmatically:
 
 ```typescript
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const { t, i18n } = useTranslation();
-i18n.changeLanguage('en'); // or 'vi'
+i18n.changeLanguage("en"); // or 'vi'
 ```
 
 ---
@@ -212,23 +192,23 @@ i18n.changeLanguage('en'); // or 'vi'
 
 Nodemailer is used for:
 
-* ✅ Account verification emails
-* 🔑 Password reset emails
-* 🔔 Chat notifications (optional)
+- ✅ Account verification emails
+- 🔑 Password reset emails
+- 🔔 Chat notifications (optional)
 
 Email templates support i18n and are rendered as HTML.
 
 Example usage in backend:
 
 ```typescript
-import transporter from './mailer';
-import i18next from 'i18next';
+import transporter from "./mailer";
+import i18next from "i18next";
 
 await transporter.sendMail({
   from: process.env.MAIL_FROM,
   to: user.email,
-  subject: i18next.t('email.verifySubject'),
-  html: `<p>${i18next.t('email.verifyBody')}</p>`,
+  subject: i18next.t("email.verifySubject"),
+  html: `<p>${i18next.t("email.verifyBody")}</p>`,
 });
 ```
 
@@ -240,34 +220,34 @@ await transporter.sendMail({
 
 ### Authentication
 
-* `POST /api/auth/signup` – Register a new account
-* `POST /api/auth/signin` – Login
-* `POST /api/auth/signout` – Logout
-* `GET /api/auth/refresh` – RefreshToken
-* `POST /api/auth/verify-email` – Verify email via token
-* `POST /api/auth/forgot-password` – Send password reset email
-* `POST /api/auth/reset-password` – Reset password
+- `POST /api/auth/signup` – Register a new account
+- `POST /api/auth/signin` – Login
+- `POST /api/auth/signout` – Logout
+- `GET /api/auth/refresh` – RefreshToken
+- `POST /api/auth/verify-email` – Verify email via token
+- `POST /api/auth/forgot-password` – Send password reset email
+- `POST /api/auth/reset-password` – Reset password
 
 ### User
 
-* `GET /api/user/profile` – Get Profile
+- `GET /api/user/profile` – Get Profile
 
 ### Friend
 
-* `POST /api/friend/requests` – Add RequestFriend
-* `POST /api/friend/requests/:requestId/accept` – Accept RequestFriend
-* `POST /api/friend/requests/:requestId/decline` – Decline RequestFriend
+- `POST /api/friend/requests` – Add RequestFriend
+- `POST /api/friend/requests/:requestId/accept` – Accept RequestFriend
+- `POST /api/friend/requests/:requestId/decline` – Decline RequestFriend
 
 ### Messages
 
-* `POST /api/messages/direct` – Fetch messages
-* `POST /api/messages/group` – Fetch messages
+- `POST /api/messages/direct` – Fetch messages
+- `POST /api/messages/group` – Fetch messages
 
 ### Conversations
 
-* `GET /api/conversation` – Get conversations
-* `POST /api/conversation` – Create a conversation
-* `GET /api/conversation/:conversationId/messages` – Conversation details
+- `GET /api/conversation` – Get conversations
+- `POST /api/conversation` – Create a conversation
+- `GET /api/conversation/:conversationId/messages` – Conversation details
 
 ---
 
@@ -275,34 +255,36 @@ await transporter.sendMail({
 
 ### Client → Server
 
-* `join_room` – Join chat room
-* `send_message` – Send message
-* `typing` – User is typing
-* `stop_typing` – Stop typing
+- `join_room` – Join chat room
+- `send_message` – Send message
+- `typing` – User is typing
+- `stop_typing` – Stop typing
 
 ### Server → Client
 
-* `receive_message` – Receive new message
-* `user_typing` – User typing indicator
-* `user_online` – User online
-* `user_offline` – User offline
+- `receive_message` – Receive new message
+- `user_typing` – User typing indicator
+- `user_online` – User online
+- `user_offline` – User offline
 
 ---
 
 ## 🎨 UI Components (shadcn/ui)
 
-* Button, Input, Textarea
-* Dialog, Sheet, Popover
-* Avatar, Badge, Card
-* Dropdown Menu, Toast
-* ScrollArea, Separator
-* And more...
+- Button, Input, Textarea
+- Dialog, Sheet, Popover
+- Avatar, Badge, Card
+- Dropdown Menu, Toast
+- ScrollArea, Separator
+- And more...
 
 ---
 
 ## 📸 Screenshots
 
-*(Add application screenshots here)*
+### 💬 Chat Application
+
+![FullReact_NodeJs Screenshot](https://res.cloudinary.com/dhl6tbhdh/image/upload/v1781711486/screencapture-localhost-5173-2026-06-17-22_49_16_whfb8t.png)
 
 ---
 
