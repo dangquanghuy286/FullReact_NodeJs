@@ -30,7 +30,7 @@ router.post("/forgot-password/send-otp", forgotSendOTP);
 router.post("/forgot-password/verify-otp", forgotVerifyOTP);
 router.post("/forgot-password/reset-password", forgotResetPassword);
 // ─ Deactivate Account
-router.patch("/deactivate-account", deactivateAccount);
+router.patch("/deactivate-account", protectedRoute, deactivateAccount);
 // ─── Recover Account ────────────────────────
 router.post("/recover-account/verify-otp", recoverVerifyOTP);
 router.post("/recover-account/resend-otp", recoverResendOTP);
