@@ -11,7 +11,10 @@ const userSchema = new mongoose.Schema(
     },
     hashedPassword: {
       type: String,
-      required: true,
+      required: function () {
+        // Không bắt buộc password nếu user đăng ký qua Google
+        return !this.googleId;
+      },
     },
     email: {
       type: String,
@@ -46,6 +49,17 @@ const userSchema = new mongoose.Schema(
     deactivatedAt: {
       type: Date,
       default: null,
+    },
+    // ─── Thêm cho Google OAuth ───────────────
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true, // cho phép null nhưng vẫn unique khi có giá trị
+    },
+    authProvider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
     },
   },
   { timestamps: true },

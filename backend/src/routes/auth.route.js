@@ -11,6 +11,7 @@ import {
   deactivateAccount,
   recoverVerifyOTP,
   recoverResendOTP,
+  googleSignIn,
 } from "../controllers/auth.controller.js";
 import { protectedRoute } from "../middlewares/auth.middleware.js";
 
@@ -21,7 +22,7 @@ router.post("/signup", signUp);
 router.post("/signin", signIn);
 router.post("/signout", signOut);
 router.get("/refresh", refreshToken);
-
+router.post("/googlesignin", googleSignIn);
 // ─── Change Password ────────────────────────
 router.post("/change-password", protectedRoute, changePassword);
 

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { sendChangePasswordEmail, sendOTPEmail } from "../libs/mailer.js";
 import OTP from "../models/otp.model.js";
-
+import { OAuth2Client } from "google-auth-library";
 const OTP_TTL = 5 * 60 * 1000;
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
@@ -523,5 +523,111 @@ export const recoverResendOTP = async (req, res) => {
   } catch (error) {
     console.error("Lỗi recoverResendOTP:", error);
     return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+// ────────────────────────────────────────────
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+// ─────────────────────────────────────────────
+// Đăng nhập / Đăng ký bằng Google
+// ─────────────────────────────────────────────
+export const googleSignIn = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({ message: "Thiếu idToken!" });
+    }
+
+    // Verify token với Google
+    let payload;
+    try {
+      const ticket = await googleClient.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch (err) {
+      console.error("Lỗi verify Google idToken:", err.message);
+      return res.status(401).json({ message: "Google token không hợp lệ!" });
+    }
+
+    const { sub: googleId, email, name, picture, email_verified } = payload;
+
+    if (!email_verified) {
+      return res
+        .status(401)
+        .json({ message: "Email Google chưa được xác thực!" });
+    }
+
+    // Tìm user theo googleId trước, sau đó theo email (để liên kết tài khoản cũ)
+    let user = await User.findOne({ googleId });
+
+    if (!user) {
+      user = await User.findOne({ email });
+
+      if (user) {
+        // Tài khoản đã tồn tại (đăng ký bằng local) → liên kết Google
+        user.googleId = googleId;
+        if (!user.avatarURL && picture) user.avatarURL = picture;
+        await user.save();
+      } else {
+        // Tạo user mới
+        // Sinh username duy nhất từ email
+        const baseUsername = email.split("@")[0].toLowerCase();
+        let username = baseUsername;
+        let suffix = 0;
+
+        while (await User.findOne({ username })) {
+          suffix += 1;
+          username = `${baseUsername}${suffix}`;
+        }
+
+        user = await User.create({
+          username,
+          email,
+          displayName: name || baseUsername,
+          avatarURL: picture,
+          googleId,
+          authProvider: "google",
+        });
+      }
+    }
+
+    if (user.isDeactivated) {
+      return res.status(403).json({
+        message:
+          "Tài khoản đã bị vô hiệu hóa. Vui lòng dùng tính năng khôi phục tài khoản.",
+        code: "ACCOUNT_DEACTIVATED",
+      });
+    }
+
+    const accessToken = jwt.sign(
+      { userId: user._id },
+      process.env.ACCESS_TOKEN,
+      { expiresIn: ACCESS_TOKEN_TTL },
+    );
+
+    const refreshToken = crypto.randomBytes(64).toString("hex");
+
+    await Session.create({
+      userId: user._id,
+      refreshToken,
+      expiresAt: new Date(Date.now() + REFRESH_TOKEN_TTL),
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: REFRESH_TOKEN_TTL,
+    });
+
+    return res.status(200).json({
+      message: `User ${user.displayName} đã đăng nhập thành công!`,
+      accessToken,
+    });
+  } catch (error) {
+    console.error("Lỗi khi gọi googleSignIn:", error);
+    return res.status(500).json({ message: "Lỗi server, thử lại sau" });
   }
 };
