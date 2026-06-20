@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
+import { GoogleLogin } from "@react-oauth/google";
 
 // Zod Schema
 const loginSchema = z.object({
@@ -21,7 +22,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { signIn } = useAuthStore();
+  const { signIn, googleSignIn } = useAuthStore();
   const navigate = useNavigate();
   const {
     register,
@@ -39,6 +40,18 @@ export function LoginForm({
     } catch (error) {
       // Login failed
       console.error("Login failed:", error);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: {
+    credential?: string;
+  }) => {
+    try {
+      if (!credentialResponse.credential) return;
+      await googleSignIn(credentialResponse.credential);
+      navigate("/");
+    } catch (error) {
+      console.error("Google login failed:", error);
     }
   };
 
@@ -95,6 +108,26 @@ export function LoginForm({
               <Button type="submit" className="w-full">
                 Login
               </Button>
+
+              {/* Separator */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              {/* Google Login */}
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => console.error("Google Login Failed")}
+                />
+              </div>
 
               {/* Footer */}
               <div className="text-center text-sm">

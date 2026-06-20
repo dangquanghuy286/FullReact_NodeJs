@@ -71,6 +71,23 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: false });
         }
       },
+      googleSignIn: async (idToken) => {
+        try {
+          set({ loading: true });
+          const { accessToken } = await authService.googleSignIn(idToken);
+          // Set token TRƯỚC, rồi mới clear các thứ khác (giống signIn)
+          set({ accessToken, user: null });
+          useChatStore.getState().reset();
+          await get().getProfile();
+          useChatStore.getState().fetchConversations();
+          toast.success("Signed in with Google successfully!");
+        } catch (error) {
+          toast.error("Google sign in failed!");
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
       signOut: async () => {
         try {
           get().clearState();
