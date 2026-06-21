@@ -24,6 +24,22 @@ export interface AuthState {
   getProfile: () => Promise<void>;
   refresh: () => Promise<void>;
   isRefreshing: boolean;
+  // ─────────────────────────────────────────────
+  // Forgot Password
+  // ─────────────────────────────────────────────
+  forgotSendOTP: (payload: {
+    email?: string;
+    username?: string;
+  }) => Promise<void>;
+  forgotVerifyOTP: (payload: {
+    email?: string;
+    username?: string;
+    otp: string;
+  }) => Promise<string>; // trả về resetToken
+  forgotResetPassword: (
+    resetToken: string,
+    newPassword: string,
+  ) => Promise<void>;
 }
 // Theme store
 export interface ThemeState {

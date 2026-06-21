@@ -60,4 +60,40 @@ export const authService = {
     );
     return res.data.accessToken;
   },
+
+  // ─────────────────────────────────────────────
+  // Forgot Password
+  // ─────────────────────────────────────────────
+  forgotSendOTP: async (payload: { email?: string; username?: string }) => {
+    const res = await api.post("/auth/forgot-password/send-otp", payload, {
+      withCredentials: true,
+    });
+    return res.data;
+  },
+
+  forgotVerifyOTP: async (payload: {
+    email?: string;
+    username?: string;
+    otp: string;
+  }) => {
+    const res = await api.post("/auth/forgot-password/verify-otp", payload, {
+      withCredentials: true,
+    });
+    // res.data = { message, resetToken }
+    return res.data;
+  },
+
+  forgotResetPassword: async (resetToken: string, newPassword: string) => {
+    const res = await api.post(
+      "/auth/forgot-password/reset-password",
+      { newPassword },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${resetToken}`,
+        },
+      },
+    );
+    return res.data;
+  },
 };

@@ -135,6 +135,52 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: false, isRefreshing: false });
         }
       },
+      // ─────────────────────────────────────────────
+      // Forgot Password
+      // ─────────────────────────────────────────────
+      forgotSendOTP: async (payload) => {
+        try {
+          set({ loading: true });
+          const { message } = await authService.forgotSendOTP(payload);
+          toast.success(message || "OTP sent! Please check your email.");
+        } catch (error) {
+          console.error(error);
+          toast.error("Could not send OTP. Please try again.");
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+      forgotVerifyOTP: async (payload) => {
+        try {
+          set({ loading: true });
+          const { resetToken } = await authService.forgotVerifyOTP(payload);
+          toast.success("OTP verified successfully!");
+          return resetToken;
+        } catch (error) {
+          console.error(error);
+          toast.error("Invalid or expired OTP.");
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
+      forgotResetPassword: async (resetToken, newPassword) => {
+        try {
+          set({ loading: true });
+          const { message } = await authService.forgotResetPassword(
+            resetToken,
+            newPassword,
+          );
+          toast.success(message || "Password reset successfully!");
+        } catch (error) {
+          console.error(error);
+          toast.error("Could not reset password. Please try again.");
+          throw error;
+        } finally {
+          set({ loading: false });
+        }
+      },
     }),
     {
       name: "auth-storage",

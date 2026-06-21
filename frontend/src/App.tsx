@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { useAuthStore } from "./stores/auth.store";
 import { useSocketStore } from "./stores/socket.store";
 
+import ForgotPasswordPage from "./pages/Forgotpass";
+
 function App() {
   const { isDarkMode, setTheme } = useThemeStore();
   const { accessToken } = useAuthStore();
@@ -33,6 +35,7 @@ function App() {
           {/* Public routes */}
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
           {/* Private routes */}
           <Route element={<ProtectedRoutes />}>
