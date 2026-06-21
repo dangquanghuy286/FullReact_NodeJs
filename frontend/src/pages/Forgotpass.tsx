@@ -1,4 +1,3 @@
-// app/forgot-password/page.tsx
 import { ForgotPasswordForm } from "@/components/auth/forgotpasswordform";
 import { AuthLayout } from "./AuthLayoutProps";
 

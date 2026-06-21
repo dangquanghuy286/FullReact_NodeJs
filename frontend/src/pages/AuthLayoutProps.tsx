@@ -1,4 +1,3 @@
-// components/auth/auth-layout.tsx
 import type { ReactNode } from "react";
 
 interface AuthLayoutProps {
