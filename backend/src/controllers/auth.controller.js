@@ -240,7 +240,8 @@ export const forgotSendOTP = async (req, res) => {
     // Trả về thành công ngay cả khi không tìm thấy (tránh lộ thông tin)
     if (!user) {
       return res.status(200).json({
-        message: "Nếu tài khoản tồn tại, OTP đã được gửi tới email đăng ký.",
+        message:
+          "If the account exists, an OTP has been sent to the registered email address.",
       });
     }
 
@@ -258,7 +259,8 @@ export const forgotSendOTP = async (req, res) => {
     await sendOTPEmail(user.email, otp);
 
     return res.status(200).json({
-      message: "Nếu tài khoản tồn tại, OTP đã được gửi tới email đăng ký.",
+      message:
+        "If the account exists, an OTP has been sent to the registered email address.",
     });
   } catch (error) {
     console.error("Lỗi forgotSendOTP:", error);
@@ -501,7 +503,8 @@ export const recoverResendOTP = async (req, res) => {
     // Không lộ thông tin nếu không tìm thấy
     if (!user || !user.isDeactivated) {
       return res.status(200).json({
-        message: "Nếu tài khoản hợp lệ, OTP đã được gửi tới email đăng ký.",
+        message:
+          "If the account exists, an OTP has been sent to the registered email address.",
       });
     }
 
@@ -518,7 +521,8 @@ export const recoverResendOTP = async (req, res) => {
     await sendOTPEmail(user.email, otp);
 
     return res.status(200).json({
-      message: "Nếu tài khoản hợp lệ, OTP đã được gửi tới email đăng ký.",
+      message:
+        "If the account exists, an OTP has been sent to the registered email address.",
     });
   } catch (error) {
     console.error("Lỗi recoverResendOTP:", error);

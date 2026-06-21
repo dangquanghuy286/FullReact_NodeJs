@@ -50,7 +50,6 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-    // ─── Thêm cho Google OAuth ───────────────
     googleId: {
       type: String,
       unique: true,
