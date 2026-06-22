@@ -1,4 +1,68 @@
 {
+    "auth": {
+        "login": {
+            "title": "Đăng nhập",
+            "subtitle": "Chào mừng bạn trở lại!",
+            "password": "Mật khẩu",
+            "forgotPassword": "Quên mật khẩu?",
+            "submit": "Đăng nhập",
+            "orContinueWith": "Hoặc tiếp tục với",
+            "noAccount": "Bạn chưa có tài khoản?",
+            "createAccount": "Tạo tài khoản",
+            "googleFailed": "Đăng nhập bằng Google thất bại"
+        },
+        "signup": {
+            "title": "Tạo tài khoản mới!",
+            "subtitle": "Chào mừng bạn trở lại!",
+            "firstName": "Tên",
+            "lastName": "Họ",
+            "password": "Mật khẩu",
+            "passwordHint": "Mật khẩu phải có ít nhất 8 ký tự và bao gồm cả chữ và số.",
+            "emailHint": "Chúng tôi sẽ dùng email này để liên hệ với bạn. Chúng tôi không chia sẻ email của bạn với bất kỳ ai.",
+            "submit": "Tạo tài khoản mới",
+            "orContinueWith": "Hoặc tiếp tục với",
+            "haveAccount": "Bạn đã có tài khoản?",
+            "signIn": "Đăng nhập",
+            "googleFailed": "Đăng ký bằng Google thất bại",
+            "termsPrefix": "Bằng việc nhấn Tiếp tục, bạn đồng ý với",
+            "termsOfService": "Điều khoản dịch vụ",
+            "and": "và",
+            "privacyPolicy": "Chính sách bảo mật"
+        },
+        "forgotPassword": {
+            "title": "Quên mật khẩu",
+            "subtitleRequest": "Nhập email hoặc tên đăng nhập để nhận mã OTP",
+            "subtitleOtp": "Nhập mã OTP đã được gửi đến email của bạn",
+            "subtitleReset": "Đặt mật khẩu mới của bạn",
+            "subtitleDone": "Hoàn tất!",
+            "steps": {
+                "account": "Tài khoản",
+                "verify": "Xác minh",
+                "newPassword": "Mật khẩu mới"
+            },
+            "identifier": "Email hoặc tên đăng nhập",
+            "identifierPlaceholder": "you@example.com hoặc tên đăng nhập",
+            "sendOtp": "Gửi OTP",
+            "sending": "Đang gửi...",
+            "otpCode": "Mã OTP",
+            "otpSentTo": "Mã OTP đã được gửi đến",
+            "otpExpiry": "Mã sẽ hết hạn sau 5 phút.",
+            "verifyOtp": "Xác minh OTP",
+            "verifying": "Đang xác minh...",
+            "resendPrompt": "Chưa nhận được mã?",
+            "resendOtp": "Gửi lại OTP",
+            "useDifferentAccount": "← Dùng tài khoản khác",
+            "newPassword": "Mật khẩu mới",
+            "confirmPassword": "Xác nhận mật khẩu",
+            "passwordHint": "Mật khẩu phải có ít nhất 8 ký tự và bao gồm cả chữ và số.",
+            "resetSubmit": "Đặt lại mật khẩu",
+            "resetting": "Đang đặt lại...",
+            "doneMessage": "Đổi mật khẩu thành công. Vui lòng đăng nhập bằng mật khẩu mới.",
+            "goToSignIn": "Đến trang đăng nhập",
+            "rememberPassword": "Bạn nhớ mật khẩu của mình?",
+            "signIn": "Đăng nhập"
+        }
+    },
     "config": {
         "title": "Tùy chỉnh ứng dụng",
         "subtitle": "Cá nhân hóa trải nghiệm chat của bạn",

@@ -1,4 +1,68 @@
 {
+    "auth": {
+        "login": {
+            "title": "Login",
+            "subtitle": "Welcome back!",
+            "password": "Password",
+            "forgotPassword": "Forgot password?",
+            "submit": "Login",
+            "orContinueWith": "Or continue with",
+            "noAccount": "Don't have an account?",
+            "createAccount": "Create account",
+            "googleFailed": "Google login failed"
+        },
+        "signup": {
+            "title": "Create a new account!",
+            "subtitle": "Welcome back!",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "password": "Password",
+            "passwordHint": "Password must be at least 8 characters and include both letters and numbers.",
+            "emailHint": "We will use this email to contact you. We will not share your email with anyone.",
+            "submit": "Create new account",
+            "orContinueWith": "Or continue with",
+            "haveAccount": "Already have an account?",
+            "signIn": "Sign In",
+            "googleFailed": "Google sign up failed",
+            "termsPrefix": "By clicking Continue, you agree to our",
+            "termsOfService": "Terms of Service",
+            "and": "and",
+            "privacyPolicy": "Privacy Policy"
+        },
+        "forgotPassword": {
+            "title": "Forgot password",
+            "subtitleRequest": "Enter your email or username to receive an OTP",
+            "subtitleOtp": "Enter the OTP sent to your email",
+            "subtitleReset": "Set your new password",
+            "subtitleDone": "All done!",
+            "steps": {
+                "account": "Account",
+                "verify": "Verify",
+                "newPassword": "New password"
+            },
+            "identifier": "Email or Username",
+            "identifierPlaceholder": "you@example.com or username",
+            "sendOtp": "Send OTP",
+            "sending": "Sending...",
+            "otpCode": "OTP Code",
+            "otpSentTo": "OTP sent to",
+            "otpExpiry": "It expires in 5 minutes.",
+            "verifyOtp": "Verify OTP",
+            "verifying": "Verifying...",
+            "resendPrompt": "Didn't receive the code?",
+            "resendOtp": "Resend OTP",
+            "useDifferentAccount": "← Use a different account",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm Password",
+            "passwordHint": "Password must be at least 8 characters and include both letters and numbers.",
+            "resetSubmit": "Reset Password",
+            "resetting": "Resetting...",
+            "doneMessage": "Your password has been reset successfully. Please sign in with your new password.",
+            "goToSignIn": "Go to Sign In",
+            "rememberPassword": "Remember your password?",
+            "signIn": "Sign In"
+        }
+    },
     "config": {
         "title": "App Preferences",
         "subtitle": "Personalize your chat experience",

@@ -10,6 +10,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
 import { GoogleLogin } from "@react-oauth/google";
 
+import { useTranslation } from "react-i18next";
+import { PasswordInput } from "../input/PasswordInput";
+
 // Zod Schema
 const loginSchema = z.object({
   username: z.string().min(1, "Please enter username"),
@@ -24,6 +27,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const { signIn, googleSignIn } = useAuthStore();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -51,7 +55,7 @@ export function LoginForm({
       await googleSignIn(credentialResponse.credential);
       navigate("/");
     } catch (error) {
-      console.error("Google login failed:", error);
+      console.error(t("auth.login.googleFailed"), error);
     }
   };
 
@@ -63,13 +67,15 @@ export function LoginForm({
             <div className="flex flex-col gap-6">
               {/* Header */}
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Login</h1>
-                <p className="text-muted-foreground text-sm">Welcome back!</p>
+                <h1 className="text-2xl font-bold">{t("auth.login.title")}</h1>
+                <p className="text-muted-foreground text-sm">
+                  {t("auth.login.subtitle")}
+                </p>
               </div>
 
               {/* Username */}
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">{t("account.username")}</Label>
                 <Input
                   id="username"
                   placeholder="username"
@@ -82,10 +88,9 @@ export function LoginForm({
 
               {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
+                <Label htmlFor="password">{t("auth.login.password")}</Label>
+                <PasswordInput
                   id="password"
-                  type="password"
                   placeholder="••••••••"
                   {...register("password")}
                 />
@@ -99,14 +104,14 @@ export function LoginForm({
                     to="/forgot-password"
                     className="text-sm text-muted-foreground underline hover:text-primary"
                   >
-                    Forgot password?
+                    {t("auth.login.forgotPassword")}
                   </Link>
                 </div>
               </div>
 
               {/* Submit Button */}
               <Button type="submit" className="w-full">
-                Login
+                {t("auth.login.submit")}
               </Button>
 
               {/* Separator */}
@@ -116,7 +121,7 @@ export function LoginForm({
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
+                    {t("auth.login.orContinueWith")}
                   </span>
                 </div>
               </div>
@@ -125,15 +130,15 @@ export function LoginForm({
               <div className="flex justify-center">
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
-                  onError={() => console.error("Google Login Failed")}
+                  onError={() => console.error(t("auth.login.googleFailed"))}
                 />
               </div>
 
               {/* Footer */}
               <div className="text-center text-sm">
-                Don't have an account?{" "}
+                {t("auth.login.noAccount")}{" "}
                 <Link to="/signup" className="underline hover:text-primary">
-                  Create account
+                  {t("auth.login.createAccount")}
                 </Link>
               </div>
             </div>

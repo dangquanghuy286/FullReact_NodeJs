@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
 import { GoogleLogin } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
+import { PasswordInput } from "../input/PasswordInput";
 
 // Zod Schema
 const signupSchema = z.object({
@@ -39,6 +41,7 @@ export function SignupForm({
 }: React.ComponentProps<"div">) {
   const { signUp, googleSignIn } = useAuthStore();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -63,7 +66,7 @@ export function SignupForm({
       await googleSignIn(credentialResponse.credential);
       navigate("/");
     } catch (error) {
-      console.error("Google sign up failed:", error);
+      console.error(t("auth.signup.googleFailed"), error);
     }
   };
 
@@ -74,23 +77,25 @@ export function SignupForm({
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Create a new account!</h1>
+                <h1 className="text-2xl font-bold">{t("auth.signup.title")}</h1>
                 <p className="text-muted-foreground text-sm text-balance">
-                  Welcome back!
+                  {t("auth.signup.subtitle")}
                 </p>
               </div>
 
               {/* First and Last Name */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name</Label>
+                  <Label htmlFor="firstName">
+                    {t("auth.signup.firstName")}
+                  </Label>
                   <Input id="firstName" {...register("firstName")} />
                   {errors.firstName && (
                     <p className="error-message">{errors.firstName.message}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="lastName">{t("auth.signup.lastName")}</Label>
                   <Input id="lastName" {...register("lastName")} />
                   {errors.lastName && (
                     <p className="error-message">{errors.lastName.message}</p>
@@ -100,7 +105,7 @@ export function SignupForm({
 
               {/* Username */}
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">{t("account.username")}</Label>
                 <Input
                   id="username"
                   placeholder="username"
@@ -113,7 +118,7 @@ export function SignupForm({
 
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("account.email")}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -124,17 +129,15 @@ export function SignupForm({
                   <p className="error-message">{errors.email.message}</p>
                 )}
                 <p className="text-sm text-muted-foreground">
-                  We will use this email to contact you. We will not share your
-                  email with anyone.
+                  {t("auth.signup.emailHint")}
                 </p>
               </div>
 
               {/* Password */}
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
+                <Label htmlFor="password">{t("auth.signup.password")}</Label>
+                <PasswordInput
                   id="password"
-                  type="password"
                   placeholder="••••••••"
                   {...register("password")}
                 />
@@ -142,14 +145,13 @@ export function SignupForm({
                   <p className="error-message">{errors.password.message}</p>
                 )}
                 <p className="text-sm text-muted-foreground">
-                  Password must be at least 8 characters and include both
-                  letters and numbers.
+                  {t("auth.signup.passwordHint")}
                 </p>
               </div>
 
               {/* Submit Button */}
               <Button type="submit" className="w-full">
-                Create new account
+                {t("auth.signup.submit")}
               </Button>
 
               {/* Separator */}
@@ -159,7 +161,7 @@ export function SignupForm({
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
+                    {t("auth.signup.orContinueWith")}
                   </span>
                 </div>
               </div>
@@ -168,15 +170,15 @@ export function SignupForm({
               <div className="flex justify-center">
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}
-                  onError={() => console.error("Google sign up failed")}
+                  onError={() => console.error(t("auth.signup.googleFailed"))}
                 />
               </div>
 
               {/* Footer */}
               <div className="text-center text-sm">
-                Already have an account?{" "}
+                {t("auth.signup.haveAccount")}{" "}
                 <Link to="/signin" className="underline hover:text-primary">
-                  Sign In
+                  {t("auth.signup.signIn")}
                 </Link>
               </div>
             </div>
@@ -200,13 +202,13 @@ export function SignupForm({
       </Card>
 
       <div className="px-6 text-center text-sm text-muted-foreground [&_a]:hover:text-primary">
-        By clicking Continue, you agree to our{" "}
+        {t("auth.signup.termsPrefix")}{" "}
         <a href="#" className="underline">
-          Terms of Service
+          {t("auth.signup.termsOfService")}
         </a>{" "}
-        and{" "}
+        {t("auth.signup.and")}{" "}
         <a href="#" className="underline">
-          Privacy Policy
+          {t("auth.signup.privacyPolicy")}
         </a>
         .
       </div>

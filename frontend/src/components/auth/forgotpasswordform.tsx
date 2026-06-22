@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/auth.store";
+import { useTranslation } from "react-i18next";
+import { PasswordInput } from "../input/PasswordInput";
 
 // ─────────────────────────────────────────────
 // Step 1: Nhập email hoặc username
@@ -52,18 +54,22 @@ type ResetFormData = z.infer<typeof resetSchema>;
 
 type Step = "request" | "otp" | "reset" | "done";
 
-const STEPS: { key: Step; label: string }[] = [
-  { key: "request", label: "Account" },
-  { key: "otp", label: "Verify" },
-  { key: "reset", label: "New password" },
-];
+function useSteps(): { key: Step; label: string }[] {
+  const { t } = useTranslation();
+  return [
+    { key: "request", label: t("auth.forgotPassword.steps.account") },
+    { key: "otp", label: t("auth.forgotPassword.steps.verify") },
+    { key: "reset", label: t("auth.forgotPassword.steps.newPassword") },
+  ];
+}
 
 function StepIndicator({ current }: { current: Step }) {
-  const currentIndex = STEPS.findIndex((s) => s.key === current);
+  const steps = useSteps();
+  const currentIndex = steps.findIndex((s) => s.key === current);
 
   return (
     <div className="flex items-center justify-center gap-2 mb-2">
-      {STEPS.map((step, index) => {
+      {steps.map((step, index) => {
         const isCompleted = index < currentIndex;
         const isActive = index === currentIndex;
 
@@ -82,7 +88,7 @@ function StepIndicator({ current }: { current: Step }) {
             >
               {isCompleted ? "✓" : index + 1}
             </div>
-            {index < STEPS.length - 1 && (
+            {index < steps.length - 1 && (
               <div
                 className={cn(
                   "h-px w-8 mx-1",
@@ -104,6 +110,7 @@ export function ForgotPasswordForm({
   const { forgotSendOTP, forgotVerifyOTP, forgotResetPassword } =
     useAuthStore();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [step, setStep] = useState<Step>("request");
   const [identifier, setIdentifier] = useState("");
@@ -194,13 +201,15 @@ export function ForgotPasswordForm({
             <div className="flex flex-col gap-6">
               {/* Header */}
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Forgot password</h1>
+                <h1 className="text-2xl font-bold">
+                  {t("auth.forgotPassword.title")}
+                </h1>
                 <p className="text-muted-foreground text-sm">
                   {step === "request" &&
-                    "Enter your email or username to receive an OTP"}
-                  {step === "otp" && "Enter the OTP sent to your email"}
-                  {step === "reset" && "Set your new password"}
-                  {step === "done" && "All done!"}
+                    t("auth.forgotPassword.subtitleRequest")}
+                  {step === "otp" && t("auth.forgotPassword.subtitleOtp")}
+                  {step === "reset" && t("auth.forgotPassword.subtitleReset")}
+                  {step === "done" && t("auth.forgotPassword.subtitleDone")}
                 </p>
               </div>
 
@@ -214,10 +223,14 @@ export function ForgotPasswordForm({
                   className="flex flex-col gap-6"
                 >
                   <div className="space-y-2">
-                    <Label htmlFor="identifier">Email or Username</Label>
+                    <Label htmlFor="identifier">
+                      {t("auth.forgotPassword.identifier")}
+                    </Label>
                     <Input
                       id="identifier"
-                      placeholder="you@example.com or username"
+                      placeholder={t(
+                        "auth.forgotPassword.identifierPlaceholder",
+                      )}
                       {...requestForm.register("identifier")}
                     />
                     {requestForm.formState.errors.identifier && (
@@ -232,7 +245,9 @@ export function ForgotPasswordForm({
                     className="w-full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Sending..." : "Send OTP"}
+                    {isSubmitting
+                      ? t("auth.forgotPassword.sending")
+                      : t("auth.forgotPassword.sendOtp")}
                   </Button>
                 </form>
               )}
@@ -244,7 +259,9 @@ export function ForgotPasswordForm({
                   className="flex flex-col gap-6"
                 >
                   <div className="space-y-2">
-                    <Label htmlFor="otp">OTP Code</Label>
+                    <Label htmlFor="otp">
+                      {t("auth.forgotPassword.otpCode")}
+                    </Label>
                     <Input
                       id="otp"
                       inputMode="numeric"
@@ -259,9 +276,9 @@ export function ForgotPasswordForm({
                       </p>
                     )}
                     <p className="text-sm text-muted-foreground">
-                      OTP sent to{" "}
-                      <span className="font-medium">{identifier}</span>. It
-                      expires in 5 minutes.
+                      {t("auth.forgotPassword.otpSentTo")}{" "}
+                      <span className="font-medium">{identifier}</span>.{" "}
+                      {t("auth.forgotPassword.otpExpiry")}
                     </p>
                   </div>
 
@@ -270,18 +287,20 @@ export function ForgotPasswordForm({
                     className="w-full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Verifying..." : "Verify OTP"}
+                    {isSubmitting
+                      ? t("auth.forgotPassword.verifying")
+                      : t("auth.forgotPassword.verifyOtp")}
                   </Button>
 
                   <div className="text-center text-sm">
-                    Didn't receive the code?{" "}
+                    {t("auth.forgotPassword.resendPrompt")}{" "}
                     <button
                       type="button"
                       onClick={handleResendOtp}
                       disabled={isSubmitting}
                       className="underline hover:text-primary disabled:opacity-50"
                     >
-                      Resend OTP
+                      {t("auth.forgotPassword.resendOtp")}
                     </button>
                   </div>
 
@@ -290,7 +309,7 @@ export function ForgotPasswordForm({
                     onClick={() => setStep("request")}
                     className="text-center text-sm text-muted-foreground underline hover:text-primary"
                   >
-                    ← Use a different account
+                    {t("auth.forgotPassword.useDifferentAccount")}
                   </button>
                 </form>
               )}
@@ -302,10 +321,11 @@ export function ForgotPasswordForm({
                   className="flex flex-col gap-6"
                 >
                   <div className="space-y-2">
-                    <Label htmlFor="newPassword">New Password</Label>
-                    <Input
+                    <Label htmlFor="newPassword">
+                      {t("auth.forgotPassword.newPassword")}
+                    </Label>
+                    <PasswordInput
                       id="newPassword"
-                      type="password"
                       placeholder="••••••••"
                       {...resetForm.register("newPassword")}
                     />
@@ -315,16 +335,16 @@ export function ForgotPasswordForm({
                       </p>
                     )}
                     <p className="text-sm text-muted-foreground">
-                      Password must be at least 8 characters and include both
-                      letters and numbers.
+                      {t("auth.forgotPassword.passwordHint")}
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
+                    <Label htmlFor="confirmPassword">
+                      {t("auth.forgotPassword.confirmPassword")}
+                    </Label>
+                    <PasswordInput
                       id="confirmPassword"
-                      type="password"
                       placeholder="••••••••"
                       {...resetForm.register("confirmPassword")}
                     />
@@ -340,7 +360,9 @@ export function ForgotPasswordForm({
                     className="w-full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Resetting..." : "Reset Password"}
+                    {isSubmitting
+                      ? t("auth.forgotPassword.resetting")
+                      : t("auth.forgotPassword.resetSubmit")}
                   </Button>
                 </form>
               )}
@@ -350,8 +372,7 @@ export function ForgotPasswordForm({
                 <div className="flex flex-col gap-6">
                   <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-center">
                     <p className="text-sm text-green-700">
-                      Your password has been reset successfully. Please sign in
-                      with your new password.
+                      {t("auth.forgotPassword.doneMessage")}
                     </p>
                   </div>
                   <Button
@@ -359,7 +380,7 @@ export function ForgotPasswordForm({
                     className="w-full"
                     onClick={() => navigate("/signin")}
                   >
-                    Go to Sign In
+                    {t("auth.forgotPassword.goToSignIn")}
                   </Button>
                 </div>
               )}
@@ -367,9 +388,9 @@ export function ForgotPasswordForm({
               {/* Footer */}
               {step !== "done" && (
                 <div className="text-center text-sm">
-                  Remember your password?{" "}
+                  {t("auth.forgotPassword.rememberPassword")}{" "}
                   <Link to="/signin" className="underline hover:text-primary">
-                    Sign In
+                    {t("auth.forgotPassword.signIn")}
                   </Link>
                 </div>
               )}

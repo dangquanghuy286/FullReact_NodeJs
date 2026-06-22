@@ -1,22 +1,16 @@
 import { useState } from "react";
-import { Sun, Moon, Globe } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { useThemeStore } from "@/stores/theme.strore";
 import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "../switch/LanguageSwitcher";
 
 export const ConfigTab = () => {
   const { isDarkMode, toggleTheme } = useThemeStore();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [showOnline, setShowOnline] = useState(true);
-
-  const currentLang = i18n.language;
-
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-    localStorage.setItem("lang", lang);
-  };
 
   return (
     <div className="space-y-5">
@@ -41,27 +35,7 @@ export const ConfigTab = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Globe className="size-4 text-muted-foreground" />
-
-          <button
-            onClick={() => changeLanguage("vi")}
-            className={`px-2 py-1 text-xs rounded ${
-              currentLang === "vi" ? "bg-[#00c0d1] text-white" : "bg-muted"
-            }`}
-          >
-            VI
-          </button>
-
-          <button
-            onClick={() => changeLanguage("en")}
-            className={`px-2 py-1 text-xs rounded ${
-              currentLang === "en" ? "bg-[#00c0d1] text-white" : "bg-muted"
-            }`}
-          >
-            EN
-          </button>
-        </div>
+        <LanguageSwitcher />
       </div>
 
       <Separator />
