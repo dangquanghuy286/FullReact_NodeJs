@@ -61,6 +61,10 @@
             "goToSignIn": "Go to Sign In",
             "rememberPassword": "Remember your password?",
             "signIn": "Sign In"
+        },
+        "logout": {
+            "announcement": "Logged out successfully",
+            "failed": "Sign out failed"
         }
     },
     "config": {

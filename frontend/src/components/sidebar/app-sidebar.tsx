@@ -12,21 +12,18 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Moon, Sun } from "lucide-react";
-import { Switch } from "../ui/switch";
 import CreateNewChat from "../chat/CreateNewChat";
 import NewGroupChatModel from "../chat/NewGroupChatModal";
 import GroupChatList from "../chat/GroupChatList";
 import AddFriendModal from "../chat/AddFriendModal";
 import DirectChatList from "../chat/DirectChatList";
-import { useThemeStore } from "@/stores/theme.strore";
 import { useAuthStore } from "@/stores/auth.store";
 import { NavUser } from "./nav-user";
 import { useTranslation } from "react-i18next";
+import { ThemeSwitch } from "../switch/ThemeSwitch";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { t } = useTranslation();
-  const { isDarkMode, toggleTheme } = useThemeStore();
   const { user } = useAuthStore();
 
   return (
@@ -43,15 +40,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <a href="#">
                 <div className="flex w-full items-center justify-between px-2">
                   <h1 className="text-lg font-bold text-white">ChatApp</h1>
-                  <div className="flex items-center gap-2">
-                    <Sun className="h-5 w-5 text-yellow-400 size-5" />
-                    <Switch
-                      checked={isDarkMode}
-                      onCheckedChange={toggleTheme}
-                      className="h-6 w-11 rounded-full bg-gray-300 data-[state=checked]:bg-[#009fb0] transition-colors [&>span]:h-5 [&>span]:w-5 [&>span]:rounded-full [&>span]:bg-white [&>span]:shadow-md [&>span]:transition-transform [&>span]:translate-x-0.5 data-[state=checked]:[&>span]:translate-x-5"
-                    />
-                    <Moon className="h-5 w-5 text-gray-600" />
-                  </div>
+                  <ThemeSwitch
+                    sunClassName="h-5 w-5 text-yellow-400 size-5"
+                    moonClassName="h-5 w-5 text-gray-600"
+                    switchClassName="h-6 w-11 rounded-full bg-gray-300 data-[state=checked]:bg-[#009fb0] transition-colors [&>span]:h-5 [&>span]:w-5 [&>span]:rounded-full [&>span]:bg-white [&>span]:shadow-md [&>span]:transition-transform [&>span]:translate-x-0.5 data-[state=checked]:[&>span]:translate-x-5"
+                  />
                 </div>
               </a>
             </SidebarMenuButton>

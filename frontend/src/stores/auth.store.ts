@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { toast } from "sonner";
+import i18next from "i18next";
 import { authService } from "@/services/auth.service";
 import type { AuthState } from "@/types/store";
 import { persist } from "zustand/middleware";
@@ -92,10 +93,10 @@ export const useAuthStore = create<AuthState>()(
         try {
           get().clearState();
           await authService.signOut();
-          toast.success("Logged out successfully");
+          toast.success(i18next.t("auth.logout.announcement"));
         } catch (error) {
           console.error(error);
-          toast.error("An error occurred while logging out!");
+          toast.error(i18next.t("auth.logout.failed"));
         }
       },
       getProfile: async () => {

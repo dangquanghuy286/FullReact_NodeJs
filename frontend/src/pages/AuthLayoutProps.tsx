@@ -1,4 +1,5 @@
 import { LanguageSwitcher } from "@/components/switch/LanguageSwitcher";
+import { ThemeSwitch } from "@/components/switch/ThemeSwitch";
 import type { ReactNode } from "react";
 
 interface AuthLayoutProps {
@@ -7,7 +8,7 @@ interface AuthLayoutProps {
 
 export const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <div className="min-h-screen w-full relative bg-white">
+    <div className="min-h-screen w-full relative bg-white dark:bg-background">
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -19,8 +20,13 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
         }}
       />
 
-      {/* Language switcher - top right, available on every auth screen */}
-      <div className="absolute top-4 right-4 z-20">
+      {/* Language & Theme switcher - top right, available on every auth screen */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-3">
+        <ThemeSwitch
+          sunClassName="size-4 text-yellow-500"
+          moonClassName="size-4 text-gray-500 dark:text-gray-300"
+          switchClassName="data-[state=checked]:bg-[#009fb0]"
+        />
         <LanguageSwitcher />
       </div>
 

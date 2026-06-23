@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Sun, Moon } from "lucide-react";
+
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { useThemeStore } from "@/stores/theme.strore";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "../switch/LanguageSwitcher";
+import { ThemeSwitch } from "../switch/ThemeSwitch";
 
 export const ConfigTab = () => {
-  const { isDarkMode, toggleTheme } = useThemeStore();
   const { t } = useTranslation();
 
   const [showOnline, setShowOnline] = useState(true);
@@ -49,17 +48,7 @@ export const ConfigTab = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Sun className="size-4 text-muted-foreground" />
-
-          <Switch
-            checked={isDarkMode}
-            onCheckedChange={toggleTheme}
-            className="data-[state=checked]:bg-[#00c0d1]"
-          />
-
-          <Moon className="size-4 text-muted-foreground" />
-        </div>
+        <ThemeSwitch />
       </div>
 
       <Separator />

@@ -61,6 +61,10 @@
             "goToSignIn": "Đến trang đăng nhập",
             "rememberPassword": "Bạn nhớ mật khẩu của mình?",
             "signIn": "Đăng nhập"
+        },
+        "logout": {
+            "announcement": "Đăng xuất thành công",
+            "failed": "Đăng xuất thất bại"
         }
     },
     "config": {
