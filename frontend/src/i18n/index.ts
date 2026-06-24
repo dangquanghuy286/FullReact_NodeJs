@@ -16,7 +16,7 @@ i18n
     fallbackLng: "en", // fallback nếu không tìm thấy key
     lng: localStorage.getItem("lang") || undefined, // ưu tiên lang đã lưu
     interpolation: {
-      escapeValue: false, // React đã tự escape XSS
+      escapeValue: false,
     },
     detection: {
       order: ["localStorage", "navigator"], // thứ tự detect
