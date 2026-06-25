@@ -13,8 +13,8 @@ i18n
       en: { translation: en },
       vi: { translation: vi },
     },
-    fallbackLng: "en", // fallback nếu không tìm thấy key
-    lng: localStorage.getItem("lang") || undefined, // ưu tiên lang đã lưu
+    fallbackLng: "en",
+    lng: localStorage.getItem("lang") || undefined,
     interpolation: {
       escapeValue: false,
     },
