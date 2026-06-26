@@ -6,10 +6,17 @@ import crypto from "crypto";
 import { sendChangePasswordEmail, sendOTPEmail } from "../libs/mailer.js";
 import OTP from "../models/otp.model.js";
 import { OAuth2Client } from "google-auth-library";
+
 const OTP_TTL = 5 * 60 * 1000;
 const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 const CONFIRM_TOKEN_TTL = "10m";
+const MAX_OTP_ATTEMPTS = 5;
+
+// Helper: sinh OTP 6 số
+const generateOTP = () =>
+  Math.floor(100000 + Math.random() * 900000).toString();
+
 // ─────────────────────────────────────────────
 // User registration
 // ─────────────────────────────────────────────
@@ -54,7 +61,6 @@ export const signUp = async (req, res) => {
 
 // ─────────────────────────────────────────────
 // User login
-
 // ─────────────────────────────────────────────
 export const signIn = async (req, res) => {
   try {
@@ -80,13 +86,15 @@ export const signIn = async (req, res) => {
 
     // Tài khoản bị khóa → gửi OTP khôi phục thay vì báo lỗi cứng
     if (user.isDeactivated) {
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otp = generateOTP();
 
-      await OTP.deleteMany({ userId: user._id });
+      await OTP.deleteMany({ userId: user._id, purpose: "recover-account" });
       await OTP.create({
         userId: user._id,
         otp,
+        purpose: "recover-account",
         verified: false,
+        attempts: 0,
         expiresAt: new Date(Date.now() + OTP_TTL),
       });
 
@@ -176,6 +184,23 @@ export const refreshToken = async (req, res) => {
       return res.status(403).json({ message: "Token đã hết hạn!" });
     }
 
+    // Chặn refresh token cấp access token mới nếu tài khoản đã bị khóa
+    // sau khi session được tạo (ví dụ user tự deactivate ở 1 thiết bị khác
+    // trước khi session này bị dọn dẹp).
+    const user = await User.findById(session.userId);
+    if (!user) {
+      await Session.deleteOne({ _id: session._id });
+      return res.status(404).json({ message: "Người dùng không tồn tại!" });
+    }
+
+    if (user.isDeactivated) {
+      await Session.deleteOne({ _id: session._id });
+      return res.status(403).json({
+        message: "Tài khoản đã bị vô hiệu hóa.",
+        code: "ACCOUNT_DEACTIVATED",
+      });
+    }
+
     const accessToken = jwt.sign(
       { userId: session.userId },
       process.env.ACCESS_TOKEN,
@@ -245,14 +270,16 @@ export const forgotSendOTP = async (req, res) => {
       });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = generateOTP();
 
-    await OTP.deleteMany({ userId: user._id });
+    await OTP.deleteMany({ userId: user._id, purpose: "forgot-password" });
 
     await OTP.create({
       userId: user._id,
       otp,
+      purpose: "forgot-password",
       verified: false,
+      attempts: 0,
       expiresAt: new Date(Date.now() + OTP_TTL),
     });
 
@@ -267,6 +294,7 @@ export const forgotSendOTP = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
+
 export const forgotVerifyOTP = async (req, res) => {
   try {
     const { email, username, otp } = req.body;
@@ -282,7 +310,10 @@ export const forgotVerifyOTP = async (req, res) => {
       return res.status(400).json({ message: "Tài khoản không tồn tại!" });
     }
 
-    const otpRecord = await OTP.findOne({ userId: user._id });
+    const otpRecord = await OTP.findOne({
+      userId: user._id,
+      purpose: "forgot-password",
+    });
 
     if (!otpRecord) {
       return res.status(400).json({ message: "OTP không tồn tại!" });
@@ -293,7 +324,17 @@ export const forgotVerifyOTP = async (req, res) => {
       return res.status(400).json({ message: "OTP đã hết hạn!" });
     }
 
+    // Chặn brute-force: quá số lần thử sai cho phép
+    if (otpRecord.attempts >= MAX_OTP_ATTEMPTS) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res.status(429).json({
+        message: "Bạn đã nhập sai OTP quá nhiều lần. Vui lòng yêu cầu OTP mới!",
+      });
+    }
+
     if (otpRecord.otp !== otp) {
+      otpRecord.attempts += 1;
+      await otpRecord.save();
       return res.status(400).json({ message: "OTP không chính xác!" });
     }
 
@@ -355,7 +396,10 @@ export const forgotResetPassword = async (req, res) => {
     }
 
     // Kiểm tra OTP đã verified chưa
-    const otpRecord = await OTP.findOne({ userId: decoded.userId });
+    const otpRecord = await OTP.findOne({
+      userId: decoded.userId,
+      purpose: "forgot-password",
+    });
 
     if (!otpRecord || !otpRecord.verified) {
       return res.status(400).json({
@@ -381,7 +425,9 @@ export const forgotResetPassword = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
-
+// ────────────────────────────────────────────
+// DEACTIVATE ACCOUNT
+// ────────────────────────────────────────────
 export const deactivateAccount = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -451,7 +497,10 @@ export const recoverVerifyOTP = async (req, res) => {
         .json({ message: "Tài khoản không ở trạng thái bị khóa!" });
     }
 
-    const otpRecord = await OTP.findOne({ userId: user._id });
+    const otpRecord = await OTP.findOne({
+      userId: user._id,
+      purpose: "recover-account",
+    });
 
     if (!otpRecord) {
       return res.status(400).json({
@@ -466,7 +515,18 @@ export const recoverVerifyOTP = async (req, res) => {
       });
     }
 
+    // Chặn brute-force: quá số lần thử sai cho phép
+    if (otpRecord.attempts >= MAX_OTP_ATTEMPTS) {
+      await OTP.deleteOne({ _id: otpRecord._id });
+      return res.status(429).json({
+        message:
+          "Bạn đã nhập sai OTP quá nhiều lần. Vui lòng đăng nhập lại để nhận OTP mới!",
+      });
+    }
+
     if (otpRecord.otp !== otp) {
+      otpRecord.attempts += 1;
+      await otpRecord.save();
       return res.status(400).json({ message: "OTP không chính xác!" });
     }
 
@@ -508,13 +568,15 @@ export const recoverResendOTP = async (req, res) => {
       });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = generateOTP();
 
-    await OTP.deleteMany({ userId: user._id });
+    await OTP.deleteMany({ userId: user._id, purpose: "recover-account" });
     await OTP.create({
       userId: user._id,
       otp,
+      purpose: "recover-account",
       verified: false,
+      attempts: 0,
       expiresAt: new Date(Date.now() + OTP_TTL),
     });
 

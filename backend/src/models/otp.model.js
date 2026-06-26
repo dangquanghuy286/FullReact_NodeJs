@@ -12,9 +12,22 @@ const otpSchema = new mongoose.Schema({
     required: true,
   },
 
+  // Phân biệt OTP dùng cho mục đích gì, tránh ghi đè nhầm giữa các flow
+  purpose: {
+    type: String,
+    enum: ["forgot-password", "recover-account"],
+    required: true,
+  },
+
   verified: {
     type: Boolean,
     default: false,
+  },
+
+  // Số lần nhập sai OTP, dùng để chặn brute-force
+  attempts: {
+    type: Number,
+    default: 0,
   },
 
   expiresAt: {
