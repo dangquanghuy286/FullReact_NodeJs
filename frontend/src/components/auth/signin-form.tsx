@@ -16,7 +16,7 @@ import { PasswordInput } from "../input/PasswordInput";
 
 import type { ApiErrorResponse } from "@/types/store";
 import { toast } from "sonner";
-import { RecoverAccountModal } from "../modal/recoveraccountmodal";
+import { RecoverAccountModal } from "../modal/RecoverAccountModal";
 
 // Zod Schema
 const loginSchema = z.object({
