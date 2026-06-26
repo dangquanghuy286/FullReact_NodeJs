@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -12,6 +13,10 @@ import { GoogleLogin } from "@react-oauth/google";
 
 import { useTranslation } from "react-i18next";
 import { PasswordInput } from "../input/PasswordInput";
+
+import type { ApiErrorResponse } from "@/types/store";
+import { toast } from "sonner";
+import { RecoverAccountModal } from "../modal/recoveraccountmodal";
 
 // Zod Schema
 const loginSchema = z.object({
@@ -36,12 +41,24 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
+  // Tài khoản bị khóa → mở modal nhập OTP khôi phục ngay trong form login
+  const [recoverModalOpen, setRecoverModalOpen] = useState(false);
+  const [recoverUsername, setRecoverUsername] = useState("");
+
   const onSubmit = async (data: LoginFormData) => {
     const { username, password } = data;
     try {
       await signIn(username, password);
       navigate("/");
     } catch (error) {
+      const code = (error as ApiErrorResponse).response?.data?.code;
+
+      if (code === "ACCOUNT_DEACTIVATED") {
+        setRecoverUsername(username);
+        setRecoverModalOpen(true);
+        return;
+      }
+
       // Login failed
       console.error("Login failed:", error);
     }
@@ -57,6 +74,15 @@ export function LoginForm({
     } catch (error) {
       console.error(t("auth.login.googleFailed"), error);
     }
+  };
+
+  const handleRecovered = () => {
+    toast.success(
+      t(
+        "auth.recoverAccount.pleaseSignInAgain",
+        "Account restored. Please sign in again.",
+      ),
+    );
   };
 
   return (
@@ -160,6 +186,13 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
+
+      <RecoverAccountModal
+        open={recoverModalOpen}
+        username={recoverUsername}
+        onOpenChange={setRecoverModalOpen}
+        onRecovered={handleRecovered}
+      />
     </div>
   );
 }

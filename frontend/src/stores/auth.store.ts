@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import i18next from "i18next";
 import { authService } from "@/services/auth.service";
-import type { AuthState } from "@/types/store";
+import type { ApiErrorResponse, AuthState } from "@/types/store";
 import { persist } from "zustand/middleware";
 import { useChatStore } from "./chat.store";
 
@@ -14,6 +14,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       loading: false, // Track loading state
       isRefreshing: false,
+      recoverLoading: false,
       setAccessToken: (accessToken) => {
         set({ accessToken });
       },
@@ -66,7 +67,13 @@ export const useAuthStore = create<AuthState>()(
           useChatStore.getState().fetchConversations();
           toast.success("Signed in successfully! Welcome back!");
         } catch (error) {
-          toast.error("Sign in failed!");
+          const code = (error as ApiErrorResponse).response?.data?.code;
+          // Tài khoản bị khóa: KHÔNG toast lỗi chung ở đây — UI (LoginForm) sẽ
+          // tự mở modal nhập OTP để khôi phục, toast "Sign in failed" lúc này
+          // chỉ gây nhiễu cho người dùng.
+          if (code !== "ACCOUNT_DEACTIVATED") {
+            toast.error("Sign in failed!");
+          }
           throw error;
         } finally {
           set({ loading: false });
@@ -182,13 +189,67 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: false });
         }
       },
+      // ─────────────────────────────────────────────
+      // Recover Account (tài khoản bị tự khóa / deactivate)
+      // ─────────────────────────────────────────────
+      recoverVerifyOTP: async (payload) => {
+        try {
+          set({ recoverLoading: true });
+          const { message } = await authService.recoverVerifyOTP(payload);
+          toast.success(message || "Account recovered! Please sign in again.");
+        } catch (error) {
+          const apiMessage = (error as ApiErrorResponse).response?.data
+            ?.message;
+          toast.error(apiMessage || "Could not verify OTP. Please try again.");
+          throw error;
+        } finally {
+          set({ recoverLoading: false });
+        }
+      },
+      recoverResendOTP: async (payload) => {
+        try {
+          set({ recoverLoading: true });
+          const { message } = await authService.recoverResendOTP(payload);
+          toast.success(message || "OTP sent! Please check your email.");
+        } catch (error) {
+          const apiMessage = (error as ApiErrorResponse).response?.data
+            ?.message;
+          toast.error(apiMessage || "Could not resend OTP. Please try again.");
+          throw error;
+        } finally {
+          set({ recoverLoading: false });
+        }
+      },
+      // ─────────────────────────────────────────────
+      // Deactivate Account
+      // ─────────────────────────────────────────────
+      deactivateLoading: false,
+      deactivateAccount: async (password) => {
+        try {
+          set({ deactivateLoading: true });
+          const { message } = await authService.deactivateAccount(password);
+          // Backend đã xóa session + clear cookie refreshToken rồi, nên ở
+          // đây chỉ cần dọn state phía client, không cần gọi lại /auth/signout.
+          get().clearState();
+          toast.success(message || "Account deactivated.");
+        } catch (error) {
+          const apiMessage = (error as ApiErrorResponse).response?.data
+            ?.message;
+          toast.error(
+            apiMessage || "Could not deactivate account. Please try again.",
+          );
+          throw error;
+        } finally {
+          set({ deactivateLoading: false });
+        }
+      },
     }),
     {
       name: "auth-storage",
       partialize: (state) => ({
         user: state.user, // Only persist user and accessToken, not loading to avoid stale state on page reload
         accessToken: state.accessToken,
-        // isRefreshing KHÔNG persist để tránh stale state
+        // isRefreshing và recoverLoading KHÔNG persist để tránh stale state
       }),
     },
   ),

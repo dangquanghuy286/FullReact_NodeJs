@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import api from "@/lib/axios";
 import { toast } from "sonner";
+import { DeactivateAccountModal } from "../modal/DeactivateAccountModal";
 
 const usePasswordSchema = () => {
   const { t } = useTranslation();
@@ -43,6 +44,7 @@ export const SecurityTab = () => {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [deactivateModalOpen, setDeactivateModalOpen] = useState(false);
 
   const {
     register,
@@ -180,11 +182,23 @@ export const SecurityTab = () => {
         <p className="text-xs font-semibold text-destructive uppercase tracking-wider mb-2">
           {t("security.dangerZone.label")}
         </p>
-        <Button variant="destructive" className="w-full gap-2">
+        <Button
+          variant="destructive"
+          className="w-full gap-2"
+          onClick={() => setDeactivateModalOpen(true)}
+        >
           <Trash2 className="size-4" />
-          {t("security.dangerZone.deleteAccount")}
+          {t("security.dangerZone.deactivateAccount", "Deactivate account")}
         </Button>
+        <p className="text-xs text-muted-foreground mt-2">
+          {t("security.dangerZone.deactivateHint")}
+        </p>
       </div>
+
+      <DeactivateAccountModal
+        open={deactivateModalOpen}
+        onOpenChange={setDeactivateModalOpen}
+      />
     </div>
   );
 };

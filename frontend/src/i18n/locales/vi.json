@@ -117,7 +117,12 @@
         "blockReport": "Chặn & Báo cáo",
         "dangerZone": {
             "label": "Vùng nguy hiểm",
-            "deleteAccount": "Khóa tài khoản"
+            "deactivateAccount": "Khóa tài khoản",
+            "deactivateHint": "Bạn có thể khôi phục tài khoản bất cứ lúc nào bằng cách đăng nhập lại và xác minh OTP.",
+            "deactivateDescription": "Tài khoản của bạn sẽ bị khóa và bạn sẽ bị đăng xuất ở tất cả các thiết bị. Bạn có thể khôi phục quyền truy cập bất cứ lúc nào bằng cách đăng nhập lại và xác minh OTP được gửi đến email của bạn.",
+            "confirmPassword": "Xác nhận mật khẩu",
+            "deactivating": "Đang khóa...",
+            "deactivateSuccess": "Tài khoản của bạn đã bị khóa. Bạn có thể khôi phục quyền truy cập bất cứ lúc nào bằng cách đăng nhập lại và xác minh OTP được gửi đến email của bạn."
         },
         "validation": {
             "currentPasswordRequired": "Nhập mật khẩu hiện tại",

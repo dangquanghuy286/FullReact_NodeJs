@@ -6,6 +6,20 @@ const api = axios.create({
   withCredentials: true,
 });
 
+const PUBLIC_AUTH_PATHS = [
+  "/auth/signin",
+  "/auth/signup",
+  "/auth/googlesignin",
+  "/auth/refresh",
+  "/auth/forgot-password",
+  "/auth/recover-account",
+];
+
+const isPublicAuthRequest = (url?: string) => {
+  if (!url) return false;
+  return PUBLIC_AUTH_PATHS.some((path) => url.includes(path));
+};
+
 api.interceptors.request.use((config) => {
   const { accessToken } = useAuthStore.getState();
   if (accessToken) {
@@ -20,6 +34,9 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     if (!originalRequest) return Promise.reject(error);
+    if (isPublicAuthRequest(originalRequest.url)) {
+      return Promise.reject(error);
+    }
 
     // 401 → token hết hạn → thử refresh rồi retry
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -36,7 +53,7 @@ api.interceptors.response.use(
       }
     }
 
-    // 403 → token sai hoàn toàn → logout luôn, không retry
+    // 403 → token sai hoàn toàn (route được bảo vệ) → logout luôn, không retry
     if (error.response?.status === 403) {
       useAuthStore.getState().clearState();
       window.location.href = "/signin";

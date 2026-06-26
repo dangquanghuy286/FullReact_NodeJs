@@ -96,4 +96,33 @@ export const authService = {
     );
     return res.data;
   },
+
+  // ─────────────────────────────────────────────
+  // Recover Account (tài khoản bị tự khóa / deactivate)
+  // ─────────────────────────────────────────────
+  recoverVerifyOTP: async (payload: { username: string; otp: string }) => {
+    const res = await api.post("/auth/recover-account/verify-otp", payload, {
+      withCredentials: true,
+    });
+    return res.data;
+  },
+
+  recoverResendOTP: async (payload: { username: string }) => {
+    const res = await api.post("/auth/recover-account/resend-otp", payload, {
+      withCredentials: true,
+    });
+    return res.data;
+  },
+
+  // ─────────────────────────────────────────────
+  // Deactivate Account
+  // ─────────────────────────────────────────────
+  deactivateAccount: async (password: string) => {
+    const res = await api.patch(
+      "/auth/deactivate-account",
+      { password },
+      { withCredentials: true },
+    );
+    return res.data;
+  },
 };

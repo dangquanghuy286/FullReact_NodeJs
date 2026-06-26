@@ -117,7 +117,12 @@
         "blockReport": "Block & Report",
         "dangerZone": {
             "label": "Danger Zone",
-            "deleteAccount": "Lock Account"
+            "deactivateAccount": "Lock Account",
+            "deactivateHint": "You can restore your account anytime by signing in again and verifying an OTP.",
+            "deactivateDescription": "Your account will be locked and you'll be signed out everywhere. You can restore access anytime by signing in again and verifying an OTP sent to your email.",
+            "confirmPassword": "Confirm your password",
+            "deactivating": "Deactivating...",
+            "deactivateSuccess": "Your account has been locked. You can restore access anytime by signing in again and verifying an OTP sent to your email."
         },
         "validation": {
             "currentPasswordRequired": "Enter current password",
