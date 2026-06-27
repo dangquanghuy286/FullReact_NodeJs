@@ -9,7 +9,8 @@
             "orContinueWith": "Or continue with",
             "noAccount": "Don't have an account?",
             "createAccount": "Create account",
-            "googleFailed": "Google login failed"
+            "googleFailed": "Google login failed",
+            "failed": "Login failed. Please check your credentials."
         },
         "signup": {
             "title": "Create a new account!",

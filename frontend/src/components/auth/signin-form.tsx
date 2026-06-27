@@ -58,9 +58,9 @@ export function LoginForm({
         setRecoverModalOpen(true);
         return;
       }
-
-      // Login failed
-      console.error("Login failed:", error);
+      toast.error(
+        t("auth.login.failed", "Login failed. Please check your credentials."),
+      );
     }
   };
 
@@ -71,8 +71,10 @@ export function LoginForm({
       if (!credentialResponse.credential) return;
       await googleSignIn(credentialResponse.credential);
       navigate("/");
-    } catch (error) {
-      console.error(t("auth.login.googleFailed"), error);
+    } catch {
+      toast.error(
+        t("auth.login.googleFailed", "Google login failed. Please try again."),
+      );
     }
   };
 
