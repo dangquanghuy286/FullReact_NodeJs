@@ -31,7 +31,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       const reason = err.message;
 
       if (reason === "TOKEN_EXPIRED") {
-        // Chặn vòng lặp retry với token cũ trong lúc đang refresh
         socket.io.opts.reconnection = false;
 
         try {
@@ -39,7 +38,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
           socket.io.opts.reconnection = true;
           socket.connect();
         } catch {
-          // Refresh token cũng hết hạn/không hợp lệ → logout thật
           useAuthStore.getState().clearState();
           set({ socket: null, onlineUsers: [] });
           window.location.href = "/signin";
@@ -48,7 +46,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       }
 
       if (reason === "TOKEN_INVALID" || reason.includes("Unauthorized")) {
-        // Token sai hoàn toàn, không phải do hết hạn → logout luôn, không retry
+        // Token sai hoàn toàn, không phải do hết hạn → logout luôn
         socket.io.opts.reconnection = false;
         useAuthStore.getState().clearState();
         set({ socket: null, onlineUsers: [] });
