@@ -13,8 +13,6 @@ export const protectedRoute = async (req, res, next) => {
     // Verify token
     jwt.verify(token, process.env.ACCESS_TOKEN, async (err, decoded) => {
       if (err) {
-        console.error("JWT Error:", err.name);
-
         if (err.name === "TokenExpiredError") {
           return res.status(401).json({
             message: "Access token đã hết hạn",
