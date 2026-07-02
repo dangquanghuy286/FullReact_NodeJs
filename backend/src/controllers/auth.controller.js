@@ -84,7 +84,7 @@ export const signIn = async (req, res) => {
         .json({ message: "Username hoặc password không chính xác!" });
     }
 
-    // Tài khoản bị khóa → gửi OTP khôi phục thay vì báo lỗi cứng
+    // Tài khoản bị khóa
     if (user.isDeactivated) {
       const otp = generateOTP();
 
