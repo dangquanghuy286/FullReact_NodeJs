@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
   sendDirectMessage,
   sendGroupMessage,
@@ -8,10 +7,17 @@ import {
   checkFriendShip,
   checkGroup,
 } from "../middlewares/friend.middleware.js";
+import { upload } from "../libs/cloudinary.js";
 
 const router = express.Router();
 
-router.post("/direct", checkFriendShip, sendDirectMessage);
-router.post("/group", checkGroup, sendGroupMessage);
+// upload.array("images", 10): field "images" trong form-data, tối đa 10 ảnh
+router.post(
+  "/direct",
+  upload.array("images", 10),
+  checkFriendShip,
+  sendDirectMessage,
+);
+router.post("/group", upload.array("images", 10), checkGroup, sendGroupMessage);
 
 export default router;

@@ -5,22 +5,25 @@ import {
   updateConversationAfterCreateMessage,
 } from "../utils/message.helper.js";
 import { io } from "../socket/index.socket.js";
-// Gửi tin nhắn trực tiếp
+import { uploadMessageImages } from "../libs/cloudinary.js";
+
+// Gửi tin nhắn trực tiếp (có thể kèm content, hoặc 1/nhiều ảnh, hoặc cả hai)
 export const sendDirectMessage = async (req, res) => {
   try {
     const { recipientId, content, conversationId } = req.body;
     const senderId = req.user._id;
-    let conversation;
+    const files = req.files || []; // do multer.array cung cấp
 
-    if (!content) {
+    // Phải có ít nhất content hoặc ảnh
+    if (!content?.trim() && files.length === 0) {
       return res.status(400).json({
-        message: "Thiếu nội dung!",
+        message: "Cần có nội dung hoặc ít nhất 1 ảnh!",
       });
     }
 
+    let conversation;
     if (conversationId) {
       conversation = await Conversation.findById(conversationId);
-
       if (!conversation) {
         return res.status(404).json({
           message: "Không tìm thấy cuộc hội thoại!",
@@ -31,7 +34,6 @@ export const sendDirectMessage = async (req, res) => {
         type: "direct",
         "participants.userId": { $all: [senderId, recipientId] },
       });
-
       if (existingConversation) {
         conversation = existingConversation;
       } else {
@@ -47,16 +49,20 @@ export const sendDirectMessage = async (req, res) => {
       }
     }
 
+    // Upload ảnh lên cloudinary (nếu có)
+    const images = await uploadMessageImages(files);
+
     const message = await Message.create({
       conversationId: conversation._id,
       senderId,
-      content,
+      content: content?.trim() || "",
+      images,
     });
 
     updateConversationAfterCreateMessage(conversation, message, senderId);
     await conversation.save();
-
     emitNewMessage(io, conversation, message);
+
     return res.status(201).json({
       message,
       conversation,
@@ -68,28 +74,34 @@ export const sendDirectMessage = async (req, res) => {
     });
   }
 };
-// Gửi tin nhắn nhóm
+
+// Gửi tin nhắn nhóm (có thể kèm content, hoặc 1/nhiều ảnh, hoặc cả hai)
 export const sendGroupMessage = async (req, res) => {
   try {
     const { conversationId, content } = req.body;
     const senderId = req.user._id;
     const conversation = req.conversation;
+    const files = req.files || [];
 
-    if (!content) {
-      return res.status(400).json("Thiếu nội dung");
+    if (!content?.trim() && files.length === 0) {
+      return res.status(400).json({
+        message: "Cần có nội dung hoặc ít nhất 1 ảnh!",
+      });
     }
+
+    const images = await uploadMessageImages(files);
 
     const message = await Message.create({
       conversationId,
       senderId,
-      content,
+      content: content?.trim() || "",
+      images,
     });
 
     updateConversationAfterCreateMessage(conversation, message, senderId);
-
     await conversation.save();
-
     emitNewMessage(io, conversation, message);
+
     return res.status(201).json({
       message,
     });

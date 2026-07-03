@@ -4,12 +4,18 @@ export const updateConversationAfterCreateMessage = (
   message,
   senderId,
 ) => {
+  const previewContent = message.content?.trim()
+    ? message.content
+    : message.images?.length
+      ? `[Hình ảnh${message.images.length > 1 ? ` (${message.images.length})` : ""}]`
+      : "";
+
   conversation.set({
     seenBy: [],
     lastMessageAt: message.createdAt,
     lastMessage: {
       _id: message._id,
-      content: message.content,
+      content: previewContent,
       senderId,
       createdAt: message.createdAt,
     },
@@ -22,6 +28,7 @@ export const updateConversationAfterCreateMessage = (
     conversation.unreadCounts.set(memberId, isSender ? 0 : prevCount + 1);
   });
 };
+
 // Emit new message event via Socket.IO
 export const emitNewMessage = (io, conversation, message) => {
   io.to(conversation._id.toString()).emit("new-message", {
