@@ -98,7 +98,7 @@ export const useChatStore = create<ChatState>()(
         }
       },
 
-      sendDirectMessage: async (recipientId, content, imgUrl) => {
+      sendDirectMessage: async (recipientId, content, images = []) => {
         try {
           const { activeConversationId } = get();
           const { user } = useAuthStore.getState();
@@ -106,7 +106,7 @@ export const useChatStore = create<ChatState>()(
           const message = await chatService.sendDirectMessage(
             recipientId,
             content ?? "",
-            imgUrl,
+            images,
             activeConversationId ?? undefined,
           );
 
@@ -138,14 +138,14 @@ export const useChatStore = create<ChatState>()(
         }
       },
 
-      sendGroupMessage: async (conversationId, content, imgUrl) => {
+      sendGroupMessage: async (conversationId, content, images = []) => {
         try {
           const { user } = useAuthStore.getState();
 
           const message = await chatService.sendGroupMessage(
             conversationId,
             content ?? "",
-            imgUrl,
+            images,
           );
 
           set((state) => {

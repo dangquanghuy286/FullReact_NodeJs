@@ -2,6 +2,7 @@ import { cn, formatMessageTime } from "@/lib/utils";
 import type { Conversation, Message, Participant } from "@/types/chat";
 import { useEffect, useRef, useState } from "react";
 import UserAvatar from "./UserAvatar";
+import MessageImages from "./MessageImages";
 import { Card } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { useTranslation } from "react-i18next";
@@ -93,15 +94,24 @@ const MessageItem = ({
         >
           <Card
             className={cn(
-              "px-4 py-2 shadow-sm transition-all",
+              "px-3 py-2 shadow-sm transition-all overflow-hidden",
               message.isOwnMessage
                 ? "bg-[#00c0d1] text-white rounded-2xl rounded-br-sm"
                 : "bg-gray-100 text-black rounded-2xl rounded-bl-sm",
             )}
           >
-            <p className="text-sm leading-relaxed break-words">
-              {message.content}
-            </p>
+            {message.images && message.images.length > 0 && (
+              <MessageImages
+                images={message.images}
+                hasContent={!!message.content}
+              />
+            )}
+
+            {message.content && (
+              <p className="text-sm leading-relaxed break-words">
+                {message.content}
+              </p>
+            )}
           </Card>
 
           {/* Status */}

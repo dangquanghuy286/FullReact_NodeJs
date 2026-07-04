@@ -12,7 +12,6 @@ const pageLimit = 50;
 export const chatService = {
   async fetchConversations(): Promise<{ conversations: Conversation[] }> {
     const response = await api.get("/conversation");
-    // BE trả về "conversation", nếu không có thì trả về mảng rỗng để tránh lỗi khi frontend cố gắng truy cập vào thuộc tính của undefined
     return { conversations: response.data.conversation ?? [] };
   },
 
@@ -32,14 +31,17 @@ export const chatService = {
   async sendDirectMessage(
     recipientId: string,
     content: string = "",
-    imgUrl?: string,
+    images: File[] = [],
     conversationId?: string,
   ) {
-    const res = await api.post("/messages/direct", {
-      recipientId,
-      content,
-      imgUrl,
-      conversationId,
+    const formData = new FormData();
+    formData.append("recipientId", recipientId);
+    formData.append("content", content);
+    if (conversationId) formData.append("conversationId", conversationId);
+    images.forEach((file) => formData.append("images", file));
+
+    const res = await api.post("/messages/direct", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data.message;
   },
@@ -47,19 +49,21 @@ export const chatService = {
   async sendGroupMessage(
     conversationId: string,
     content: string = "",
-    imgUrl?: string,
+    images: File[] = [],
   ) {
-    const res = await api.post("/messages/group", {
-      conversationId,
-      content,
-      imgUrl,
+    const formData = new FormData();
+    formData.append("conversationId", conversationId);
+    formData.append("content", content);
+    images.forEach((file) => formData.append("images", file));
+
+    const res = await api.post("/messages/group", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data.message;
   },
 
   async markAsSeen(conversationId: string) {
     const res = await api.patch(`/conversation/${conversationId}/seen`);
-
     return res.data;
   },
 

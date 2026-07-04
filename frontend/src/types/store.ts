@@ -97,12 +97,12 @@ export interface ChatState {
   sendDirectMessage: (
     recipientId: string,
     content?: string,
-    imgUrl?: string,
+    images?: File[],
   ) => Promise<void>;
   sendGroupMessage: (
     conversationId: string,
     content?: string,
-    imgUrl?: string,
+    images?: File[],
   ) => Promise<void>;
 
   // Add message

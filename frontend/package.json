@@ -46,6 +46,7 @@
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4.1.17",
     "tailwindcss-animate": "^1.0.7",
+    "yet-another-react-lightbox": "^3.32.0",
     "zod": "^4.1.13",
     "zustand": "^5.0.9"
   },
