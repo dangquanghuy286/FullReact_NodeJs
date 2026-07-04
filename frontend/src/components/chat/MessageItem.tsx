@@ -13,6 +13,7 @@ interface MessageItemProps {
   messages: Message[];
   selectedConvo: Conversation;
   lastMessageStatus: "seen" | "delivered" | "sent";
+  onImageClick: (messageId: string, localIndex: number) => void;
 }
 
 const MessageItem = ({
@@ -21,6 +22,7 @@ const MessageItem = ({
   messages,
   selectedConvo,
   lastMessageStatus,
+  onImageClick,
 }: MessageItemProps) => {
   const prev = index + 1 < messages.length ? messages[index + 1] : undefined;
   const [visible, setVisible] = useState(false);
@@ -104,6 +106,9 @@ const MessageItem = ({
               <MessageImages
                 images={message.images}
                 hasContent={!!message.content}
+                onImageClick={(localIndex) =>
+                  onImageClick(message._id, localIndex)
+                }
               />
             )}
 

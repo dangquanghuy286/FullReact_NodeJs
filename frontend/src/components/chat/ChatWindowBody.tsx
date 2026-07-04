@@ -5,6 +5,9 @@ import MessageItem from "./MessageItem";
 import { useAuthStore } from "@/stores/auth.store";
 import InfinityScroll from "react-infinite-scroll-component";
 import { useTranslation } from "react-i18next";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import { useChatLightbox } from "@/hooks/useChatLightbox";
 
 const ChatWindowBody = () => {
   const { t } = useTranslation();
@@ -26,6 +29,9 @@ const ChatWindowBody = () => {
   const selectedConvo = conversations.find(
     (c) => c._id === activeConversationId,
   );
+
+  // Gộp ảnh toàn bộ hội thoại (messages đang là thứ tự cũ -> mới)
+  const { slides, openIndex, openAt, close } = useChatLightbox(messages);
 
   const seenBy = selectedConvo?.seenBy ?? [];
   const lastMessageStatus: "delivered" | "seen" = selectedConvo?.lastMessage
@@ -125,10 +131,18 @@ const ChatWindowBody = () => {
               messages={reversedMessages}
               selectedConvo={selectedConvo}
               lastMessageStatus={lastMessageStatus}
+              onImageClick={openAt}
             />
           ))}
         </InfinityScroll>
       </div>
+
+      <Lightbox
+        open={openIndex !== null}
+        close={close}
+        index={openIndex ?? 0}
+        slides={slides}
+      />
     </div>
   );
 };
