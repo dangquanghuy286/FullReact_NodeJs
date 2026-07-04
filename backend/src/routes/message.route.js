@@ -7,7 +7,7 @@ import {
   checkFriendShip,
   checkGroup,
 } from "../middlewares/friend.middleware.js";
-import { upload } from "../libs/cloudinary.js";
+import { upload } from "../middlewares/upload.middleware.js";
 
 const router = express.Router();
 

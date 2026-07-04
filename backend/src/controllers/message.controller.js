@@ -5,7 +5,7 @@ import {
   updateConversationAfterCreateMessage,
 } from "../utils/message.helper.js";
 import { io } from "../socket/index.socket.js";
-import { uploadMessageImages } from "../libs/cloudinary.js";
+import { uploadMessageImages } from "../middlewares/upload.middleware.js";
 
 // Gửi tin nhắn trực tiếp (có thể kèm content, hoặc 1/nhiều ảnh, hoặc cả hai)
 export const sendDirectMessage = async (req, res) => {
