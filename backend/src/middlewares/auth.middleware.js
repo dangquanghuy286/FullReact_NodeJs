@@ -10,7 +10,6 @@ export const protectedRoute = async (req, res, next) => {
       return res.status(401).json({ message: "Không tìm thấy access token." });
     }
 
-    // Verify token
     jwt.verify(token, process.env.ACCESS_TOKEN, async (err, decoded) => {
       if (err) {
         if (err.name === "TokenExpiredError") {
