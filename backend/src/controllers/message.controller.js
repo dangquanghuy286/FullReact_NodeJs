@@ -12,7 +12,7 @@ export const sendDirectMessage = async (req, res) => {
   try {
     const { recipientId, content, conversationId } = req.body;
     const senderId = req.user._id;
-    const files = req.files || []; // do multer.array cung cấp
+    const files = req.files || [];
 
     // Phải có ít nhất content hoặc ảnh
     if (!content?.trim() && files.length === 0) {
