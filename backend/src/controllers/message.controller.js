@@ -49,7 +49,7 @@ export const sendDirectMessage = async (req, res) => {
       }
     }
 
-    // Upload ảnh lên cloudinary (nếu có)
+    // Upload ảnh lên cloudinary
     const images = await uploadMessageImages(files);
 
     const message = await Message.create({
@@ -75,7 +75,7 @@ export const sendDirectMessage = async (req, res) => {
   }
 };
 
-// Gửi tin nhắn nhóm (có thể kèm content, hoặc 1/nhiều ảnh, hoặc cả hai)
+// Gửi tin nhắn nhóm
 export const sendGroupMessage = async (req, res) => {
   try {
     const { conversationId, content } = req.body;

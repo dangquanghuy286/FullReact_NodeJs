@@ -35,7 +35,7 @@ export const protectedRoute = async (req, res, next) => {
           return res.status(404).json({ message: "Người dùng không tồn tại." });
         }
 
-        // Chặn access token cũ (cấp trước khi deactivate, vẫn còn hạn 15 phút)
+        // Chặn access token cũ
         // tiếp tục được dùng để gọi các route được bảo vệ.
         if (user.isDeactivated) {
           return res.status(403).json({
