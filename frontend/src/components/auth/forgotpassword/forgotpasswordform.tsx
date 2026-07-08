@@ -151,7 +151,6 @@ export function ForgotPasswordForm({
             </div>
           </div>
 
-          {/* Image Side */}
           <div
             className="bg-muted relative hidden md:block"
             style={{
