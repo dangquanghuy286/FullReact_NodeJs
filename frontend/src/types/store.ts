@@ -4,9 +4,6 @@ import type { Friend, FriendRequest, User } from "./user";
 
 // Dinh nghia cac interface cho store
 // Auth store
-
-// Lỗi trả về từ axios khi backend báo lỗi có kèm "code"
-// (ví dụ: ACCOUNT_DEACTIVATED, TOKEN_EXPIRED, ...)
 export interface ApiErrorResponse {
   response?: {
     data?: {
