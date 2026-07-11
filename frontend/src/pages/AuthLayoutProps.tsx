@@ -19,8 +19,6 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
           mixBlendMode: "multiply",
         }}
       />
-
-      {/* Language & Theme switcher - top right, available on every auth screen */}
       <div className="absolute top-4 right-4 z-20 flex items-center gap-3">
         <ThemeSwitch
           sunClassName="size-4 text-yellow-500"
