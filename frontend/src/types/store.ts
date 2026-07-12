@@ -44,13 +44,13 @@ export interface AuthState {
     email?: string;
     username?: string;
     otp: string;
-  }) => Promise<string>; // trả về resetToken
+  }) => Promise<string>;
   forgotResetPassword: (
     resetToken: string,
     newPassword: string,
   ) => Promise<void>;
   // ─────────────────────────────────────────────
-  // Recover Account (tài khoản bị tự khóa / deactivate)
+  // Recover Account
   // ─────────────────────────────────────────────
   recoverLoading: boolean;
   recoverVerifyOTP: (payload: {
