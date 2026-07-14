@@ -9,7 +9,9 @@
             "orContinueWith": "Hoặc tiếp tục với",
             "noAccount": "Bạn chưa có tài khoản?",
             "createAccount": "Tạo tài khoản",
-            "googleFailed": "Đăng nhập bằng Google thất bại"
+            "googleFailed": "Đăng nhập bằng Google thất bại",
+            "success": "Đăng nhập thành công! Chào mừng bạn trở lại!",
+            "googleSuccess": "Đăng nhập bằng Google thành công!"
         },
         "signup": {
             "title": "Tạo tài khoản mới!",
@@ -27,7 +29,12 @@
             "termsPrefix": "Bằng việc nhấn Tiếp tục, bạn đồng ý với",
             "termsOfService": "Điều khoản dịch vụ",
             "and": "và",
-            "privacyPolicy": "Chính sách bảo mật"
+            "privacyPolicy": "Chính sách bảo mật",
+            "success": "Đăng ký thành công!",
+            "failed": "Đăng ký thất bại!"
+        },
+        "session": {
+            "expired": "Phiên đăng nhập của bạn đã hết hạn!"
         },
         "forgotPassword": {
             "title": "Quên mật khẩu",
@@ -99,7 +106,8 @@
             "bioMax": "Giới thiệu tối đa 160 ký tự"
         },
         "saveSuccess": "Cập nhật hồ sơ thành công!",
-        "saveError": "Đã xảy ra lỗi khi cập nhật hồ sơ của bạn. Vui lòng thử lại!"
+        "saveError": "Đã xảy ra lỗi khi cập nhật hồ sơ của bạn. Vui lòng thử lại!",
+        "fetchError": "Đã xảy ra lỗi khi lấy thông tin hồ sơ!"
     },
     "security": {
         "title": "Quyền riêng tư & Bảo mật",

@@ -10,7 +10,9 @@
             "noAccount": "Don't have an account?",
             "createAccount": "Create account",
             "googleFailed": "Google login failed",
-            "failed": "Login failed. Please check your credentials."
+            "failed": "Login failed. Please check your credentials.",
+            "success": "Signed in successfully! Welcome back!",
+            "googleSuccess": "Signed in with Google successfully!"
         },
         "signup": {
             "title": "Create a new account!",
@@ -28,7 +30,12 @@
             "termsPrefix": "By clicking Continue, you agree to our",
             "termsOfService": "Terms of Service",
             "and": "and",
-            "privacyPolicy": "Privacy Policy"
+            "privacyPolicy": "Privacy Policy",
+            "success": "Registration successful!",
+            "failed": "Registration failed!"
+        },
+        "session": {
+            "expired": "Your session has expired!"
         },
         "forgotPassword": {
             "title": "Forgot password",
@@ -100,7 +107,8 @@
             "bioMax": "Bio must be at most 160 characters"
         },
         "saveSuccess": "Profile updated successfully!",
-        "saveError": "An error occurred while updating your profile. Please try again!"
+        "saveError": "An error occurred while updating your profile. Please try again!",
+        "fetchError": "An error occurred while fetching profile!"
     },
     "security": {
         "title": "Privacy & Security",

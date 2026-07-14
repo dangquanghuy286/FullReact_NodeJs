@@ -46,10 +46,10 @@ export const useAuthStore = create<AuthState>()(
             firstName,
             lastName,
           );
-          toast.success("Registration successful!");
+          toast.success(i18next.t("auth.signup.success"));
         } catch (error) {
           console.error(error);
-          toast.error("Registration failed!");
+          toast.error(i18next.t("auth.signup.failed"));
         } finally {
           set({
             loading: false,
@@ -65,14 +65,12 @@ export const useAuthStore = create<AuthState>()(
           useChatStore.getState().reset();
           await get().getProfile();
           useChatStore.getState().fetchConversations();
-          toast.success("Signed in successfully! Welcome back!");
+          toast.success(i18next.t("auth.login.success"));
         } catch (error) {
           const code = (error as ApiErrorResponse).response?.data?.code;
-          // Tài khoản bị khóa: KHÔNG toast lỗi chung ở đây — UI (LoginForm) sẽ
-          // tự mở modal nhập OTP để khôi phục, toast "Sign in failed" lúc này
-          // chỉ gây nhiễu cho người dùng.
+          // Tài khoản bị khóa
           if (code !== "ACCOUNT_DEACTIVATED") {
-            toast.error("Sign in failed!");
+            toast.error(i18next.t("auth.login.failed"));
           }
           throw error;
         } finally {
@@ -88,9 +86,9 @@ export const useAuthStore = create<AuthState>()(
           useChatStore.getState().reset();
           await get().getProfile();
           useChatStore.getState().fetchConversations();
-          toast.success("Signed in with Google successfully!");
+          toast.success(i18next.t("auth.googleSuccess"));
         } catch (error) {
-          toast.error("Google sign in failed!");
+          toast.error(i18next.t("auth.googleFailed"));
           throw error;
         } finally {
           set({ loading: false });
@@ -117,7 +115,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           console.error(error);
           set({ user: null, accessToken: null });
-          toast.error("An error occurred while fetching profile!");
+          toast.error(i18next.t("auth.account.fetchError"));
         } finally {
           set({ loading: false });
         }
@@ -136,7 +134,7 @@ export const useAuthStore = create<AuthState>()(
           return accessToken;
         } catch (error) {
           console.error(error);
-          toast.error("Your session has expired!");
+          toast.error(i18next.t("auth.session.expired"));
           // Không gọi clearState() để tránh loop — chỉ xóa token
           set({ accessToken: null, user: null });
         } finally {
