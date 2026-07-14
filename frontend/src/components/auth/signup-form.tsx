@@ -169,6 +169,9 @@ export function SignupForm({
               {/* Google Login */}
               <div className="flex justify-center">
                 <GoogleLogin
+                  type="icon"
+                  shape="circle"
+                  theme="filled_blue"
                   onSuccess={handleGoogleSuccess}
                   onError={() => console.error(t("auth.signup.googleFailed"))}
                 />

@@ -9,6 +9,7 @@
             "orContinueWith": "Hoặc tiếp tục với",
             "noAccount": "Bạn chưa có tài khoản?",
             "createAccount": "Tạo tài khoản",
+            "google": "Đăng nhập bằng Google",
             "googleFailed": "Đăng nhập bằng Google thất bại",
             "success": "Đăng nhập thành công! Chào mừng bạn trở lại!",
             "googleSuccess": "Đăng nhập bằng Google thành công!"
@@ -25,6 +26,7 @@
             "orContinueWith": "Hoặc tiếp tục với",
             "haveAccount": "Bạn đã có tài khoản?",
             "signIn": "Đăng nhập",
+            "google": "Đăng ký bằng Google",
             "googleFailed": "Đăng ký bằng Google thất bại",
             "termsPrefix": "Bằng việc nhấn Tiếp tục, bạn đồng ý với",
             "termsOfService": "Điều khoản dịch vụ",
