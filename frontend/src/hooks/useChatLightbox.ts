@@ -6,7 +6,6 @@ interface FlatImage {
   messageId: string;
 }
 
-// messages truyền vào phải theo thứ tự cũ -> mới để lightbox đi tới/lui đúng dòng thời gian
 export const useChatLightbox = (messages: Message[]) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
