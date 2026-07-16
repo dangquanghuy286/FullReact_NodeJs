@@ -20,7 +20,6 @@ export const useImageUpload = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
 
-  // Cleanup object URLs khi unmount hoặc previews thay đổi
   useEffect(() => {
     return () => {
       previews.forEach((p) => URL.revokeObjectURL(p.url));
