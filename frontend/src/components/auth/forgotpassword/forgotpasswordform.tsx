@@ -39,7 +39,7 @@ export function ForgotPasswordForm({
       setIdentifier(data.identifier);
       setStep("otp");
     } catch (error) {
-      // Lỗi đã được toast trong store
+      
       console.error(error);
     } finally {
       setIsSubmitting(false);
