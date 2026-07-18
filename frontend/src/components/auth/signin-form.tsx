@@ -41,7 +41,7 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
-  // Tài khoản bị khóa → mở modal nhập OTP khôi phục ngay trong form login
+  // Tài khoản bị khóa 
   const [recoverModalOpen, setRecoverModalOpen] = useState(false);
   const [recoverUsername, setRecoverUsername] = useState("");
 
