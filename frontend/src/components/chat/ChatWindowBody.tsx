@@ -2,7 +2,7 @@ import { useChatStore } from "@/stores/chat.store";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import MessageItem from "./MessageItem";
-import { useAuthStore } from "@/stores/auth.store";
+
 import InfinityScroll from "react-infinite-scroll-component";
 import { useTranslation } from "react-i18next";
 import Lightbox from "yet-another-react-lightbox";
@@ -18,7 +18,6 @@ const ChatWindowBody = () => {
     fetchMessages,
   } = useChatStore();
 
-  const { user } = useAuthStore();
   const bottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +29,7 @@ const ChatWindowBody = () => {
     (c) => c._id === activeConversationId,
   );
 
-  // Gộp ảnh toàn bộ hội thoại (messages đang là thứ tự cũ -> mới)
+  // Gộp ảnh toàn bộ hội thoại
   const { slides, openIndex, openAt, close } = useChatLightbox(messages);
 
   const seenBy = selectedConvo?.seenBy ?? [];
