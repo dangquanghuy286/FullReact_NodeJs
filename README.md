@@ -284,7 +284,7 @@ await transporter.sendMail({
 
 ### 💬 Chat Application
 
-![FullReact_NodeJs Screenshot](https://res.cloudinary.com/dhl6tbhdh/image/upload/v1781711486/screencapture-localhost-5173-2026-06-17-22_49_16_whfb8t.png)
+![FullReact_NodeJs Screenshot](https://res.cloudinary.com/dhl6tbhdh/image/upload/v1784807572/ChatAPP_eypj7r.png)
 
 ---
 
