@@ -64,20 +64,23 @@ export function LoginForm({
   const handleGoogleSuccess = async (credentialResponse: {
     credential?: string;
   }) => {
+    if (!credentialResponse.credential) return;
+
     try {
-      if (!credentialResponse.credential) return;
       await googleSignIn(credentialResponse.credential);
       navigate("/");
     } catch (error) {
-      // Google login cũng có thể gặp tài khoản bị khóa
-      const code = (error as ApiErrorResponse).response?.data?.code;
-      if (code === "ACCOUNT_DEACTIVATED") {
-        // Backend Google không gửi OTP, nên cần gọi recoverResendOTP trong modal
-        // hoặc cho người dùng bấm "Gửi lại OTP". Cần username để mở modal.
+      const data = (error as ApiErrorResponse).response?.data as
+        | { code?: string; username?: string }
+        | undefined;
+
+      // Tài khoản bị khóa
+      if (data?.code === "ACCOUNT_DEACTIVATED" && data.username) {
+        setRecoverUsername(data.username);
+        setRecoverModalOpen(true);
       }
     }
   };
-
   const handleRecovered = () => {
     toast.success(
       t(

@@ -81,7 +81,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ loading: true });
           const { accessToken } = await authService.googleSignIn(idToken);
-          // Set token TRƯỚC, rồi mới clear các thứ khác (giống signIn)
+
           set({ accessToken, user: null });
           useChatStore.getState().reset();
           await get().getProfile();
