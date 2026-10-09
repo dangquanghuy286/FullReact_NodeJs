@@ -658,12 +658,26 @@ export const googleSignIn = async (req, res) => {
         });
       }
     }
-
     if (user.isDeactivated) {
+      const otp = generateOTP();
+
+      await OTP.deleteMany({ userId: user._id, purpose: "recover-account" });
+      await OTP.create({
+        userId: user._id,
+        otp,
+        purpose: "recover-account",
+        verified: false,
+        attempts: 0,
+        expiresAt: new Date(Date.now() + OTP_TTL),
+      });
+
+      await sendOTPEmail(user.email, otp);
+
       return res.status(403).json({
         message:
-          "Tài khoản đã bị vô hiệu hóa. Vui lòng dùng tính năng khôi phục tài khoản.",
+          "Tài khoản đã bị vô hiệu hóa. OTP khôi phục đã được gửi tới email đăng ký.",
         code: "ACCOUNT_DEACTIVATED",
+        username: user.username,
       });
     }
 

@@ -227,6 +227,8 @@ await transporter.sendMail({
 - `POST /api/auth/verify-email` – Verify email via token
 - `POST /api/auth/forgot-password` – Send password reset email
 - `POST /api/auth/reset-password` – Reset password
+- `POST /api/auth/reset-password` – Reset password
+
 
 ### User
 
