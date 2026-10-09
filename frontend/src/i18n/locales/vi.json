@@ -14,6 +14,9 @@
             "success": "Đăng nhập thành công! Chào mừng bạn trở lại!",
             "googleSuccess": "Đăng nhập bằng Google thành công!"
         },
+        "recoverAccount": {
+            "pleaseSignInAgain": "Đã khôi phục tài khoản. Vui lòng đăng nhập lại."
+        },
         "signup": {
             "title": "Tạo tài khoản mới!",
             "subtitle": "Chào mừng bạn trở lại!",

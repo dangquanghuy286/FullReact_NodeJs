@@ -41,7 +41,7 @@ export function LoginForm({
     resolver: zodResolver(loginSchema),
   });
 
-  // Tài khoản bị khóa 
+  // Tài khoản bị khóa
   const [recoverModalOpen, setRecoverModalOpen] = useState(false);
   const [recoverUsername, setRecoverUsername] = useState("");
 
@@ -58,9 +58,6 @@ export function LoginForm({
         setRecoverModalOpen(true);
         return;
       }
-      toast.error(
-        t("auth.login.failed", "Login failed. Please check your credentials."),
-      );
     }
   };
 
@@ -71,10 +68,13 @@ export function LoginForm({
       if (!credentialResponse.credential) return;
       await googleSignIn(credentialResponse.credential);
       navigate("/");
-    } catch {
-      toast.error(
-        t("auth.login.googleFailed", "Google login failed. Please try again."),
-      );
+    } catch (error) {
+      // Google login cũng có thể gặp tài khoản bị khóa
+      const code = (error as ApiErrorResponse).response?.data?.code;
+      if (code === "ACCOUNT_DEACTIVATED") {
+        // Backend Google không gửi OTP, nên cần gọi recoverResendOTP trong modal
+        // hoặc cho người dùng bấm "Gửi lại OTP". Cần username để mở modal.
+      }
     }
   };
 

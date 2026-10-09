@@ -86,9 +86,9 @@ export const useAuthStore = create<AuthState>()(
           useChatStore.getState().reset();
           await get().getProfile();
           useChatStore.getState().fetchConversations();
-          toast.success(i18next.t("auth.googleSuccess"));
+          toast.success(i18next.t("auth.login.googleSuccess"));
         } catch (error) {
-          toast.error(i18next.t("auth.googleFailed"));
+          toast.error(i18next.t("auth.login.googleFailed"));
           throw error;
         } finally {
           set({ loading: false });
