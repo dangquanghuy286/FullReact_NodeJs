@@ -33,7 +33,7 @@ export interface AuthState {
   getProfile: () => Promise<void>;
   refresh: () => Promise<void>;
   isRefreshing: boolean;
-  // ─────────────────────────────────────────────
+
   // Forgot Password
   // ─────────────────────────────────────────────
   forgotSendOTP: (payload: {
@@ -49,7 +49,7 @@ export interface AuthState {
     resetToken: string,
     newPassword: string,
   ) => Promise<void>;
-  // ─────────────────────────────────────────────
+
   // Recover Account
   // ─────────────────────────────────────────────
   recoverLoading: boolean;
@@ -58,7 +58,7 @@ export interface AuthState {
     otp: string;
   }) => Promise<void>;
   recoverResendOTP: (payload: { username: string }) => Promise<void>;
-  // ─────────────────────────────────────────────
+
   // Deactivate Account
   // ─────────────────────────────────────────────
   deactivateLoading: boolean;
@@ -79,7 +79,7 @@ export interface ChatState {
     {
       items: Message[];
       hasMore: boolean;
-      nextCursor: string | null; //Phan trang
+      nextCursor: string | null;
     }
   >;
   activeConversationId: string | null;
