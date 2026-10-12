@@ -54,7 +54,7 @@ export function DeactivateAccountModal({
       toast.success(t("security.dangerZone.deactivateSuccess"));
       navigate("/signin");
     } catch {
-      // Lỗi đã được toast trong store (ví dụ: sai mật khẩu)
+      toast.error(t("security.dangerZone.deactivateError"));
     }
   };
 
