@@ -57,7 +57,7 @@ const ProfileSettingsTabs = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Hidden file input */}
+
       <input type="file" accept="image/*" hidden ref={fileInputRef} />
     </div>
   );
