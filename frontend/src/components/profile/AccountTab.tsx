@@ -114,7 +114,6 @@ export const AccountTab = () => {
         </div>
       </div>
 
-      {/* Bio */}
       <div className="space-y-1.5">
         <Label htmlFor="bio">{t("account.bio")}</Label>
         <Textarea id="bio" rows={3} {...register("bio")} />
